@@ -54,5 +54,6 @@ public class Main {
 
         Prettify.prettifyLogList(TerminalUtil.occurredLogs);
         Prettify.prettifyLogList(TerminalUtil.occurringLogs);
+       //hello em
     }
 }
