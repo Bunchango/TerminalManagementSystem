@@ -1,7 +1,7 @@
 package TerminalPortManagementSystem.User;
 
 public interface User {
-    /*This class can perform statistics on
-
-    */
+    public abstract String getUsername();
+    public abstract String getPassword();
+    public abstract UserType getUserType();
 }

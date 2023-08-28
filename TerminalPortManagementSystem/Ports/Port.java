@@ -72,16 +72,6 @@ public class Port implements Serializable { // Might have to add a log ( history
         return portContainers;
     }
 
-
-
-    public int getNumberOfVehicles() {
-        return portVehicles.size();
-    }
-
-    public int getNumberOfContainers() {
-        return portContainers.size();
-    }
-
     public static double calculateDistanceBetweenPort(Port target_1, Port target_2) {
         // To calculate the distance using latitude and longitude, use haversine formula
         double R = 6371; // Earth's radius in kilometers

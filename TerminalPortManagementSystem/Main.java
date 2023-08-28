@@ -88,8 +88,5 @@ public class Main {
         // Check for occurring logs every 1 minutes
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(TerminalUtil::updateLogWhenFinished, 0, 1, TimeUnit.MINUTES);
-
-
-
     }
 }

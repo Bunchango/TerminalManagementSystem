@@ -201,4 +201,12 @@ public enum VehicleType {
     public static List<VehicleType> getAllVehicleTypes() {
         return Arrays.asList(VehicleType.values());
     }
+    public static VehicleType fromString(String input) {
+        for (VehicleType vehicleType : VehicleType.values()) {
+            if (vehicleType.name().equalsIgnoreCase(input)) {
+                return vehicleType;
+            }
+        }
+        throw new IllegalArgumentException("Unknown vehicle type: " + input);
+    }
 }

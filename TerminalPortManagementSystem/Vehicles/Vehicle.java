@@ -25,10 +25,6 @@ public abstract class Vehicle implements Serializable {
             throw new IllegalArgumentException("Vehicle already exist, try another vehicleID");
         }
 
-        if (currentFuel > fuelCapacity) {
-            throw new IllegalArgumentException("Invalid fuel value initialization");
-        }
-
         if (currentPort == null) {
             throw new IllegalArgumentException("Invalid port initialization");
         }
@@ -82,20 +78,6 @@ public abstract class Vehicle implements Serializable {
         return vehicleContainers;
     }
 
-    public int getNumberOfContainers() {
-        return vehicleContainers.size();
-    }
-
-    public int getNumberOfContainerByType(ContainerType containerType) {
-        int total = 0;
-        for (Container container: vehicleContainers) {
-            if (container.getContainerType() == containerType) {
-                total ++;
-            }
-        }
-        return total;
-    }
-
     public double getTotalCarryingWeight() {
         double totalWeight = 0;
         for (Container container: vehicleContainers) {
@@ -128,6 +110,8 @@ public abstract class Vehicle implements Serializable {
         } return null;
     }
 
+
+    //TODO: Make loadContainer and unloadContainer return a String
     // Vehicle can load and unload container as long as it is not moving (sail away)
     public void loadContainer(Container containerToLoad) {
         if (ableToLoadContainer(containerToLoad) && !isSailAway() &&

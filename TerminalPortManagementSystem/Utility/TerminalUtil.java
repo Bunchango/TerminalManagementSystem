@@ -3,6 +3,7 @@ package TerminalPortManagementSystem.Utility;
 import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
+import TerminalPortManagementSystem.User.*;
 import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
 
@@ -17,6 +18,7 @@ public class TerminalUtil {
     public static final List<Log> occurredLogs = LogManager.loadOccurredLog("Data/History/occurred.obj");
     public static final List<Log> occurringLogs = LogManager.loadOccurredLog("Data/History/occurring.obj");
     public static final List<String> usedIds = LogManager.loadUsedIds();
+    public static final List<User> users = new ArrayList<>(); // TODO: More work - load and save managers
 
     public static double roundToSecondDecimalPlace(double number) {
         return (double)Math.round(number * 100d) / 100d;
@@ -37,8 +39,17 @@ public class TerminalUtil {
     public static void addOccurringLog(Log logToAdd) {
         occurringLogs.add(logToAdd);
     }
+
     public static void addId(String idToAdd) {
         usedIds.add(idToAdd);
+    }
+
+    public static void addUser(User userToAdd) {
+        users.add(userToAdd);
+    }
+
+    public static void removeUser(User userToRemove) {
+        users.remove(userToRemove);
     }
 
     public static boolean objectAlreadyExist(String id) {
@@ -224,5 +235,14 @@ public class TerminalUtil {
 
     public static boolean passedDate(Date date1, Date date2) {
         return date1.compareTo(date2) >= 0;
+    }
+
+    public static User login(String username, String password) {
+        for (User user: users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

@@ -33,4 +33,13 @@ public enum ContainerType {
     public static List<ContainerType> getAllContainerTypes() {
         return Arrays.asList(ContainerType.values());
     }
+
+    public static ContainerType fromString(String input) {
+        for (ContainerType containerType : ContainerType.values()) {
+            if (containerType.name().equalsIgnoreCase(input)) {
+                return containerType;
+            }
+        }
+        return null;
+    }
 }
