@@ -84,6 +84,7 @@ public class Main {
         //depart date later
         System.out.println(TerminalUtil.searchVehicle("sh-1015").moveToPort(TerminalUtil.searchPort("p-1014"),TerminalUtil.parseStringToDateTime("26-08-2023 15:00:00"),TerminalUtil.parseStringToDateTime("26-08-2023 16:00:00")));
         //TerminalUtil.searchVehicle("sh-1015").loadContainer(TerminalUtil.searchContainer("c-1012"));
+        //TerminalUtil.searchVehicle("sh-1015").unloadContainer(TerminalUtil.searchContainer("c-1012"));
 
         // Check for occurring logs every 1 minutes
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();

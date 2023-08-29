@@ -3,12 +3,15 @@ package TerminalPortManagementSystem.User;
 import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
+import TerminalPortManagementSystem.Utility.Log;
 import TerminalPortManagementSystem.Utility.TerminalUtil;
 import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Manager implements Serializable, User { // Update delete function later, when delete port, also delete manager
@@ -43,7 +46,9 @@ public class Manager implements Serializable, User { // Update delete function l
         return managePortID;
     }
 
-    //TODO: More work, exception handling
+    //TODO: More work, exception handling, complete static query and extract log
+
+    //create object
     public String createContainer(String containerID, String containerType, double weight) {
         Port port = TerminalUtil.searchPort(managePortID);
 
@@ -83,6 +88,8 @@ public class Manager implements Serializable, User { // Update delete function l
         return TerminalUtil.removeContainer(containerID);
     }
 
+
+    // transporting
     public String loadContainer(String vehicleID, String containerID) {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
         Container container = TerminalUtil.searchContainer(containerID);
@@ -165,5 +172,45 @@ public class Manager implements Serializable, User { // Update delete function l
     }
 
     // Statistics
+    public int getTotalConsumedFuelByDay(Date dateToQuery){
+        int totalConsumedFuel = 0;
+        return totalConsumedFuel;
+    }
+    public String CalculateWeightOfEachTypeOfAll(){
+        //return weight of each container type in both ship and port
+        Port port = TerminalUtil.searchPort(managePortID);
+        String output= new String();
+        return output;
+    }
 
+    public String getNumberOfContainerOfEachType(){
+        //return weight of each container type in both ship and port
+        String output = new String();
+        return output;
+    }
+
+    //search for container and vehicle will connect with the Port to implement
+    public ArrayList<Container> getListOfAllContainer(){
+        //return all containers in both ship and port
+        ArrayList<Container> listContainers = new ArrayList<>();
+        return listContainers;
+    }
+
+    public ArrayList<Vehicle> getListOfVehicleByType(VehicleType vehicleType){
+        //return list of vehicles by vehicle type
+        ArrayList<Vehicle> listVehicle = new ArrayList<>();
+        return listVehicle;
+    }
+
+    // extract log
+    public List<Log> getTripsByDate(Date dateToQuery){
+        // restrict the trip with the specific trip has arrival or departure port similar to managerPortID
+        List<Log> tripsOnDate = new ArrayList<>();
+        return tripsOnDate;
+    }
+    public List<Log> getTripsBetweenDates(Date startDate, Date endDate){
+        // restrict the trip with the specific trip has arrival or departure port similar to managerPortID
+        List<Log> tripsBetweenDates = new ArrayList<>();
+        return tripsBetweenDates;
+    }
 }
