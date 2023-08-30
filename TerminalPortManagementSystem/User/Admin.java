@@ -135,5 +135,11 @@ public class Admin implements User {
         return tripsBetweenDates;
     }
 
-
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

@@ -28,6 +28,10 @@ public class Manager implements Serializable, User {
             throw new IllegalArgumentException("Port already managed by a manager");
         }
 
+        if (TerminalUtil.searchPort(managePortID) == null) {
+            throw new IllegalArgumentException("Port does not exist");
+        }
+
         this.username = username;
         this.password = password;
         this.managePortID = managePortID;
@@ -323,5 +327,14 @@ public class Manager implements Serializable, User {
         }
 
         return StatQuery.getTripsBetweenDatesOfPort(startDate, endDate, managePortID);
+    }
+
+    @Override
+    public String toString() {
+        return "Manager{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", managePortID='" + managePortID + '\'' +
+                '}';
     }
 }
