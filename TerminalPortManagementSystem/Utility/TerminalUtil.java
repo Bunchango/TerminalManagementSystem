@@ -1,10 +1,8 @@
 package TerminalPortManagementSystem.Utility;
 
-import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
 import TerminalPortManagementSystem.User.*;
-import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
 
 import java.text.ParseException;
@@ -213,9 +211,8 @@ public class TerminalUtil {
         try {
             return formatter.parse(stringToParse);
         } catch (ParseException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public static String parseDateToString(Date dateToParse) {

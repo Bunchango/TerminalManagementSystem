@@ -4,8 +4,6 @@ import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Utility.Log;
 import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
-
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +12,6 @@ import java.util.List;
 public class Admin implements Serializable, User {
     private final String username = "admin";
     private final String password = "admin12345";
-    public final UserType userType = UserType.Admin;
     private static final Admin instance = new Admin();
 
     public static Admin getInstance() {
@@ -32,11 +29,9 @@ public class Admin implements Serializable, User {
     }
 
     @Override
-    public UserType getUserType() {
-        return userType;
+    public int getUserType() {
+        return 1;
     }
-
-    //TODO: complete all function
 
     //create obj
     public String createManager(){

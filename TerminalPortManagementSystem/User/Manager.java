@@ -4,20 +4,19 @@ import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
 import TerminalPortManagementSystem.Utility.Log;
+import TerminalPortManagementSystem.Utility.StatQuery;
 import TerminalPortManagementSystem.Utility.TerminalUtil;
 import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
+// TODO: When delete a port, reset managePortID of manager; Add null checking for managePortID
 
 public class Manager implements Serializable, User { // Update delete function later, when delete port, also delete manager
     private final String username;
     private final String password;
-    public final UserType userType = UserType.Manager;
     private final String managePortID;
 
     public Manager(String username, String password, String managePortID) {
@@ -25,7 +24,6 @@ public class Manager implements Serializable, User { // Update delete function l
         this.password = password;
         this.managePortID = managePortID;
     }
-
 
     @Override
     public String getUsername() {
@@ -38,17 +36,21 @@ public class Manager implements Serializable, User { // Update delete function l
     }
 
     @Override
-    public UserType getUserType() {
-        return userType;
+    public int getUserType() {
+        return 0;
     }
 
     public String getManagePortID() {
         return managePortID;
     }
 
+    public boolean isNotManaging() {
+        return managePortID == null;
+    }
+
     //TODO: More work, exception handling, complete static query and extract log
 
-    //create object
+    //Create object
     public String createContainer(String containerID, String containerType, double weight) {
         Port port = TerminalUtil.searchPort(managePortID);
 
@@ -65,6 +67,11 @@ public class Manager implements Serializable, User { // Update delete function l
         }
 
         ContainerType type = ContainerType.fromString(containerType);
+
+        if (type == null) {
+            return "Invalid type";
+        }
+
         new Container(containerID, type, port, weight);
 
         return "Object created";
@@ -89,13 +96,17 @@ public class Manager implements Serializable, User { // Update delete function l
     }
 
 
-    // transporting
+    // Transporting
     public String loadContainer(String vehicleID, String containerID) {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
         Container container = TerminalUtil.searchContainer(containerID);
 
         if (vehicle == null) {
             return "Vehicle does not exist";
+        }
+
+        if (isNotManaging()) {
+            return "Manager currently does not manage any port";
         }
 
         if (!Objects.equals(vehicle.getCurrentPort().getPortID(), managePortID)) {
@@ -118,6 +129,10 @@ public class Manager implements Serializable, User { // Update delete function l
     public String unloadContainer(String vehicleID, String containerID) {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
         Container container = TerminalUtil.searchContainer(containerID);
+
+        if (isNotManaging()) {
+            return "Manager currently does not manage any port";
+        }
 
         if (vehicle == null) {
             return "Vehicle does not exist";
@@ -147,6 +162,10 @@ public class Manager implements Serializable, User { // Update delete function l
             return "Vehicle does not exist";
         }
 
+        if (isNotManaging()) {
+            return "Manager currently does not manage any port";
+        }
+
         if (!Objects.equals(vehicle.getCurrentPort().getPortID(), managePortID)) {
             return "Manager is not allowed to control this vehicle";
         }
@@ -160,6 +179,14 @@ public class Manager implements Serializable, User { // Update delete function l
         Date departureDate = TerminalUtil.parseStringToDateTime(departure);
         Date arrivalDate = TerminalUtil.parseStringToDateTime(arrival);
 
+        if (departureDate == null || arrivalDate == null) {
+            return "Invalid date format";
+        }
+
+        if (isNotManaging()) {
+            return "Manager currently does not manage any port";
+        }
+
         if (vehicle == null) {
             return "Vehicle does not exist";
         }
@@ -172,45 +199,102 @@ public class Manager implements Serializable, User { // Update delete function l
     }
 
     // Statistics
-    public int getTotalConsumedFuelByDay(Date dateToQuery){
-        int totalConsumedFuel = 0;
-        return totalConsumedFuel;
-    }
-    public String CalculateWeightOfEachTypeOfAll(){
-        //return weight of each container type in both ship and port
-        Port port = TerminalUtil.searchPort(managePortID);
-        String output= new String();
-        return output;
+    public Map<Date, Double> getTotalFuelConsumedPerDay() {
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.totalFuelConsumedPerDayOfPort(managePortID);
     }
 
-    public String getNumberOfContainerOfEachType(){
-        //return weight of each container type in both ship and port
-        String output = new String();
-        return output;
+    public double getTotalConsumedFuelByDay(String date){
+        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+
+        if (dateToQuery == null) {
+            return 0;
+        }
+
+        if (isNotManaging()) {
+            return 0;
+        }
+
+        return StatQuery.totalFuelConsumedByDayByPort(dateToQuery, managePortID);
     }
 
-    //search for container and vehicle will connect with the Port to implement
-    public ArrayList<Container> getListOfAllContainer(){
-        //return all containers in both ship and port
-        ArrayList<Container> listContainers = new ArrayList<>();
-        return listContainers;
+    public Map<ContainerType, Double> getTotalWeightOfEachType(){
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getTotalWeightOfEachTypeByPort(managePortID);
     }
 
-    public ArrayList<Vehicle> getListOfVehicleByType(VehicleType vehicleType){
-        //return list of vehicles by vehicle type
-        ArrayList<Vehicle> listVehicle = new ArrayList<>();
-        return listVehicle;
+    public Map<ContainerType, Integer> getNumberOfContainerOfEachType(){
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getNumberOfContainerOfEachTypeByPort(managePortID);
     }
 
-    // extract log
-    public List<Log> getTripsByDate(Date dateToQuery){
-        // restrict the trip with the specific trip has arrival or departure port similar to managerPortID
-        List<Log> tripsOnDate = new ArrayList<>();
-        return tripsOnDate;
+    public List<Container> getListOfAllContainers(){
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getListOfContainerByPort(managePortID);
     }
-    public List<Log> getTripsBetweenDates(Date startDate, Date endDate){
-        // restrict the trip with the specific trip has arrival or departure port similar to managerPortID
-        List<Log> tripsBetweenDates = new ArrayList<>();
-        return tripsBetweenDates;
+
+    public Map<VehicleType, Integer> getNumberOfVehicleOfEachType() {
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getNumberOfVehicleOfEachTypeByPort(managePortID);
+    }
+
+    public List<Vehicle> getListOfVehicleByType(String vehicleType){
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getListOfVehicleByTypeOfPort(managePortID, vehicleType);
+    }
+
+    public List<Vehicle> getListOfAllVehicles() {
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getListOfVehicleByPort(managePortID);
+    }
+
+    public List<Log> getTripsByDate(String date){
+        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+
+        if (dateToQuery == null) {
+            return null;
+        }
+
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getTripsByDateOfPort(dateToQuery, managePortID);
+    }
+
+    public List<Log> getTripsBetweenDates(String start, String end){
+        Date startDate = TerminalUtil.parseStringToDateTime(start);
+        Date endDate = TerminalUtil.parseStringToDateTime(end);
+
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getTripsBetweenDatesOfPort(startDate, endDate, managePortID);
     }
 }

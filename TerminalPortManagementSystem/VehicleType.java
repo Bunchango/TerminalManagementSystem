@@ -207,6 +207,6 @@ public enum VehicleType {
                 return vehicleType;
             }
         }
-        throw new IllegalArgumentException("Unknown vehicle type: " + input);
+        return null;
     }
 }
