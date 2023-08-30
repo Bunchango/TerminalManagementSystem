@@ -4,6 +4,7 @@ import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
 import TerminalPortManagementSystem.Utility.Log;
+import TerminalPortManagementSystem.Utility.LogManager;
 import TerminalPortManagementSystem.Utility.StatQuery;
 import TerminalPortManagementSystem.Utility.TerminalUtil;
 import TerminalPortManagementSystem.VehicleType;
@@ -12,17 +13,30 @@ import TerminalPortManagementSystem.Vehicles.*;
 import java.io.Serializable;
 import java.util.*;
 
-// TODO: When delete a port, reset managePortID of manager; Add null checking for managePortID
-
-public class Manager implements Serializable, User { // Update delete function later, when delete port, also delete manager
+// TODO: When delete a port, reset managePortID of manager;
+public class Manager implements Serializable, User {
     private final String username;
     private final String password;
-    private final String managePortID;
+    private String managePortID;
 
     public Manager(String username, String password, String managePortID) {
+        if (TerminalUtil.objectAlreadyExist(username)) {
+            throw new IllegalArgumentException("User already exist");
+        }
+
+        if (TerminalUtil.portIsManaged(managePortID)) {
+            throw new IllegalArgumentException("Port already managed by a manager");
+        }
+
         this.username = username;
         this.password = password;
         this.managePortID = managePortID;
+
+        // Save
+        TerminalUtil.addId(this.username);
+        TerminalUtil.addManager(this);
+        LogManager.saveAllObjects();
+        LogManager.saveUsedIds();
     }
 
     @Override
@@ -36,8 +50,22 @@ public class Manager implements Serializable, User { // Update delete function l
     }
 
     @Override
-    public int getUserType() {
-        return 0;
+    public boolean isManager() {
+        return true;
+    }
+
+    @Override
+    public boolean isAdmin() {
+        return false;
+    }
+
+    public String setManagePortID(String portID) {
+        if (TerminalUtil.portIsManaged(portID)) {
+            return "Invalid portID. Port already managed by a Manager";
+        }
+
+        managePortID = portID;
+        return "Set manager's port successfully";
     }
 
     public String getManagePortID() {
@@ -48,7 +76,6 @@ public class Manager implements Serializable, User { // Update delete function l
         return managePortID == null;
     }
 
-    //TODO: More work, exception handling, complete static query and extract log
 
     //Create object
     public String createContainer(String containerID, String containerType, double weight) {

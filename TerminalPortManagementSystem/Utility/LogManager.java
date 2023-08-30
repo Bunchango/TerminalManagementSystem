@@ -1,5 +1,6 @@
 package TerminalPortManagementSystem.Utility;
 import TerminalPortManagementSystem.Ports.*;
+import TerminalPortManagementSystem.User.*;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
 
 import java.io.*;
@@ -12,6 +13,7 @@ public class LogManager {
         savePorts();
         saveOccurredLog();
         saveOccurringLog();
+        saveManagers();
     }
 
     protected static void saveVehicles() {
@@ -171,5 +173,39 @@ public class LogManager {
             e.printStackTrace();
         }
         return loadedIds;
+    }
+
+    // Save users
+    protected static void saveManagers() {
+        String filePath = "Data/Objects/managers.obj";
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            outputStream.writeObject(TerminalUtil.managers);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // Load users
+    @SuppressWarnings("unchecked")
+    protected static List<Manager> loadManagers() {
+        List<Manager> loadedManagers = new ArrayList<>();
+        String filePath = "Data/Objects/managers.obj";
+
+        File file = new File(filePath);
+
+        if (file.length() > 0) {
+            try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filePath))) {
+
+                loadedManagers = (List<Manager>) inputStream.readObject();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("File empty");
+        }
+
+        return loadedManagers;
     }
 }

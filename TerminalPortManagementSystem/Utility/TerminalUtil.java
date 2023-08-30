@@ -16,7 +16,7 @@ public class TerminalUtil {
     public static final List<Log> occurredLogs = LogManager.loadOccurredLog("Data/History/occurred.obj");
     public static final List<Log> occurringLogs = LogManager.loadOccurredLog("Data/History/occurring.obj");
     public static final List<String> usedIds = LogManager.loadUsedIds();
-    public static final List<User> users = new ArrayList<>(); // TODO: More work - load and save managers
+    public static final List<Manager> managers = LogManager.loadManagers(); // TODO: More work - load and save managers
 
     public static double roundToSecondDecimalPlace(double number) {
         return (double)Math.round(number * 100d) / 100d;
@@ -42,16 +42,25 @@ public class TerminalUtil {
         usedIds.add(idToAdd);
     }
 
-    public static void addUser(User userToAdd) {
-        users.add(userToAdd);
+    public static void addManager(Manager managerToAdd) {
+        managers.add(managerToAdd);
     }
 
-    public static void removeUser(User userToRemove) {
-        users.remove(userToRemove);
+    public static void removeManager(Manager managerToRemove) {
+        managers.remove(managerToRemove);
     }
 
     public static boolean objectAlreadyExist(String id) {
         return usedIds.contains(id);
+    }
+
+    public static boolean portIsManaged(String portID) {
+        for (Manager manager: managers) {
+            if (Objects.equals(manager.getManagePortID(), portID)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Port searchPort(String portID) {
@@ -234,10 +243,17 @@ public class TerminalUtil {
         return date1.compareTo(date2) >= 0;
     }
 
+    // TODO: Might have to rethink this, maybe instead of return User, return the Interface
     public static User login(String username, String password) {
-        for (User user: users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return user;
+        Admin admin = Admin.getInstance();
+        if (username.equals(admin.getUsername())
+                && password.equals(admin.getPassword())) {
+            return admin;
+        }
+
+        for (Manager manager: managers) {
+            if (manager.getUsername().equals(username) && manager.getPassword().equals(password)) {
+                return manager;
             }
         }
         return null;

@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Admin implements Serializable, User {
+// Don't need to save Admin since there always 1
+public class Admin implements User {
     private final String username = "admin";
     private final String password = "admin12345";
     private static final Admin instance = new Admin();
@@ -29,9 +30,15 @@ public class Admin implements Serializable, User {
     }
 
     @Override
-    public int getUserType() {
-        return 1;
+    public boolean isManager() {
+        return false;
     }
+
+    @Override
+    public boolean isAdmin() {
+        return true;
+    }
+
 
     //create obj
     public String createManager(){
