@@ -225,8 +225,8 @@ public class Manager implements Serializable, User {
         return StatQuery.totalFuelConsumedPerDayOfPort(managePortID);
     }
 
-    public double getTotalConsumedFuelByDay(String date){
-        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+    public double getTotalConsumedFuelByDate(String date){
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
         if (dateToQuery == null) {
             return 0;

@@ -265,7 +265,7 @@ public class Admin implements User {
         return StatQuery.totalFuelConsumedPerDayOfPort(portID);
     }
 
-    public double getTotalConsumedFuelByDay(String date){
+    public double getTotalConsumedFuelByDate(String date){
         Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
 
         if (dateToQuery == null) {
