@@ -197,7 +197,11 @@ public abstract class Vehicle implements Serializable {
 
     public String moveToPort(Port destinationPort, Date departureDate, Date arrivalDate) {
         if (!TerminalUtil.passedDate(arrivalDate, departureDate)) {
-            return "Invalid arrival date";
+            return "Invalid arrival date - arrivalDate is before DepartureDate";
+        }
+
+        if (TerminalUtil.passedDate(TerminalUtil.getNow(), departureDate)) {
+            return "Invalid departure date - departureDate is before current time";
         }
 
         if (isScheduled()) { // Scheduled does not mean it is sail away

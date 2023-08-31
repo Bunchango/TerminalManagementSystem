@@ -288,7 +288,7 @@ public class Manager implements Serializable, User {
     }
 
     public List<Log> getTripsByDate(String date){
-        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
         if (dateToQuery == null) {
             return null;
@@ -302,8 +302,8 @@ public class Manager implements Serializable, User {
     }
 
     public List<Log> getTripsBetweenDates(String start, String end){
-        Date startDate = TerminalUtil.parseStringToDateTime(start);
-        Date endDate = TerminalUtil.parseStringToDateTime(end);
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
 
         if (startDate == null || endDate == null) {
             return null;

@@ -258,7 +258,14 @@ public class TerminalUtil {
             return null;
         }
     }
-
+    public static Date parseStringToDate(String stringToParse) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            return formatter.parse(stringToParse);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
     public static String parseDateToString(Date dateToParse) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return formatter.format(dateToParse);

@@ -345,7 +345,7 @@ public class Admin implements User {
     }
 
     public List<Log> getTripsByDateOfPort(String date, String portID) {
-        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
         if (dateToQuery == null) {
             return null;
@@ -355,8 +355,8 @@ public class Admin implements User {
     }
 
     public List<Log> getTripsBetweenDates(String start, String end){
-        Date startDate = TerminalUtil.parseStringToDateTime(start);
-        Date endDate = TerminalUtil.parseStringToDateTime(end);
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
 
         if (startDate == null || endDate == null) {
             return null;
@@ -366,8 +366,8 @@ public class Admin implements User {
     }
 
     public List<Log> getTripsBetweenDatesOfPort(String start, String end, String portID) {
-        Date startDate = TerminalUtil.parseStringToDateTime(start);
-        Date endDate = TerminalUtil.parseStringToDateTime(end);
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
 
         if (startDate == null || endDate == null) {
             return null;

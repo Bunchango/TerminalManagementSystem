@@ -178,7 +178,7 @@ public class StatQuery {
             Date arrivalDate = log.getArrivalDate();
             Date dayOnly = TerminalUtil.truncateTime(arrivalDate);
 
-            if (dayOnly.equals(TerminalUtil.truncateTime(dateToQuery))) {
+            if (dayOnly.equals(dateToQuery)) {
                 tripsOnDate.add(log);
             }
         }
@@ -203,7 +203,7 @@ public class StatQuery {
             Date arrivalDate = log.getArrivalDate();
             Date dayOnly = TerminalUtil.truncateTime(arrivalDate);
 
-            if (dayOnly.equals(TerminalUtil.truncateTime(dateToQuery)) &&
+            if (dayOnly.equals(dateToQuery) &&
             (log.getArrivalPortID().equals(portID) || log.getDeparturePortID().equals(portID))) {
                 tripsOnDate.add(log);
             }
@@ -223,7 +223,7 @@ public class StatQuery {
             Date arrivalDate = log.getArrivalDate();
             Date dayOnly = TerminalUtil.truncateTime(arrivalDate);
 
-            if (!dayOnly.before(TerminalUtil.truncateTime(startDate)) && !dayOnly.after(TerminalUtil.truncateTime(endDate))) {
+            if (!dayOnly.before(startDate) && !dayOnly.after(endDate)) {
                 tripsBetweenDates.add(log);
             }
         }
@@ -248,8 +248,8 @@ public class StatQuery {
             Date arrivalDate = log.getArrivalDate();
             Date dayOnly = TerminalUtil.truncateTime(arrivalDate);
 
-            if (!dayOnly.before(TerminalUtil.truncateTime(startDate)) &&
-                    !dayOnly.after(TerminalUtil.truncateTime(endDate)) &&
+            if (!dayOnly.before(startDate) &&
+                    !dayOnly.after(endDate) &&
                     (log.getArrivalPortID().equals(portID) || log.getDeparturePortID().equals(portID))) {
                 tripsBetweenDates.add(log);
             }
