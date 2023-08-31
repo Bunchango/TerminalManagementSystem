@@ -88,7 +88,7 @@ public class Manager implements Serializable, User {
             return "Manager currently does not manage any port";
         }
 
-        if (TerminalUtil.objectAlreadyExist(containerID)) {
+        if (TerminalUtil.objectAlreadyExist("c-" + containerID)) {
             return "Invalid container ID - Container already exist";
         }
 
