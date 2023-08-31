@@ -181,7 +181,7 @@ public class Prettify {
             System.out.println();
         }
     }
-    public static void prettifyContainer(Container container){
+    public static void prettifyContainer(Container container) {
         if (container == null) {
             String format = "%-6s | %-12s | %-6s%n";
             System.out.printf(format, "ID", "Type", "Weight");
@@ -234,15 +234,15 @@ public class Prettify {
         }
     }
 
-    public static void prettifyLogList(List<Log> logs){
-        if(logs.size()==0){
-            String format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
+    public static void prettifyLogList(List<Log> logs) {
+        String format;
+        if (logs.size() == 0) {
+            format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
             System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null", "Null");
-            System.out.println();
         }
         else {
-            String format = "%-9s | %-19s | %-19s | %-16s | %-14s | %-16s | %-5s%n";
+            format = "%-9s | %-19s | %-19s | %-16s | %-14s | %-16s | %-5s%n";
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
             for (Log log : logs) {
                 System.out.printf(format,
@@ -253,17 +253,17 @@ public class Prettify {
                         log.getArrivalPortID(),
                         log.getFuelConsumed(), log.isFinished());
             }
-            System.out.println();
         }
+        System.out.println();
     }
-    public static void prettifyLog(Log log){
-        if(log == null){
+    public static void prettifyLog(Log log) {
+        if (log == null) {
             String format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
             System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null", "Null");
             System.out.println();
         }
-        else{
+        else {
             String format = "%-9s | %-19s | %-19s | %-16s | %-14s | %-16s | %-5s%n";
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
             System.out.printf(format,
@@ -276,30 +276,30 @@ public class Prettify {
         }
     }
 
-    public static void prettifyManagerList(List<Manager> Managers){
-        if(Managers == null){
+    public static void prettifyManagerList(List<Manager> Managers) {
+        if (Managers == null) {
             String format = "%-15s | %-15s | %-10s%n";
-            System.out.printf(format,"Username","Password","Manage PortID");
-            System.out.printf(format,"Null","NUll","Null");
+            System.out.printf(format, "Username", "Password", "Manage PortID");
+            System.out.printf(format, "Null", "NUll", "Null");
             System.out.println();
-        }else{
+        } else {
             int maxLengthUsername = 0;
             int maxLengthPassword = 0;
 
             // dynamic length
-            for(Manager manager: Managers){
+            for (Manager manager: Managers) {
                 int LengthUsername = manager.getUsername().length();
                 int LengthPassword = manager.getPassword().length();
 
-                if(LengthPassword>maxLengthPassword){
+                if (LengthPassword > maxLengthPassword){
                     maxLengthPassword = LengthPassword;
                 }
-                if(LengthUsername>maxLengthUsername){
+                if (LengthUsername > maxLengthUsername){
                     maxLengthUsername = LengthUsername;
                 }
             }
-            String format = "%-"+maxLengthUsername+"s | %-"+maxLengthPassword+"s | %-10s%n";
-            System.out.printf(format,"Username","Password","Manage PortID");
+            String format = "%-" + maxLengthUsername + "s | %-" + maxLengthPassword + "s | %-10s%n";
+            System.out.printf(format, "Username", "Password", "Manage PortID");
             for(Manager manager: Managers){
                 System.out.printf(format,
                         manager.getUsername(),
@@ -310,17 +310,17 @@ public class Prettify {
         }
     }
 
-    public static void prettifyManager(Manager Manager){
-        if(Manager == null){
+    public static void prettifyManager(Manager Manager) {
+        if (Manager == null) {
             String format = "%-15s | %-15s | %-10s%n";
-            System.out.printf(format,"Username","Password","Manage PortID");
-            System.out.printf(format,"Null","NUll","Null");
+            System.out.printf(format, "Username", "Password", "Manage PortID");
+            System.out.printf(format, "Null", "NUll", "Null");
             System.out.println();
-        }else{
+        } else {
             int maxLengthUsername = Manager.getUsername().length();
             int maxLengthPassword = Manager.getPassword().length();
 
-            String format = "%-"+maxLengthUsername+"s | %-"+maxLengthPassword+"s | %-10s%n";
+            String format = "%-" + maxLengthUsername + "s | %-" + maxLengthPassword + "s | %-10s%n";
             System.out.printf(format,"Username","Password","Manage PortID");
             System.out.printf(format,
                     Manager.getUsername(),
@@ -329,10 +329,10 @@ public class Prettify {
         }
     }
 
-    public static void prettifyAdmin(){
+    public static void prettifyAdmin() {
         String format = "%-15s | %-15s%n";
-        System.out.printf(format,"Username","Password");
-        System.out.printf(format, Admin.getInstance().getUsername(),Admin.getInstance().getPassword());
+        System.out.printf(format, "Username", "Password");
+        System.out.printf(format, Admin.getInstance().getUsername(), Admin.getInstance().getPassword());
         System.out.println();
     }
 
