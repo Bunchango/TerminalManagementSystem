@@ -277,10 +277,10 @@ public class Prettify {
     }
 
     public static void prettifyManagerList(List<Manager> Managers) {
-        if (Managers == null) {
+        if (Managers.size() == 0) {
             String format = "%-15s | %-15s | %-10s%n";
             System.out.printf(format, "Username", "Password", "Manage PortID");
-            System.out.printf(format, "Null", "NUll", "Null");
+            System.out.printf(format, "Null", "Null", "Null");
             System.out.println();
         } else {
             int maxLengthUsername = 0;
@@ -314,14 +314,14 @@ public class Prettify {
         if (Manager == null) {
             String format = "%-15s | %-15s | %-10s%n";
             System.out.printf(format, "Username", "Password", "Manage PortID");
-            System.out.printf(format, "Null", "NUll", "Null");
+            System.out.printf(format, "Null", "Null", "Null");
             System.out.println();
         } else {
             int maxLengthUsername = Manager.getUsername().length();
             int maxLengthPassword = Manager.getPassword().length();
 
             String format = "%-" + maxLengthUsername + "s | %-" + maxLengthPassword + "s | %-10s%n";
-            System.out.printf(format,"Username","Password","Manage PortID");
+            System.out.printf(format, "Username", "Password", "Manage PortID");
             System.out.printf(format,
                     Manager.getUsername(),
                     Manager.getPassword(),
