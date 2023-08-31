@@ -372,6 +372,16 @@ public class Admin implements User {
         return StatQuery.getTripsBetweenDatesOfPort(startDate, endDate, portID);
     }
 
+    public double calculateDistanceBetweenPorts(String target_1, String target_2) {
+        Port port_1 = TerminalUtil.searchPort(target_1);
+        Port port_2 = TerminalUtil.searchPort(target_2);
+
+        if (port_1 == null || port_2 == null) {
+            return 0;
+        }
+        return Port.calculateDistanceBetweenPort(port_1, port_2);
+    }
+
     @Override
     public String toString() {
         return "Admin{" +
