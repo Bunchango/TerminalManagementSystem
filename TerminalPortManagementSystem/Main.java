@@ -9,8 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        // TODO: When moving vehicle, deleting objects, creating objects, loading and unloading containers, must update files
-
         // Init function, always above all code
         TerminalUtil.updateLogWhenFinished();
 
