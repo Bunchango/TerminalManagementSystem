@@ -25,15 +25,48 @@ public class Main {
 //            Admin admin = (Admin) user;
 //            Prettify.prettifyAdmin();
 //        }
+        Admin admin = Admin.getInstance();
 
         //create Object
-        String port1 = Admin.getInstance().createPort("1000","Hai Phong",-42,75,400,true);
-        String port2 = Admin.getInstance().createPort("1011","Quang Ninh",-41,75,350,false);
-        String admin1 = Admin.getInstance().createManager("manager-1011","mike125","p-1011");
-        String vehicle1 = Admin.getInstance().createVehicle("1010","Ship","p-1010",50,150);
-        System.out.println(port1);
-        System.out.println(port2);
-        System.out.println(admin1);
+//        String port1 = admin.createPort("1010","Hai Phong",-42,75,400,true);
+//        String port2 = admin.createPort("1011","Quang Ninh",-41,75,350,false);
+//        String manager2 = admin.createManager("manager-1010", "dongmanhduc", "p-1010");
+//        String manager1 = admin.createManager("manager-1011","mike125","p-1011");
+//        String vehicle1 = admin.createVehicle("1010","Ship","p-1010",50,150);
+//        String vehicle2 = admin.createVehicle("1010","BasicTruck","p-1010",30,70);
+//        String vehicle3 = admin.createVehicle("1011","TankerTruck","p-1010",30,70);
+//
+//        String container1 = admin.createContainer("1010","DryStorage","p-1010",12);
+//        String container2 = admin.createContainer("1011","DryStorage","p-1010",22);
+//        String container3 = admin.createContainer("1012","DryStorage","p-1010",14);
+//        String container4 = admin.createContainer("1013","DryStorage","p-1010",16);
+//
+//
+//
+//        System.out.println(port1);
+//        System.out.println(port2);
+//        System.out.println(manager1);
+//        System.out.println(manager2);
+//        System.out.println(vehicle1);
+//        System.out.println(vehicle2);
+//        System.out.println(vehicle3);
+//        System.out.println(container1);
+//        System.out.println(container2);
+//        System.out.println(container3);
+//        System.out.println(container4);
+        Manager manager  = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
+
+        System.out.println(admin.loadContainer("sh-1010","c-1010"));
+        System.out.println(admin.loadContainer("tr-1010","c-1011"));
+        System.out.println(admin.refuelVehicle("sh-1010",300));
+        System.out.println(admin.moveToPort("sh-1010","p-1011","31-08-2023 17:10:00","31-08-2023 17:15:00"));
+        System.out.println(admin.loadContainer("sh-1010","c-1012"));
+        System.out.println(admin.loadContainer("sh-1010","c-1013"));
+        System.out.println(manager.getListOfAllContainers());
+        Prettify.prettifyContainerList(manager.getListOfAllContainers());
+        Prettify.prettifyContainerList(admin.getListOfAllContainer());
+        Prettify.prettifyVehicleList(admin.getListOfAllVehicle());
+        //Prettify.prettifyPortList(admin.get);
 
 
         // print the data
