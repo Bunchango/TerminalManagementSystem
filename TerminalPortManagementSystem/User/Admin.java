@@ -4,6 +4,7 @@ import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
 import TerminalPortManagementSystem.Utility.Log;
+import TerminalPortManagementSystem.Utility.LogManager;
 import TerminalPortManagementSystem.Utility.StatQuery;
 import TerminalPortManagementSystem.Utility.TerminalUtil;
 import TerminalPortManagementSystem.VehicleType;
@@ -138,7 +139,41 @@ public class Admin implements User {
         return "Container created";
     }
 
-    //remove obj
+    // Set manager's manage port
+    public String setManagerPort(String username, String portID) {
+        Manager manager = TerminalUtil.searchManager(username);
+        Port port = TerminalUtil.searchPort(portID);
+
+        if (manager == null) {
+            return "Invalid username - Manager does not exist";
+        }
+
+        if (port == null) {
+            return "Invalid portID - Port does not exist";
+        }
+
+        if (TerminalUtil.portIsManaged(portID)) {
+            return "Invalid portID - Port is already managed by a manager";
+        }
+
+        manager.setManagePortID(portID);
+        // Save
+        LogManager.saveAllObjects();
+        return "Managing port set successfully";
+    }
+
+    public String unsetManagerPort(String username) {
+        Manager manager = TerminalUtil.searchManager(username);
+
+        if (manager == null) {
+            return "Invalid username - Manager does not exist";
+        }
+
+        manager.setManagePortID(null);
+        return "Managing port unset successfully";
+    }
+
+    // Remove obj
     public String removeManager(String username) {
         return TerminalUtil.removeManager(username);
     }
