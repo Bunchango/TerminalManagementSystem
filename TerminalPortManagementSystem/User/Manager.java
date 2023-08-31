@@ -81,7 +81,7 @@ public class Manager implements Serializable, User {
     }
 
 
-    //Create object
+    // Create object
     public String createContainer(String containerID, String containerType, double weight) {
         Port port = TerminalUtil.searchPort(managePortID);
 
@@ -90,11 +90,11 @@ public class Manager implements Serializable, User {
         }
 
         if (TerminalUtil.objectAlreadyExist(containerID)) {
-            return "Invalid container ID";
+            return "Invalid container ID - Container already exist";
         }
 
         if (port.getTotalCarryingWeight() + weight > port.getStoringCapacity()) {
-            return "Weight exceed port storing capacity";
+            return "Invalid container weight - Weight exceed port storing capacity";
         }
 
         ContainerType type = ContainerType.fromString(containerType);
@@ -105,7 +105,7 @@ public class Manager implements Serializable, User {
 
         new Container(containerID, type, port, weight);
 
-        return "Object created";
+        return "Container created";
     }
 
     public String removeContainer(String containerID) {
@@ -133,7 +133,7 @@ public class Manager implements Serializable, User {
         Container container = TerminalUtil.searchContainer(containerID);
 
         if (vehicle == null) {
-            return "Vehicle does not exist";
+            return "Invalid vehicleID - Vehicle does not exist";
         }
 
         if (isNotManaging()) {
@@ -141,20 +141,14 @@ public class Manager implements Serializable, User {
         }
 
         if (!Objects.equals(vehicle.getCurrentPort().getPortID(), managePortID)) {
-            return "Manager is not allowed to control this vehicle";
+            return "Invalid vehicleID - Manager is not allowed to control this vehicle";
         }
 
         if (container == null) {
-            return "Container does not exist";
+            return "Invalid containerID - Container does not exist";
         }
 
-        if (vehicle.getCurrentPort().searchContainer(containerID) == null) {
-            return "Container does not exist in the managing port";
-        }
-
-        vehicle.loadContainer(container);
-
-        return "Container loaded";
+        return vehicle.loadContainer(container);
     }
 
     public String unloadContainer(String vehicleID, String containerID) {
@@ -166,7 +160,7 @@ public class Manager implements Serializable, User {
         }
 
         if (vehicle == null) {
-            return "Vehicle does not exist";
+            return "Invalid vehicleID - Vehicle does not exist";
         }
 
         if (!Objects.equals(vehicle.getCurrentPort().getPortID(), managePortID)) {
@@ -174,16 +168,10 @@ public class Manager implements Serializable, User {
         }
 
         if (container == null) {
-            return "Container does not exist";
+            return "Invalid containerID - Container does not exist";
         }
 
-        if (vehicle.searchContainer(containerID) == null) {
-            return "Container does not exist on this vehicle";
-        }
-
-        vehicle.unloadContainer(container);
-
-        return "Container unloaded";
+        return vehicle.unloadContainer(container);
     }
 
     public String refuelVehicle(String vehicleID, double gallons) {
@@ -219,11 +207,11 @@ public class Manager implements Serializable, User {
         }
 
         if (vehicle == null) {
-            return "Vehicle does not exist";
+            return "Invalid vehicleID - Vehicle does not exist";
         }
 
         if (!Objects.equals(vehicle.getCurrentPort().getPortID(), managePortID)) {
-            return "Manager is not allowed to control this vehicle";
+            return "Invalid vehicleID - Manager is not allowed to control this vehicle";
         }
 
         return vehicle.moveToPort(destinationPort, departureDate, arrivalDate);

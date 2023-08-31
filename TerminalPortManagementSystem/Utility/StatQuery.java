@@ -5,8 +5,6 @@ import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
 import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
-
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class StatQuery {

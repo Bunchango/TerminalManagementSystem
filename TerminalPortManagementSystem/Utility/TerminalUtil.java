@@ -46,10 +46,6 @@ public class TerminalUtil {
         managers.add(managerToAdd);
     }
 
-    public static void removeManager(Manager managerToRemove) {
-        managers.remove(managerToRemove);
-    }
-
     public static boolean objectAlreadyExist(String id) {
         return usedIds.contains(id);
     }
@@ -61,6 +57,24 @@ public class TerminalUtil {
             }
         }
         return false;
+    }
+
+    public static boolean coordinateAlreadyTaken(double latitude, double longitude) {
+        for (Port port: ports) {
+            if (port.getLatitude() == latitude && port.getLongitude() == longitude) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Manager searchManager(String username) {
+        for (Manager manager: managers) {
+            if (manager.getUsername().equals(username)) {
+                return manager;
+            }
+        }
+        return null;
     }
 
     public static Port searchPort(String portID) {
@@ -87,13 +101,26 @@ public class TerminalUtil {
         } return null;
     }
 
+    public static String removeManager(String username) {
+        Manager managerToRemove = searchManager(username);
+        if (managerToRemove == null) {
+            return "Manager does not exist";
+        }
+
+        managers.remove(managerToRemove);
+        LogManager.saveAllObjects();
+        return "Manager found and deleted";
+    }
+
     public static String removePort(String portID) {
         // When remove port, must also remove all vehicles and containers
         // Only remove port that does not have any vehicles moving to it
         Port portToRemove = searchPort(portID);
         if (portToRemove == null) {
             return "Port not found";
-        } else if (portToRemove.isTargetPort()) {
+        }
+
+        if (portToRemove.isTargetPort()) {
             return "Not allowed to remove Port that have occurring trips";
         }
 
@@ -131,7 +158,9 @@ public class TerminalUtil {
         Vehicle vehicleToRemove = searchVehicle(vehicleID);
         if (vehicleToRemove == null) {
             return "Vehicle not found";
-        } else if (vehicleToRemove.isScheduled()) {
+        }
+
+        if (vehicleToRemove.isScheduled()) {
             return "Not allowed to remove vehicle that is scheduled";
         }
 
@@ -199,9 +228,20 @@ public class TerminalUtil {
     public static void updateVehicleWhenReachDepartureDate() {
         for (Log log: occurringLogs) {
             Vehicle vehicleToUpdate = searchVehicle(log.getVehicleID());
-            if (passedDate(getNow(), log.getDepartureDate()) && !vehicleToUpdate.isSailAway()) {
+            if (passedDate(getNow(), log.getDepartureDate()) && vehicleToUpdate != null && !vehicleToUpdate.isSailAway()) {
                 vehicleToUpdate.getCurrentPort().departureVehicle(vehicleToUpdate);
                 vehicleToUpdate.setCurrentPort(null);
+            }
+        }
+    }
+
+    public static void updateLogWhenTransportContainer(Vehicle vehicle) {
+        for (Log log: occurringLogs) {
+            // Search for the log and if the vehicle has not moved yet
+            if (log.getVehicleID().equals(vehicle.getVehicleID()) && !vehicle.isSailAway()) {
+                Port destinationPort = TerminalUtil.searchPort(log.getArrivalPortID());
+                double newFuelConsumed = TerminalUtil.roundToSecondDecimalPlace(vehicle.calculateFuelConsumption(destinationPort));
+                log.setFuelConsumed(newFuelConsumed);
             }
         }
     }

@@ -1,13 +1,19 @@
 package TerminalPortManagementSystem.User;
 
+import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
+import TerminalPortManagementSystem.Ports.Port;
 import TerminalPortManagementSystem.Utility.Log;
+import TerminalPortManagementSystem.Utility.StatQuery;
+import TerminalPortManagementSystem.Utility.TerminalUtil;
 import TerminalPortManagementSystem.VehicleType;
-import TerminalPortManagementSystem.Vehicles.Vehicle;
+import TerminalPortManagementSystem.Vehicles.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 // Don't need to save Admin since there always 1
 public class Admin implements User {
@@ -39,100 +45,292 @@ public class Admin implements User {
         return true;
     }
 
-
     //create obj
-    public String createManager(){
-        String output = new String();
-        return output;
+    public String createManager(String username, String password, String managePortID){
+        if (TerminalUtil.objectAlreadyExist(username)) {
+            return "Invalid username - This user already exist";
+        }
+
+        if (TerminalUtil.portIsManaged(managePortID)) {
+            return "Invalid port - This port is already managed by a manager";
+        }
+
+        if (TerminalUtil.searchPort(managePortID) == null) {
+            return "Port does not exist";
+        }
+
+        new Manager(username, password, managePortID);
+        return "Manager created";
     }
-    public String createPort(){
-        String output = new String();
-        return output;
+
+    public String createPort(String portID, String portName, double latitude, double longitude, double storingCapacity,
+                             boolean landingAbility){
+
+        if (TerminalUtil.objectAlreadyExist(portID)) {
+            return "Invalid portID - This port already exist";
+        }
+
+        if (TerminalUtil.coordinateAlreadyTaken(latitude, longitude)) {
+            return "Invalid coordinate - latitude and longitude is already taken";
+        }
+
+        new Port(portID, portName, latitude, longitude, storingCapacity, landingAbility);
+        return "Port created";
     }
-    public String createVehicle(){
-        String output = new String();
-        return output;
+
+    public String createVehicle(String vehicleID, String vehicleType, String portID, double carryingCapacity,
+                                double fuelCapacity){
+        Port currentPort = TerminalUtil.searchPort(portID);
+        VehicleType type = VehicleType.fromString(vehicleType);
+
+        if (currentPort == null) {
+            return "Invalid portID - This port does not exist";
+        }
+
+        if (TerminalUtil.objectAlreadyExist(vehicleID)) {
+            return "Invalid vehicleID - This vehicle already exist";
+        }
+
+        if (type == null) {
+            return "Invalid vehicleType";
+        }
+
+        if (!currentPort.getLandingAbility() && type.isTruck()) {
+            return "Invalid vehicleType - This port does not have landing ability";
+        }
+
+        if (type == VehicleType.Ship) {
+            new Ship(vehicleID, currentPort, carryingCapacity, fuelCapacity);
+        } else if (type == VehicleType.BasicTruck) {
+            new BasicTruck(vehicleID, currentPort, carryingCapacity, fuelCapacity);
+        } else if (type == VehicleType.ReeferTruck) {
+            new ReeferTruck(vehicleID, currentPort, carryingCapacity, fuelCapacity);
+        } else if (type == VehicleType.TankerTruck) {
+            new TankerTruck(vehicleID, currentPort, carryingCapacity, fuelCapacity);
+        }
+
+        return "Vehicle created successfully";
     }
-    public String createContainer(){
-        String output = new String();
-        return output;
+
+    public String createContainer(String containerID, String containerType, String portID, double weight) {
+        Port port = TerminalUtil.searchPort(portID);
+
+        if (port == null) {
+            return "Invalid portID - This port does not exist";
+        }
+
+        if (TerminalUtil.objectAlreadyExist(containerID)) {
+            return "Invalid container ID - Container already exist";
+        }
+
+        if (port.getTotalCarryingWeight() + weight > port.getStoringCapacity()) {
+            return "Invalid container weight - Weight exceed port storing capacity";
+        }
+
+        ContainerType type = ContainerType.fromString(containerType);
+
+        if (type == null) {
+            return "Invalid type";
+        }
+
+        new Container(containerID, type, port, weight);
+
+        return "Container created";
     }
 
     //remove obj
-    public String removeManager(){
-        String output = new String();
-        return output;
-    }
-    public String removePort(){
-        String output = new String();
-        return output;
-    }
-    public String removeVehicle(){
-        String output = new String();
-        return output;
-    }
-    public String removeContainer(){
-        String output = new String();
-        return output;
-    }
-    //transporting
-    public String loadContainer(){
-        String output = new String();
-        return output;
-    }
-    public String unloadContainer(){
-        String output = new String();
-        return output;
-    }
-    public String refuelVehicle(){
-        String output = new String();
-        return output;
-    }
-    public String moveToPort(){
-        String output = new String();
-        return output;
-    }
-    //static
-    public String totalFuelConsumedPerDay(){
-        String output = new String();
-        return output;
-    }
-    public String getTotalConsumedFuelByDay(){
-        String output = new String();
-        return output;
-    }
-    public String CalculateWeightOfEachTypeOfAll(){
-        String output = new String();
-        return output;
-    }public String CalculateWeightOfEachTypeOfEachPort(){
-        String output = new String();
-        return output;
-    }
-    public String getNumberOfContainerOfEachType(){
-        String output = new String();
-        return output;
-    }
-    public ArrayList<Container> getListOfAllContainer(){
-        //return all containers in both ship and port
-        ArrayList<Container> listContainers = new ArrayList<>();
-        return listContainers;
-    }
-    public ArrayList<Vehicle> getListOfVehicleByType(VehicleType vehicleType){
-        //return list of vehicles by vehicle type
-        ArrayList<Vehicle> listVehicle = new ArrayList<>();
-        return listVehicle;
+    public String removeManager(String username) {
+        return TerminalUtil.removeManager(username);
     }
 
-    // extract log
-    public List<Log> getTripsByDate(Date dateToQuery){
-
-        java.util.List<Log> tripsOnDate = new ArrayList<>();
-        return tripsOnDate;
+    public String removePort(String portID) {
+        return TerminalUtil.removePort(portID);
     }
-    public List<Log> getTripsBetweenDates(Date startDate, Date endDate){
 
-        List<Log> tripsBetweenDates = new ArrayList<>();
-        return tripsBetweenDates;
+    public String removeVehicle(String vehicleID) {
+        return TerminalUtil.removeVehicle(vehicleID);
+    }
+
+    public String removeContainer(String containerID) {
+        return TerminalUtil.removeContainer(containerID);
+    }
+
+    // Transporting
+    public String loadContainer(String vehicleID, String containerID) {
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+        Container container = TerminalUtil.searchContainer(containerID);
+
+        if (vehicle == null) {
+            return "Invalid vehicleID - Vehicle does not exist";
+        }
+
+        if (container == null) {
+            return "Invalid containerID - Container does not exist";
+        }
+
+        return vehicle.loadContainer(container);
+    }
+
+    public String unloadContainer(String vehicleID, String containerID) {
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+        Container container = TerminalUtil.searchContainer(containerID);
+
+        if (vehicle == null) {
+            return "Invalid vehicleID - Vehicle does not exist";
+        }
+
+        if (container == null) {
+            return "Invalid containerID - Container does not exist";
+        }
+
+        return vehicle.unloadContainer(container);
+    }
+
+    public String refuelVehicle(String vehicleID, double gallons) {
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+
+        if (vehicle == null) {
+            return "Vehicle does not exist";
+        }
+
+        return vehicle.refuel(gallons);
+    }
+
+    public String moveToPort(String vehicleID, String destinationPortID, String departure, String arrival) {
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+        Port destinationPort = TerminalUtil.searchPort(destinationPortID);
+        Date departureDate = TerminalUtil.parseStringToDateTime(departure);
+        Date arrivalDate = TerminalUtil.parseStringToDateTime(arrival);
+
+        if (departureDate == null || arrivalDate == null) {
+            return "Invalid date format";
+        }
+
+        if (vehicle == null) {
+            return "Invalid vehicleID - Vehicle does not exist";
+        }
+
+        if (destinationPort == null) {
+            return "Invalid destinationPortID - Port does not exist";
+        }
+
+        return vehicle.moveToPort(destinationPort, departureDate, arrivalDate);
+    }
+
+    // Statistic
+    public Map<Date, Double> totalFuelConsumedPerDay(){
+        return StatQuery.totalFuelConsumedPerDay();
+    }
+
+    public Map<Date, Double> totalFuelConsumedPerDayOfPort(String portID) {
+        return StatQuery.totalFuelConsumedPerDayOfPort(portID);
+    }
+
+    public double getTotalConsumedFuelByDay(String date){
+        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+
+        if (dateToQuery == null) {
+            return 0;
+        }
+
+        return StatQuery.totalFuelConsumedByDay(dateToQuery);
+    }
+
+    public double getTotalConsumedFuelByDayByPort(String portID, String date) {
+        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+
+        if (dateToQuery == null) {
+            return 0;
+        }
+
+        return StatQuery.totalFuelConsumedByDayByPort(dateToQuery, portID);
+    }
+
+    public Map<ContainerType, Double> getTotalWeightOfEachType() {
+        return StatQuery.getTotalWeightOfEachType();
+    }
+
+    public Map<ContainerType, Double> getTotalWeightOfEachTypeByPort(String portID) {
+        return StatQuery.getTotalWeightOfEachTypeByPort(portID);
+    }
+
+    public Map<ContainerType, Integer> getNumberOfContainerOfEachType() {
+        return StatQuery.getNumberOfContainerOfEachType();
+    }
+
+    public Map<ContainerType, Integer> getNumberOfContainerOfEachTypeByPort(String portID) {
+        return StatQuery.getNumberOfContainerOfEachTypeByPort(portID);
+    }
+
+    public List<Container> getListOfAllContainer() {
+        return StatQuery.getListOfAllContainer();
+    }
+
+    public List<Container> getListOfContainerByPort(String portID) {
+        return StatQuery.getListOfContainerByPort(portID);
+    }
+
+    public List<Vehicle> getListOfAllVehicle() {
+        return StatQuery.getListOfAllVehicle();
+    }
+
+    public List<Vehicle> getListOfVehicleByType(String vehicleType){
+        return StatQuery.getListOfVehicleByType(vehicleType);
+    }
+
+    public List<Vehicle> getListOFVehicleByTypeOfPort(String portID, String vehicleType) {
+        return StatQuery.getListOfVehicleByTypeOfPort(portID, vehicleType);
+    }
+
+    public Map<VehicleType, Integer> getNumberOfVehicleOfEachType() {
+        return StatQuery.getNumberOfVehicleOfEachType();
+    }
+
+    public Map<VehicleType, Integer> getNumberOfVehicleOfEachTypeByPort(String portID) {
+        return StatQuery.getNumberOfVehicleOfEachTypeByPort(portID);
+    }
+
+    // Extract log
+    public List<Log> getTripsByDate(String date){
+        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+
+        if (dateToQuery == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsByDate(dateToQuery);
+    }
+
+    public List<Log> getTripsByDateOfPort(String date, String portID) {
+        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+
+        if (dateToQuery == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsByDateOfPort(dateToQuery, portID);
+    }
+
+    public List<Log> getTripsBetweenDates(String start, String end){
+        Date startDate = TerminalUtil.parseStringToDateTime(start);
+        Date endDate = TerminalUtil.parseStringToDateTime(end);
+
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsBetweenDates(startDate, endDate);
+    }
+
+    public List<Log> getTripsBetweenDatesOfPort(String start, String end, String portID) {
+        Date startDate = TerminalUtil.parseStringToDateTime(start);
+        Date endDate = TerminalUtil.parseStringToDateTime(end);
+
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsBetweenDatesOfPort(startDate, endDate, portID);
     }
 
     @Override

@@ -1,7 +1,4 @@
 package TerminalPortManagementSystem.Utility;
-
-import TerminalPortManagementSystem.Ports.Port;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,7 +8,7 @@ public class Log implements Serializable { // Finding a specific Log just need t
     private final Date arrivalDate;
     private final String departurePortID;
     private final String arrivalPortID;
-    private final double fuelConsumed;
+    private double fuelConsumed;
     private boolean finished;
 
     public Log(String vehicleID, Date departureDate, Date arrivalDate, String departurePortID, String arrivalPortID, double fuelConsumed, boolean finished) {
@@ -56,6 +53,9 @@ public class Log implements Serializable { // Finding a specific Log just need t
         this.finished = finished;
     }
 
+    protected void setFuelConsumed(double fuelConsumed) {
+        this.fuelConsumed = fuelConsumed;
+    }
     @Override
     public String toString() {
         return "Log{" +

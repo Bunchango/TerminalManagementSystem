@@ -23,6 +23,10 @@ public class Port implements Serializable { // Might have to add a log ( history
             throw new IllegalArgumentException("Port already exist, try another portID");
         }
 
+        if (TerminalUtil.coordinateAlreadyTaken(latitude, longitude)) {
+            throw new IllegalArgumentException("Coordinate already taken by a port, try another latitude or longitude");
+        }
+
         this.portID = "p-" + portID;
         this.portName = portName;
         this.latitude = latitude;

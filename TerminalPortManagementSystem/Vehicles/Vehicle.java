@@ -112,30 +112,51 @@ public abstract class Vehicle implements Serializable {
 
 
     //TODO: Make loadContainer and unloadContainer return a String
-    // Vehicle can load and unload container as long as it is not moving (sail away)
-    public void loadContainer(Container containerToLoad) {
-        if (ableToLoadContainer(containerToLoad) && !isSailAway() &&
-                (currentPort.searchContainer(containerToLoad.getContainerID()) != null)) {
-            vehicleContainers.add(containerToLoad);
-            currentPort.unloadContainer(containerToLoad);
-
-            // Save object
-            LogManager.saveAllObjects();
-        } else {
-            System.out.println("This " + vehicleType + " might be sail away OR given container might not exist in the port OR given container might not be suitable for this type of vehicle");
+    public String loadContainer(Container containerToLoad) {
+        if (!ableToLoadContainer(containerToLoad)) {
+            return "Invalid container - This vehicle can't load this vehicle";
         }
+
+        if (isSailAway()) {
+            return "Vehicle can't load when sail away";
+        }
+
+        if (currentPort.searchContainer(containerToLoad.getContainerID()) == null) {
+            return "Invalid container - Container and Vehicle must be in the same port";
+        }
+
+        vehicleContainers.add(containerToLoad);
+        currentPort.unloadContainer(containerToLoad);
+
+        // Update fuel consumed if vehicle is scheduled but has not moved
+        TerminalUtil.updateLogWhenTransportContainer(this);
+        // Save object
+        LogManager.saveAllObjects();
+        return "Container loaded";
     }
 
-    public void unloadContainer(Container containerToUnload) {
-        if (currentPort.ableToLoadContainer(containerToUnload) && searchContainer(containerToUnload.getContainerID()) != null && !isSailAway()) {
-            currentPort.loadContainer(containerToUnload);
-            vehicleContainers.remove(containerToUnload);
-
-            // Save object
-            LogManager.saveAllObjects();
-        } else {
-            System.out.println("Target port is not able to have more containers OR container does not exist in this " + vehicleType);
+    public String unloadContainer(Container containerToUnload) {
+        if (!currentPort.ableToLoadContainer(containerToUnload)) {
+            return "Invalid container - This port can't load this container";
         }
+
+        if (searchContainer(containerToUnload.getContainerID()) == null) {
+            return "Invalid container - Given container does not exist on this vehicle";
+        }
+
+        if (isSailAway()) {
+            return "Vehicle can't unload when sail away";
+        }
+
+        currentPort.loadContainer(containerToUnload);
+        vehicleContainers.remove(containerToUnload);
+
+        // Update fuel consumed if vehicle is scheduled but has not moved
+        TerminalUtil.updateLogWhenTransportContainer(this);
+        // Save object
+        LogManager.saveAllObjects();
+
+        return "Container unloaded";
     }
 
     public void removeContainer(Container containerToRemove) {
