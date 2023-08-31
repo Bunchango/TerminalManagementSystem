@@ -278,13 +278,7 @@ public class StatQuery {
             return null;
         }
 
-        List<Container> containers = port.getPortContainers();
-
-        for (Vehicle vehicle: port.getPortVehicles()) {
-            containers.addAll(vehicle.getVehicleContainers());
-        }
-
-        return containers;
+        return port.getPortContainers();
     }
 
     public static List<Vehicle> getListOfAllVehicle() {
