@@ -80,7 +80,6 @@ public class Manager implements Serializable, User {
         return managePortID == null;
     }
 
-
     // Create object
     public String createContainer(String containerID, String containerType, double weight) {
         Port port = TerminalUtil.searchPort(managePortID);

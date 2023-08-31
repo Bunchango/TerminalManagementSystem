@@ -10,8 +10,6 @@ import TerminalPortManagementSystem.Utility.TerminalUtil;
 import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.*;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -225,7 +223,7 @@ public class Admin implements User {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
 
         if (vehicle == null) {
-            return "Vehicle does not exist";
+            return "Invalid vehicleID - Vehicle does not exist";
         }
 
         return vehicle.refuel(gallons);
