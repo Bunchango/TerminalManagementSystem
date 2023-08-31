@@ -1,6 +1,8 @@
 package TerminalPortManagementSystem.Utility;
 
 import TerminalPortManagementSystem.Ports.*;
+import TerminalPortManagementSystem.User.Admin;
+import TerminalPortManagementSystem.User.Manager;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
 
 import java.util.Date;
@@ -274,5 +276,64 @@ public class Prettify {
         }
     }
 
+    public static void prettifyManagerList(List<Manager> Managers){
+        if(Managers == null){
+            String format = "%-15s | %-15s | %-10s%n";
+            System.out.printf(format,"Username","Password","Manage PortID");
+            System.out.printf(format,"Null","NUll","Null");
+            System.out.println();
+        }else{
+            int maxLengthUsername = 0;
+            int maxLengthPassword = 0;
+
+            // dynamic length
+            for(Manager manager: Managers){
+                int LengthUsername = manager.getUsername().length();
+                int LengthPassword = manager.getPassword().length();
+
+                if(LengthPassword>maxLengthPassword){
+                    maxLengthPassword = LengthPassword;
+                }
+                if(LengthUsername>maxLengthUsername){
+                    maxLengthUsername = LengthUsername;
+                }
+            }
+            String format = "%-"+maxLengthUsername+"s | %-"+maxLengthPassword+"s | %-10s%n";
+            System.out.printf(format,"Username","Password","Manage PortID");
+            for(Manager manager: Managers){
+                System.out.printf(format,
+                        manager.getUsername(),
+                        manager.getPassword(),
+                        manager.getManagePortID());
+            }
+            System.out.println();
+        }
+    }
+
+    public static void prettifyManager(Manager Manager){
+        if(Manager == null){
+            String format = "%-15s | %-15s | %-10s%n";
+            System.out.printf(format,"Username","Password","Manage PortID");
+            System.out.printf(format,"Null","NUll","Null");
+            System.out.println();
+        }else{
+            int maxLengthUsername = Manager.getUsername().length();
+            int maxLengthPassword = Manager.getPassword().length();
+
+            String format = "%-"+maxLengthUsername+"s | %-"+maxLengthPassword+"s | %-10s%n";
+            System.out.printf(format,"Username","Password","Manage PortID");
+            System.out.printf(format,
+                    Manager.getUsername(),
+                    Manager.getPassword(),
+                    Manager.getManagePortID());
+        }
+    }
+
+    public static void prettifyAdmin(){
+        String format = "%-15s | %-15s%n";
+        System.out.printf(format,"Username","Password");
+        System.out.printf(format, Admin.getInstance().getUsername(),Admin.getInstance().getPassword());
+        System.out.println();
+    }
 
 }
