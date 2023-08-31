@@ -277,7 +277,7 @@ public class Prettify {
     }
 
     public static void prettifyManagerList(List<Manager> Managers){
-        if(Managers == null){
+        if(Managers.size() == 0){
             String format = "%-15s | %-15s | %-10s%n";
             System.out.printf(format,"Username","Password","Manage PortID");
             System.out.printf(format,"Null","NUll","Null");

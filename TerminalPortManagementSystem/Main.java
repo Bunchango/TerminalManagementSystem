@@ -40,9 +40,7 @@ public class Main {
 //        String container2 = admin.createContainer("1011","DryStorage","p-1010",22);
 //        String container3 = admin.createContainer("1012","DryStorage","p-1010",14);
 //        String container4 = admin.createContainer("1013","DryStorage","p-1010",16);
-//
-//
-//
+
 //        System.out.println(port1);
 //        System.out.println(port2);
 //        System.out.println(manager1);
@@ -55,18 +53,24 @@ public class Main {
 //        System.out.println(container3);
 //        System.out.println(container4);
         Manager manager  = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
-
-        System.out.println(admin.loadContainer("sh-1010","c-1010"));
-        System.out.println(admin.loadContainer("tr-1010","c-1011"));
-        System.out.println(admin.refuelVehicle("sh-1010",300));
-        System.out.println(admin.moveToPort("sh-1010","p-1011","31-08-2023 17:10:00","31-08-2023 17:15:00"));
-        System.out.println(admin.loadContainer("sh-1010","c-1012"));
-        System.out.println(admin.loadContainer("sh-1010","c-1013"));
+//
+//        System.out.println(admin.loadContainer("sh-1010","c-1010"));
+//        System.out.println(admin.loadContainer("tr-1010","c-1011"));
+//        System.out.println(admin.refuelVehicle("sh-1010",300));
+//        System.out.println(admin.moveToPort("sh-1010","p-1011","31-08-2023 17:50:00","31-08-2023 18:15:00"));
+//        System.out.println(admin.loadContainer("sh-1010","c-1012"));
+//        System.out.println(admin.loadContainer("sh-1010","c-1013"));
+//
+//        // manager static query
         System.out.println(manager.getListOfAllContainers());
+        //Prettify.prettifyContainerList(TerminalUtil.searchVehicle("sh-1010").getVehicleContainers());
         Prettify.prettifyContainerList(manager.getListOfAllContainers());
+        System.out.println(manager.createContainer("1014","OpenTop",13));
+        System.out.println(manager.removeContainer("c-1014"));
+
         Prettify.prettifyContainerList(admin.getListOfAllContainer());
         Prettify.prettifyVehicleList(admin.getListOfAllVehicle());
-        //Prettify.prettifyPortList(admin.get);
+
 
 
         // print the data
@@ -78,7 +82,7 @@ public class Main {
         Prettify.prettifyLogList(TerminalUtil.occurringLogs);
         Prettify.prettifyLogList(TerminalUtil.occurredLogs);
 
-
+        //em chau
 
         // Check for occurring logs every 1 minutes
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
