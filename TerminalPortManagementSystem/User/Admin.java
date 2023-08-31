@@ -65,7 +65,7 @@ public class Admin implements User {
     public String createPort(String portID, String portName, double latitude, double longitude, double storingCapacity,
                              boolean landingAbility){
 
-        if (TerminalUtil.objectAlreadyExist("p" + portID)) {
+        if (TerminalUtil.objectAlreadyExist("p-" + portID)) {
             return "Invalid portID - This port already exist";
         }
 
@@ -91,11 +91,11 @@ public class Admin implements User {
         }
 
         if (type.isShip()) {
-            if (TerminalUtil.objectAlreadyExist("sh" + vehicleID)) {
+            if (TerminalUtil.objectAlreadyExist("sh-" + vehicleID)) {
                 return "Invalid vehicleID - This ship already exist";
             }
         } else if (type.isTruck()) {
-            if (TerminalUtil.objectAlreadyExist("tr" + vehicleID)) {
+            if (TerminalUtil.objectAlreadyExist("tr-" + vehicleID)) {
                 return "Invalid vehicleID - This vehicle already exist";
             }
         }
@@ -124,7 +124,7 @@ public class Admin implements User {
             return "Invalid portID - This port does not exist";
         }
 
-        if (TerminalUtil.objectAlreadyExist("c" + containerID)) {
+        if (TerminalUtil.objectAlreadyExist("c-" + containerID)) {
             return "Invalid container ID - Container already exist";
         }
 
@@ -327,6 +327,10 @@ public class Admin implements User {
 
     public Map<VehicleType, Integer> getNumberOfVehicleOfEachTypeByPort(String portID) {
         return StatQuery.getNumberOfVehicleOfEachTypeByPort(portID);
+    }
+
+    public List<Port> getListOfAllPort() {
+        return StatQuery.getListOfAllPort();
     }
 
     // Extract log

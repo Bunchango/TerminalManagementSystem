@@ -373,4 +373,8 @@ public class StatQuery {
         }
         return numberOfEachType;
     }
+
+    public static List<Port> getListOfAllPort() {
+        return TerminalUtil.ports;
+    }
 }
