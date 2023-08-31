@@ -87,18 +87,6 @@ public class TerminalUtil {
         } return null;
     }
 
-    public static int getTotalNumberOfPorts() {
-        return ports.size();
-    }
-
-    public static int getTotalNumberOfVehicles() {
-        return vehicles.size();
-    }
-
-    public static int getTotalNumberOfContainers() {
-        return containers.size();
-    }
-
     public static String removePort(String portID) {
         // When remove port, must also remove all vehicles and containers
         // Only remove port that does not have any vehicles moving to it
@@ -124,6 +112,13 @@ public class TerminalUtil {
         for (Container containerToRemove: portToRemove.getPortContainers()) {
             // Only need to remove from list of containers
             containers.remove(containerToRemove);
+        }
+
+        // Reset manager's managePortID
+        for (Manager manager: managers) {
+            if (manager.getManagePortID().equals(portID)) {
+                manager.setManagePortID(null);
+            }
         }
 
         // Save
