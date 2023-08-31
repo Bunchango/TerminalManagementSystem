@@ -52,7 +52,8 @@ public class Main {
 //        System.out.println(container2);
 //        System.out.println(container3);
 //        System.out.println(container4);
-        Manager manager  = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
+
+//        Manager manager  = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
 //
 //        System.out.println(admin.loadContainer("sh-1010","c-1010"));
 //        System.out.println(admin.loadContainer("tr-1010","c-1011"));
@@ -62,14 +63,15 @@ public class Main {
 //        System.out.println(admin.loadContainer("sh-1010","c-1013"));
 //
 //        // manager static query
-        System.out.println(manager.getListOfAllContainers());
-        //Prettify.prettifyContainerList(TerminalUtil.searchVehicle("sh-1010").getVehicleContainers());
-        Prettify.prettifyContainerList(manager.getListOfAllContainers());
-        System.out.println(manager.createContainer("1014","OpenTop",13));
-        System.out.println(manager.removeContainer("c-1014"));
-
-        Prettify.prettifyContainerList(admin.getListOfAllContainer());
-        Prettify.prettifyVehicleList(admin.getListOfAllVehicle());
+//        System.out.println(manager.getListOfAllContainers());
+//        //Prettify.prettifyContainerList(TerminalUtil.searchVehicle("sh-1010").getVehicleContainers());
+//        Prettify.prettifyContainerList(manager.getListOfAllContainers());
+//        System.out.println(manager.createContainer("1015","OpenTop",13));
+//        System.out.println(manager.removeContainer("c-1015"));
+//        Prettify.prettifyLogList(manager.getTripsByDate("31-08-2023"));
+//
+//        Prettify.prettifyContainerList(admin.getListOfAllContainer());
+//        Prettify.prettifyVehicleList(admin.getListOfAllVehicle());
 
 
 
@@ -82,7 +84,7 @@ public class Main {
         Prettify.prettifyLogList(TerminalUtil.occurringLogs);
         Prettify.prettifyLogList(TerminalUtil.occurredLogs);
 
-        //em chau
+
 
         // Check for occurring logs every 1 minutes
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
