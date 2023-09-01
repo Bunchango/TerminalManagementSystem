@@ -8,6 +8,9 @@ import TerminalPortManagementSystem.Vehicles.Vehicle;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TerminalUtil {
     public static final List<Port> ports = LogManager.loadPorts();
@@ -290,7 +293,6 @@ public class TerminalUtil {
         return date1.compareTo(date2) >= 0;
     }
 
-    // TODO: Might have to rethink this, maybe instead of return User, return the Interface
     public static User login(String username, String password) {
         Admin admin = Admin.getInstance();
         if (username.equals(admin.getUsername())
@@ -304,5 +306,10 @@ public class TerminalUtil {
             }
         }
         return null;
+    }
+
+    public static void startScheduledTask() {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(TerminalUtil::updateLogWhenFinished, 0, 1, TimeUnit.MINUTES);
     }
 }
