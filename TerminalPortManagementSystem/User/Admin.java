@@ -341,7 +341,7 @@ public class Admin implements User {
     }
     // Extract log
     public List<Log> getTripsByDate(String date){
-        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
         if (dateToQuery == null) {
             return null;
@@ -389,7 +389,7 @@ public class Admin implements User {
         if (port_1 == null || port_2 == null) {
             return 0;
         }
-        return Port.calculateDistanceBetweenPort(port_1, port_2);
+        return TerminalUtil.roundToSecondDecimalPlace(Port.calculateDistanceBetweenPort(port_1, port_2));
     }
 
     @Override

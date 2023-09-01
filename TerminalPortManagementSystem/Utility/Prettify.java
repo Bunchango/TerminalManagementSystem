@@ -265,8 +265,8 @@ public class Prettify {
                 for (Log log : logs) {
                     System.out.printf(format,
                             log.getVehicleID(),
-                            TerminalUtil.parseDateToString(log.getDepartureDate()),
-                            TerminalUtil.parseDateToString(log.getArrivalDate()),
+                            TerminalUtil.parseDateTimeToString(log.getDepartureDate()),
+                            TerminalUtil.parseDateTimeToString(log.getArrivalDate()),
                             log.getDeparturePortID(),
                             log.getArrivalPortID(),
                             log.getFuelConsumed(), log.isFinished());
@@ -293,8 +293,8 @@ public class Prettify {
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
             System.out.printf(format,
                     log.getVehicleID(),
-                    TerminalUtil.parseDateToString(log.getDepartureDate()),
-                    TerminalUtil.parseDateToString(log.getArrivalDate()),
+                    TerminalUtil.parseDateTimeToString(log.getDepartureDate()),
+                    TerminalUtil.parseDateTimeToString(log.getArrivalDate()),
                     log.getDeparturePortID(),
                     log.getArrivalPortID(),
                     log.getFuelConsumed(), log.isFinished());
@@ -363,7 +363,7 @@ public class Prettify {
 
     public static void prettifyGetTotalFuelConsumedPerDay(Map<Date, Double> input) {
         if (input != null) {
-            String format = "%-19s | %-5s%n";
+            String format = "%-11s | %-5s%n";
             System.out.printf(format, "Date", "Total Fuel Consumed");
             for (Date date: input.keySet()) {
                 System.out.printf(format, TerminalUtil.parseDateToString(date), input.get(date));

@@ -96,41 +96,41 @@ public class Main {
         //System.out.println(admin.removeManager("manager-1012"));
         //System.out.println(admin.createManager("manager-1012","myPassword","p-1012"));
 
-//        Prettify.prettifyGetTotalFuelConsumedPerDay(admin.totalFuelConsumedPerDay());
-//        Prettify.prettifyGetTotalFuelConsumedPerDay(admin.totalFuelConsumedPerDayOfPort("p-1011"));
-//        System.out.println(admin.getTotalConsumedFuelByDate("01-09-2023 15:00:00"));
-//        System.out.println(admin.getTotalConsumedFuelByDayByPort("p-1010","01-09-2023 13:15:00"));
+        Prettify.prettifyGetTotalFuelConsumedPerDay(admin.totalFuelConsumedPerDay());
+        Prettify.prettifyGetTotalFuelConsumedPerDay(admin.totalFuelConsumedPerDayOfPort("p-1011"));
+        System.out.println(admin.getTotalConsumedFuelByDate("01-09-2023"));
+        System.out.println(admin.getTotalConsumedFuelByDayByPort("p-1010","01-09-2023"));
 //        Prettify.prettifyGetTotalWeightOfEachType(admin.getTotalWeightOfEachType());
 //        Prettify.prettifyGetTotalWeightOfEachType(admin.getTotalWeightOfEachTypeByPort("p-1010"));
 //        Prettify.prettifyGetNumberOfContainerOfEachType(admin.getNumberOfContainerOfEachType());
 //        Prettify.prettifyGetNumberOfContainerOfEachType(admin.getNumberOfContainerOfEachTypeByPort("p-1011"));
 //        Prettify.prettifyContainerList(admin.getListOfContainerByPort("p-1011"));
 //        Prettify.prettifyVehicleList(admin.getListOfVehicleByType("TankerTruck"));
-//        Prettify.prettifyVehicleList(admin.getListOFVehicleByTypeOfPort("p-1011","Ship"));
+//        Prettify.prettifyVehicleList(admin.getListOFVehicleByTypeOfPort("p-1011","TankerTruck"));
 //        Prettify.prettifyGetNumberOfVehicleOfEachType(admin.getNumberOfVehicleOfEachType());
 //        Prettify.prettifyGetNumberOfVehicleOfEachType(admin.getNumberOfVehicleOfEachTypeByPort("p-10100"));
-//        Prettify.prettifyLogList(admin.getTripsByDate("02-09-2023 00:00:00"));
-//        Prettify.prettifyLogList(admin.getTripsByDateOfPort("01-09-2023","p-1010"));
-//        Prettify.prettifyLogList(admin.getTripsBetweenDates("01-09-2023","02-09-2023"));
-//        Prettify.prettifyLogList(admin.getTripsBetweenDatesOfPort("01-09-2023","02-09-2023","p-1011"));
-//        System.out.println(admin.calculateDistanceBetweenPorts("p-1010","p-1011"));
+        Prettify.prettifyLogList(admin.getTripsByDate("02-09-2023"));
+        Prettify.prettifyLogList(admin.getTripsByDateOfPort("01-09-2023","p-1010"));
+        Prettify.prettifyLogList(admin.getTripsBetweenDates("01-09-2023","02-09-2023"));
+        Prettify.prettifyLogList(admin.getTripsBetweenDatesOfPort("01-09-2023","02-09-2023","p-1011"));
+        System.out.println(admin.calculateDistanceBetweenPorts("p-1010", "p-1011"));
 
 
 
-        Prettify.prettifyManagerList(admin.getListOfAllManager());
-        Prettify.prettifyContainerList(admin.getListOfAllContainer());
-        Prettify.prettifyVehicleList(admin.getListOfAllVehicle());
-        Prettify.prettifyPortList(admin.getListOfAllPort());
-
-
-        // print the data
-        Prettify.prettifyAdmin();
-        Prettify.prettifyManagerList(TerminalUtil.managers);
-        Prettify.prettifyPortList(TerminalUtil.ports);
-        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
-        Prettify.prettifyContainerList(TerminalUtil.containers);
-        Prettify.prettifyLogList(TerminalUtil.occurringLogs);
-        Prettify.prettifyLogList(TerminalUtil.occurredLogs);
+//        Prettify.prettifyManagerList(admin.getListOfAllManager());
+//        Prettify.prettifyContainerList(admin.getListOfAllContainer());
+//        Prettify.prettifyVehicleList(admin.getListOfAllVehicle());
+//        Prettify.prettifyPortList(admin.getListOfAllPort());
+//
+//
+//        // print the data
+//        Prettify.prettifyAdmin();
+//        Prettify.prettifyManagerList(TerminalUtil.managers);
+//        Prettify.prettifyPortList(TerminalUtil.ports);
+//        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+//        Prettify.prettifyContainerList(TerminalUtil.containers);
+//        Prettify.prettifyLogList(TerminalUtil.occurringLogs);
+//        Prettify.prettifyLogList(TerminalUtil.occurredLogs);
 
 
 

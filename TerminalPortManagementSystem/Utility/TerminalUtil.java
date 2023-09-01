@@ -19,7 +19,7 @@ public class TerminalUtil {
     public static final List<Manager> managers = LogManager.loadManagers(); // TODO: More work - load and save managers
 
     public static double roundToSecondDecimalPlace(double number) {
-        return (double) Math.round(number * 100.0) / 100.0;
+        return (double)Math.round(number * 100.0) / 100.0;
     }
 
     public static void addPort(Port portToAdd) {
@@ -266,8 +266,13 @@ public class TerminalUtil {
             return null;
         }
     }
-    public static String parseDateToString(Date dateToParse) {
+    public static String parseDateTimeToString(Date dateToParse) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        return formatter.format(dateToParse);
+    }
+
+    public static String parseDateToString(Date dateToParse) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         return formatter.format(dateToParse);
     }
 

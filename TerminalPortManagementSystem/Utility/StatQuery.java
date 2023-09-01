@@ -18,7 +18,8 @@ public class StatQuery {
             Date dayOnly = TerminalUtil.truncateTime(arrivalDate);
 
             double fuelConsumed = log.getFuelConsumed();
-            dailyFuelConsumption.put(dayOnly, dailyFuelConsumption.getOrDefault(dayOnly, 0.0) + fuelConsumed);
+            dailyFuelConsumption.put(dayOnly,
+                    TerminalUtil.roundToSecondDecimalPlace(dailyFuelConsumption.getOrDefault(dayOnly, 0.0) + fuelConsumed));
         }
 
         return dailyFuelConsumption;
@@ -37,7 +38,8 @@ public class StatQuery {
                 Date dayOnly = TerminalUtil.truncateTime(arrivalDate);
 
                 double fuelConsumed = log.getFuelConsumed();
-                dailyFuelConsumption.put(dayOnly, dailyFuelConsumption.getOrDefault(dayOnly, 0.0) + fuelConsumed);
+                dailyFuelConsumption.put(dayOnly,
+                        TerminalUtil.roundToSecondDecimalPlace(dailyFuelConsumption.getOrDefault(dayOnly, 0.0) + fuelConsumed));
             }
         }
         return dailyFuelConsumption;
@@ -55,7 +57,7 @@ public class StatQuery {
             }
         }
 
-        return totalFuelConsumed;
+        return TerminalUtil.roundToSecondDecimalPlace(totalFuelConsumed);
     }
 
     public static double totalFuelConsumedByDayByPort(Date dateToQuery, String portID) {
@@ -75,7 +77,7 @@ public class StatQuery {
             }
         }
 
-        return totalFuelConsumed;
+        return TerminalUtil.roundToSecondDecimalPlace(totalFuelConsumed);
     }
 
     public static Map<ContainerType, Integer> getNumberOfContainerOfEachType() {
@@ -134,7 +136,7 @@ public class StatQuery {
                     totalWeight += container.getWeight();
                 }
             }
-            totalWeightOfEachType.put(containerType, totalWeight);
+            totalWeightOfEachType.put(containerType, TerminalUtil.roundToSecondDecimalPlace(totalWeight));
         }
         return totalWeightOfEachType;
     }
@@ -164,7 +166,7 @@ public class StatQuery {
                 }
             }
 
-            totalWeightOfEachType.put(containerType, totalWeight);
+            totalWeightOfEachType.put(containerType, TerminalUtil.roundToSecondDecimalPlace(totalWeight));
         }
         return totalWeightOfEachType;
     }
