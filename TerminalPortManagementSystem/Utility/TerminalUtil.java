@@ -19,7 +19,7 @@ public class TerminalUtil {
     public static final List<Manager> managers = LogManager.loadManagers(); // TODO: More work - load and save managers
 
     public static double roundToSecondDecimalPlace(double number) {
-        return (double)Math.round(number * 100d) / 100d;
+        return (double) Math.round(number * 100.0) / 100.0;
     }
 
     public static void addPort(Port portToAdd) {
