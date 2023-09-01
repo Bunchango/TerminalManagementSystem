@@ -12,19 +12,6 @@ public class Main {
         // Init function, always above all code
         TerminalUtil.updateLogWhenFinished();
 
-//        new Port("1010", "Hai Phong", 50, 50, 50, true);
-//        new Manager("manager-1010", "dongmanhduc", "p-1010");
-
-        //User user = TerminalUtil.login("admin", "admin12345");
-
-        // Separate using this
-//        if (user != null && user.isManager()) {
-//            Manager manager = (Manager) user;
-//            Prettify.prettifyManager(manager);
-//        } else if (user != null && user.isAdmin()) {
-//            Admin admin = (Admin) user;
-//            Prettify.prettifyAdmin();
-//        }
         Admin admin = Admin.getInstance();
 
         //create Object

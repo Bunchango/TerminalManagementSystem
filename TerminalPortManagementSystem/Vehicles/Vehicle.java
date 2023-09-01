@@ -260,7 +260,7 @@ public abstract class Vehicle implements Serializable {
     }
 
     public boolean isScheduled() {
-        return StatQuery.getOccurringLogByVehicle(vehicleID) != null;
+        return StatQuery.getOccurringLogByVehicleID(vehicleID) != null;
     }
 
     @Override

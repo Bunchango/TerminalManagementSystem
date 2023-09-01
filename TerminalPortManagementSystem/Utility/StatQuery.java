@@ -262,7 +262,7 @@ public class StatQuery {
         return tripsBetweenDates;
     }
 
-    public static Log getOccurringLogByVehicle(String vehicleID) {
+    public static Log getOccurringLogByVehicleID(String vehicleID) {
         for (Log log: TerminalUtil.occurringLogs) {
             if (log.getVehicleID().equals(vehicleID)) {
                 return log;
