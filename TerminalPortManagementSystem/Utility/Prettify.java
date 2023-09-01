@@ -1,12 +1,15 @@
 package TerminalPortManagementSystem.Utility;
 
+import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.*;
 import TerminalPortManagementSystem.User.Admin;
 import TerminalPortManagementSystem.User.Manager;
+import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Prettify {
     public static void prettifyPort(Port port) {
@@ -134,52 +137,57 @@ public class Prettify {
     }
 
     public static void prettifyVehicleList(List<Vehicle> vehicles) {
-        if (vehicles.size() == 0) {
-            String format = "%-8s | %-15s | %-7s | %-13s | %-15s | %-10s%n";
-            System.out.printf(format, "ID", "Type", "Port", "Is Sail Away", "Fuel", "Carry");
-            System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null");
-            System.out.println();
-        } else {
+        if(vehicles != null){
+            if (vehicles.size() == 0) {
+                String format = "%-8s | %-15s | %-7s | %-13s | %-15s | %-10s%n";
+                System.out.printf(format, "ID", "Type", "Port", "Is Sail Away", "Fuel", "Carry");
+                System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null");
+                System.out.println();
+            } else {
 
-            int maxIDLength = 0;
-            int maxCurrentPortLength = 0;
-            int maxFuelLength = 0;
-            int maxCapacityLength = 0;
+                int maxIDLength = 0;
+                int maxCurrentPortLength = 0;
+                int maxFuelLength = 0;
+                int maxCapacityLength = 0;
 
-            // Create dynamic printf
-            for (Vehicle vehicle : vehicles) {
-                int vehicleIDLength = vehicle.getVehicleID().length();
-                int currentPortLength = (vehicle.getCurrentPort() == null) ? 5 : vehicle.getCurrentPort().getPortID().length();
-                int fuelLength = String.valueOf(vehicle.getFuelCapacity()).length() * 2 + 8;
-                int capacityLength = String.valueOf(vehicle.getCarryingCapacity()).length() * 2 + 4;
+                // Create dynamic printf
+                for (Vehicle vehicle : vehicles) {
+                    int vehicleIDLength = vehicle.getVehicleID().length();
+                    int currentPortLength = (vehicle.getCurrentPort() == null) ? 5 : vehicle.getCurrentPort().getPortID().length();
+                    int fuelLength = String.valueOf(vehicle.getFuelCapacity()).length() * 2 + 8;
+                    int capacityLength = String.valueOf(vehicle.getCarryingCapacity()).length() * 2 + 4;
 
-                if (vehicleIDLength > maxIDLength) {
-                    maxIDLength = vehicleIDLength;
+                    if (vehicleIDLength > maxIDLength) {
+                        maxIDLength = vehicleIDLength;
+                    }
+                    if (currentPortLength > maxCurrentPortLength) {
+                        maxCurrentPortLength = currentPortLength;
+                    }
+                    if (fuelLength > maxFuelLength) {
+                        maxFuelLength = fuelLength;
+                    }
+                    if (capacityLength > maxCapacityLength) {
+                        maxCapacityLength = capacityLength;
+                    }
                 }
-                if (currentPortLength > maxCurrentPortLength) {
-                    maxCurrentPortLength = currentPortLength;
-                }
-                if (fuelLength > maxFuelLength) {
-                    maxFuelLength = fuelLength;
-                }
-                if (capacityLength > maxCapacityLength) {
-                    maxCapacityLength = capacityLength;
-                }
-            }
 
-            System.out.printf("%-" + maxIDLength + "s | %-15s | %-" + maxCurrentPortLength + "s | %-13s | %-" + maxFuelLength + "s | %-" + maxCapacityLength + "s%n",
-                    "ID", "Type", "Port", "Is Sail Away", "Fuel", "Carry");
-            for (Vehicle vehicle : vehicles) {
                 System.out.printf("%-" + maxIDLength + "s | %-15s | %-" + maxCurrentPortLength + "s | %-13s | %-" + maxFuelLength + "s | %-" + maxCapacityLength + "s%n",
-                        vehicle.getVehicleID(),
-                        vehicle.getVehicleType() + vehicle.getVehicleType().getEmoji(),
-                        (vehicle.getCurrentPort() == null) ? null : vehicle.getCurrentPort().getPortID(),
-                        vehicle.isSailAway(),
-                        vehicle.getCurrentFuel() + "/" + vehicle.getFuelCapacity() + " gallon",
-                        vehicle.getTotalCarryingWeight() + "/" + vehicle.getCarryingCapacity() + " kg");
+                        "ID", "Type", "Port", "Is Sail Away", "Fuel", "Carry");
+                for (Vehicle vehicle : vehicles) {
+                    System.out.printf("%-" + maxIDLength + "s | %-15s | %-" + maxCurrentPortLength + "s | %-13s | %-" + maxFuelLength + "s | %-" + maxCapacityLength + "s%n",
+                            vehicle.getVehicleID(),
+                            vehicle.getVehicleType() + vehicle.getVehicleType().getEmoji(),
+                            (vehicle.getCurrentPort() == null) ? null : vehicle.getCurrentPort().getPortID(),
+                            vehicle.isSailAway(),
+                            vehicle.getCurrentFuel() + "/" + vehicle.getFuelCapacity() + " gallon",
+                            vehicle.getTotalCarryingWeight() + "/" + vehicle.getCarryingCapacity() + " kg");
+                }
+                System.out.println();
             }
-            System.out.println();
+        }else{
+            System.out.println("Invalid");
         }
+
     }
     public static void prettifyContainer(Container container) {
         if (container == null) {
@@ -199,62 +207,79 @@ public class Prettify {
         }
     }
     public static void prettifyContainerList(List<Container> containers) {
-        if (containers.size() == 0) {
+        if(containers != null){
+            if (containers.size() == 0) {
+                String format = "%-6s | %-12s | %-6s%n";
+                System.out.printf(format, "ID", "Type", "Weight");
+                System.out.printf(format, "Null", "Null", "Null");
+                System.out.println();
+            }  else {
+
+                int maxIDLength = 0;
+                int maxWeightLength = 0;
+
+                // Create dynamic printf
+                for (Container container : containers) {
+                    int containerIDLength = container.getContainerID().length();
+                    int weightLength = String.valueOf(container.getWeight()).length() + 4;
+
+                    if (containerIDLength > maxIDLength) {
+                        maxIDLength = containerIDLength;
+                    }
+                    if (weightLength > maxWeightLength) {
+                        maxWeightLength = weightLength;
+                    }
+                }
+
+                System.out.printf("%-" + maxIDLength + "s | %-12s | %-" + maxWeightLength + "s%n",
+                        "ID", "Type", "Weight");
+                for (Container container : containers) {
+                    System.out.printf("%-" + maxIDLength + "s | %-12s | %-" + maxWeightLength + "s%n",
+                            container.getContainerID(),
+                            container.getContainerType() + container.getContainerType().getEmoji(),
+                            container.getWeight() + " kg");
+                }
+                System.out.println();
+            }
+        }else{
             String format = "%-6s | %-12s | %-6s%n";
             System.out.printf(format, "ID", "Type", "Weight");
             System.out.printf(format, "Null", "Null", "Null");
             System.out.println();
-        } else {
-
-            int maxIDLength = 0;
-            int maxWeightLength = 0;
-
-            // Create dynamic printf
-            for (Container container : containers) {
-                int containerIDLength = container.getContainerID().length();
-                int weightLength = String.valueOf(container.getWeight()).length() + 4;
-
-                if (containerIDLength > maxIDLength) {
-                    maxIDLength = containerIDLength;
-                }
-                if (weightLength > maxWeightLength) {
-                    maxWeightLength = weightLength;
-                }
-            }
-
-            System.out.printf("%-" + maxIDLength + "s | %-12s | %-" + maxWeightLength + "s%n",
-                    "ID", "Type", "Weight");
-            for (Container container : containers) {
-                System.out.printf("%-" + maxIDLength + "s | %-12s | %-" + maxWeightLength + "s%n",
-                        container.getContainerID(),
-                        container.getContainerType() + container.getContainerType().getEmoji(),
-                        container.getWeight() + " kg");
-            }
-            System.out.println();
         }
+
     }
 
     public static void prettifyLogList(List<Log> logs) {
-        String format;
-        if (logs.size() == 0) {
-            format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
+        if(logs !=null){
+            String format;
+            if (logs.size() == 0) {
+                format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
+                System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
+                System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null", "Null");
+                System.out.println();
+            }
+            else {
+                format = "%-9s | %-19s | %-19s | %-16s | %-14s | %-16s | %-5s%n";
+                System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
+                for (Log log : logs) {
+                    System.out.printf(format,
+                            log.getVehicleID(),
+                            TerminalUtil.parseDateToString(log.getDepartureDate()),
+                            TerminalUtil.parseDateToString(log.getArrivalDate()),
+                            log.getDeparturePortID(),
+                            log.getArrivalPortID(),
+                            log.getFuelConsumed(), log.isFinished());
+                }
+            }
+            System.out.println();
+        }else{
+            String format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
             System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null", "Null");
+            System.out.println();
         }
-        else {
-            format = "%-9s | %-19s | %-19s | %-16s | %-14s | %-16s | %-5s%n";
-            System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
-            for (Log log : logs) {
-                System.out.printf(format,
-                        log.getVehicleID(),
-                        TerminalUtil.parseDateToString(log.getDepartureDate()),
-                        TerminalUtil.parseDateToString(log.getArrivalDate()),
-                        log.getDeparturePortID(),
-                        log.getArrivalPortID(),
-                        log.getFuelConsumed(), log.isFinished());
-            }
-        }
-        System.out.println();
+
     }
     public static void prettifyLog(Log log) {
         if (log == null) {
@@ -335,5 +360,65 @@ public class Prettify {
         System.out.printf(format, Admin.getInstance().getUsername(), Admin.getInstance().getPassword());
         System.out.println();
     }
+    public static void prettifyGetTotalFuelConsumedPerDay(Map<Date, Double> input){
+        if(input != null){
+            String format = "%-19s | %-5s%n";
+            System.out.printf(format,"Date","Total Fuel Consumed");
+            for(Date date:input.keySet()){
+                System.out.printf(format,TerminalUtil.parseDateToString(date),input.get(date));
+            }
+            System.out.println();
+        }else{
+            System.out.println("Invalid");
+        }
 
+    }
+
+    public static void prettifyGetTotalWeightOfEachType(Map<ContainerType, Double> input){
+        if(input != null){
+            int maxLength = 14;
+            for(ContainerType containerType: ContainerType.values()){
+                if(containerType.name().length() > maxLength){
+                    maxLength = containerType.name().length();
+                }
+            }
+
+            String format = "%-"+maxLength+"s | %-10s%n";
+            System.out.printf(format,"Container Type","Total Weight");
+            for(ContainerType containerType:input.keySet()){
+                System.out.printf(format,containerType.name(),input.get(containerType));
+            }
+            System.out.println();
+        }else {
+            System.out.println("Invalid");
+        }
+
+    }
+    public static void prettifyGetNumberOfContainerOfEachType(Map<ContainerType, Integer> input){
+        if(input != null){
+            String format = "%-14s | %-10s%n";
+            System.out.printf(format,"Container Type","Number of Container");
+            for(ContainerType containerType:input.keySet()){
+                System.out.printf(format,containerType.name(),input.get(containerType));
+            }
+            System.out.println();
+        }else{
+            System.out.println("Invalid");
+        }
+
+    }
+
+    public static void prettifyGetNumberOfVehicleOfEachType(Map<VehicleType, Integer> input){
+        if(input != null){
+            String format = "%-12s | %-10s%n";
+            System.out.printf(format,"Vehicle Type","Number of Vehicle");
+            for(VehicleType vehicleType:input.keySet()){
+                System.out.printf(format,vehicleType.name(),input.get(vehicleType));
+            }
+            System.out.println();
+        }else{
+            System.out.println("Invalid");
+        }
+
+    }
 }

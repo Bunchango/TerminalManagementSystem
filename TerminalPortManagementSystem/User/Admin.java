@@ -172,6 +172,9 @@ public class Admin implements User {
         if (manager == null) {
             return "Invalid username - Manager does not exist";
         }
+        if(manager.getManagePortID() == null) {
+            return "Managing port is already unset";
+        }
 
         manager.setManagePortID(null);
         return "Managing port unset successfully";
@@ -333,6 +336,9 @@ public class Admin implements User {
         return StatQuery.getListOfAllPort();
     }
 
+    public List<Manager> getListOfAllManager(){
+        return StatQuery.getListOfAllManager();
+    }
     // Extract log
     public List<Log> getTripsByDate(String date){
         Date dateToQuery = TerminalUtil.parseStringToDateTime(date);

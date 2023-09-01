@@ -3,6 +3,7 @@ package TerminalPortManagementSystem.Utility;
 import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
+import TerminalPortManagementSystem.User.Manager;
 import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
 import java.util.*;
@@ -103,12 +104,13 @@ public class StatQuery {
         List<ContainerType> containerTypes = ContainerType.getAllContainerTypes();
         for (ContainerType containerType: containerTypes) {
             int numberOfContainer = 0;
+            // find container in port
             for (Container container: port.getPortContainers()) {
                 if (container.getContainerType() == containerType) {
                     numberOfContainer++;
                 }
             }
-
+            // find container in vehicle
             for (Vehicle vehicle: port.getPortVehicles()) {
                 for (Container container: vehicle.getVehicleContainers()) {
                     if (container.getContainerType() == containerType) {
@@ -375,5 +377,8 @@ public class StatQuery {
 
     public static List<Port> getListOfAllPort() {
         return TerminalUtil.ports;
+    }
+    public static  List<Manager> getListOfAllManager(){
+        return TerminalUtil.managers;
     }
 }
