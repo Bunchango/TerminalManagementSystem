@@ -172,7 +172,7 @@ public class Admin implements User {
         if (manager == null) {
             return "Invalid username - Manager does not exist";
         }
-        if(manager.getManagePortID() == null) {
+        if (manager.getManagePortID() == null) {
             return "Managing port is already unset";
         }
 

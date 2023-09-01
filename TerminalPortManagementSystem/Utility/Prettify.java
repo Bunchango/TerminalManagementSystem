@@ -360,63 +360,64 @@ public class Prettify {
         System.out.printf(format, Admin.getInstance().getUsername(), Admin.getInstance().getPassword());
         System.out.println();
     }
-    public static void prettifyGetTotalFuelConsumedPerDay(Map<Date, Double> input){
-        if(input != null){
+
+    public static void prettifyGetTotalFuelConsumedPerDay(Map<Date, Double> input) {
+        if (input != null) {
             String format = "%-19s | %-5s%n";
-            System.out.printf(format,"Date","Total Fuel Consumed");
-            for(Date date:input.keySet()){
-                System.out.printf(format,TerminalUtil.parseDateToString(date),input.get(date));
+            System.out.printf(format, "Date", "Total Fuel Consumed");
+            for (Date date: input.keySet()) {
+                System.out.printf(format, TerminalUtil.parseDateToString(date), input.get(date));
             }
             System.out.println();
-        }else{
+        } else {
             System.out.println("Invalid");
         }
 
     }
 
-    public static void prettifyGetTotalWeightOfEachType(Map<ContainerType, Double> input){
-        if(input != null){
+    public static void prettifyGetTotalWeightOfEachType(Map<ContainerType, Double> input) {
+        if (input != null) {
             int maxLength = 14;
-            for(ContainerType containerType: ContainerType.values()){
-                if(containerType.name().length() > maxLength){
+            for (ContainerType containerType: ContainerType.values()) {
+                if (containerType.name().length() > maxLength) {
                     maxLength = containerType.name().length();
                 }
             }
 
-            String format = "%-"+maxLength+"s | %-10s%n";
-            System.out.printf(format,"Container Type","Total Weight");
-            for(ContainerType containerType:input.keySet()){
-                System.out.printf(format,containerType.name(),input.get(containerType));
+            String format = "%-" + maxLength + "s | %-10s%n";
+            System.out.printf(format, "Container Type", "Total Weight");
+            for (ContainerType containerType: input.keySet()){
+                System.out.printf(format, containerType.name(), input.get(containerType));
             }
             System.out.println();
-        }else {
+        } else {
             System.out.println("Invalid");
         }
 
     }
-    public static void prettifyGetNumberOfContainerOfEachType(Map<ContainerType, Integer> input){
-        if(input != null){
+    public static void prettifyGetNumberOfContainerOfEachType(Map<ContainerType, Integer> input) {
+        if (input != null) {
             String format = "%-14s | %-10s%n";
-            System.out.printf(format,"Container Type","Number of Container");
-            for(ContainerType containerType:input.keySet()){
-                System.out.printf(format,containerType.name(),input.get(containerType));
+            System.out.printf(format, "Container Type", "Number of Container");
+            for (ContainerType containerType:input.keySet()) {
+                System.out.printf(format, containerType.name(), input.get(containerType));
             }
             System.out.println();
-        }else{
+        } else {
             System.out.println("Invalid");
         }
 
     }
 
-    public static void prettifyGetNumberOfVehicleOfEachType(Map<VehicleType, Integer> input){
-        if(input != null){
+    public static void prettifyGetNumberOfVehicleOfEachType(Map<VehicleType, Integer> input) {
+        if (input != null) {
             String format = "%-12s | %-10s%n";
-            System.out.printf(format,"Vehicle Type","Number of Vehicle");
-            for(VehicleType vehicleType:input.keySet()){
-                System.out.printf(format,vehicleType.name(),input.get(vehicleType));
+            System.out.printf(format, "Vehicle Type", "Number of Vehicle");
+            for (VehicleType vehicleType:input.keySet()) {
+                System.out.printf(format, vehicleType.name(), input.get(vehicleType));
             }
             System.out.println();
-        }else{
+        } else {
             System.out.println("Invalid");
         }
 

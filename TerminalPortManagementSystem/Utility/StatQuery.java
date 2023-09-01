@@ -378,7 +378,8 @@ public class StatQuery {
     public static List<Port> getListOfAllPort() {
         return TerminalUtil.ports;
     }
-    public static  List<Manager> getListOfAllManager(){
+
+    public static List<Manager> getListOfAllManager(){
         return TerminalUtil.managers;
     }
 }
