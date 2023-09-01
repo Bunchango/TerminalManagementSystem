@@ -113,12 +113,12 @@ public abstract class Vehicle implements Serializable {
 
     //TODO: Make loadContainer and unloadContainer return a String
     public String loadContainer(Container containerToLoad) {
-        if (!ableToLoadContainer(containerToLoad)) {
-            return "Invalid container - This vehicle can't load this container";
-        }
-
         if (isSailAway()) {
             return "Vehicle can't load when sail away";
+        }
+
+        if (!ableToLoadContainer(containerToLoad)) {
+            return "Invalid container - This vehicle can't load this container";
         }
 
         if (currentPort.searchContainer(containerToLoad.getContainerID()) == null) {
@@ -136,7 +136,6 @@ public abstract class Vehicle implements Serializable {
     }
 
     public String unloadContainer(Container containerToUnload) {
-
         if (isSailAway()) {
             return "Vehicle can't unload when sail away";
         }

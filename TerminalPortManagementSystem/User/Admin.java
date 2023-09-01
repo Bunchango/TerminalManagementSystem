@@ -269,7 +269,7 @@ public class Admin implements User {
     }
 
     public double getTotalConsumedFuelByDate(String date){
-        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
         if (dateToQuery == null) {
             return 0;
@@ -279,7 +279,7 @@ public class Admin implements User {
     }
 
     public double getTotalConsumedFuelByDayByPort(String portID, String date) {
-        Date dateToQuery = TerminalUtil.parseStringToDateTime(date);
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
         if (dateToQuery == null) {
             return 0;
