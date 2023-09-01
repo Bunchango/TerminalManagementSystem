@@ -124,7 +124,11 @@ public class TerminalUtil {
         }
 
         if (portToRemove.isTargetPort()) {
-            return "Not allowed to remove Port that have occurring trips";
+            return "Not allowed to remove Port that currently have vehicles going in";
+        }
+
+        if (portToRemove.isStartPort()) {
+            return "Not allowed to remove Port that currently have vehicles going out";
         }
 
         // Remove from list of ports

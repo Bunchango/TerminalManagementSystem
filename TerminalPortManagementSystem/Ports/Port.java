@@ -143,6 +143,15 @@ public class Port implements Serializable { // Might have to add a log ( history
         return false;
     }
 
+    public boolean isStartPort() {
+        for (Log log: TerminalUtil.occurringLogs) {
+            if (Objects.equals(log.getDeparturePortID(), portID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         StringBuilder vehicleIDs = new StringBuilder();
