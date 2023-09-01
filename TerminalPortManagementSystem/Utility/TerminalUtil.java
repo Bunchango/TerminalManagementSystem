@@ -116,8 +116,6 @@ public class TerminalUtil {
     }
 
     public static String removePort(String portID) {
-        // When remove port, must also remove all vehicles and containers
-        // Only remove port that does not have any vehicles moving to it
         Port portToRemove = searchPort(portID);
         if (portToRemove == null) {
             return "Port not found";

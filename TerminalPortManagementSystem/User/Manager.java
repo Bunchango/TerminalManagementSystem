@@ -13,7 +13,6 @@ import TerminalPortManagementSystem.Vehicles.*;
 import java.io.Serializable;
 import java.util.*;
 
-// TODO: When delete a port, reset managePortID of manager;
 public class Manager implements Serializable, User {
     private final String username;
     private final String password;
