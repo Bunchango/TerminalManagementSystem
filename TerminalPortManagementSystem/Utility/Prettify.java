@@ -383,8 +383,12 @@ public class Prettify {
         if (input != null) {
             String format = "%-11s | %-5s%n";
             System.out.printf(format, "Date", "Total Fuel Consumed");
-            for (Date date: input.keySet()) {
-                System.out.printf(format, TerminalUtil.parseDateToString(date), input.get(date));
+            if(input.size()==0){
+                System.out.printf(format,"Null","Null");
+            }else{
+                for (Date date: input.keySet()) {
+                    System.out.printf(format, TerminalUtil.parseDateToString(date), input.get(date));
+                }
             }
             System.out.println();
         } else {
