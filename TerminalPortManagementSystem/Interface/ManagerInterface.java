@@ -161,9 +161,29 @@ public class ManagerInterface {
     }
 
     public static void statQuery(Manager manager) {
+        System.out.println(" * Statistic Search Options *");
+        System.out.println("1. Total Fuel Consumed by Date");
+        System.out.println("2. Total Weight of Each Type of Container");
+        System.out.println("3. Number of Containers of Each Type");
+        System.out.println("4. List of All The Containers");
+        System.out.println("5. Number of Vehicles of Each Type");
+        System.out.println("6. List of Vehicles by Type");
+        System.out.println("7. List of All Vehicles");
+        System.out.println("8. Get The Trips by Arrival Date");
+        System.out.println("9. Get The Trips by Departure Date");
+        System.out.println("10. Get The Trips That Arives Between A to B Dates ");
+        System.out.println("11. Get The Trips That Departs Between A to B Dates ");
+        System.out.println("12. Get Trips Between A to B Dates ");
+        System.out.println("Enter your choice: ");
 
+        Scanner sc = new Scanner(System.in);
+        String choice = sc.nextLine();
+
+        switch (choice) {
+
+            case "1" -> {
+
+            }
+        }
     }
-
-
-
     }
