@@ -1,6 +1,5 @@
 package TerminalPortManagementSystem.Interface;
 
-import TerminalPortManagementSystem.User.Admin;
 import TerminalPortManagementSystem.User.Manager;
 import TerminalPortManagementSystem.User.User;
 import TerminalPortManagementSystem.Utility.TerminalUtil;

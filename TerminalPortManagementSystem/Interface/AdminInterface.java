@@ -2,8 +2,7 @@ package TerminalPortManagementSystem.Interface;
 import TerminalPortManagementSystem.User.Admin;
 import TerminalPortManagementSystem.Utility.Prettify;
 import TerminalPortManagementSystem.Utility.TerminalUtil;
-
-import java.io.IOException;
+import TerminalPortManagementSystem.Vehicles.Vehicle;
 import java.util.Scanner;
 
 public class AdminInterface {
@@ -223,6 +222,8 @@ public class AdminInterface {
 
         System.out.println("Existing vehicles: ");
         Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+        System.out.println("Existing ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
 
         while (true) {
             try {
@@ -537,8 +538,142 @@ public class AdminInterface {
         System.out.println("~. Go back");
         System.out.print("Enter your choice: ");
 
-
+        String option = sc.nextLine();
+        switch (option) {
+            case "1" -> {
+                loadContainer();
+            }
+            case "2" -> {
+                unloadContainer();
+            }
+            case "3" -> {
+                refuel();
+            }
+            case "4" -> {
+                moveToPort();
+            }
+            case "~" -> {
+                run();
+            }
+            default -> {
+                System.out.println("Invalid input. ");
+                transportation();
+            }
+        }
         run();
+    }
+
+    public static void loadContainer() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Existing vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+        System.out.print("Vehicle's ID: ");
+        String vehicleID = sc.nextLine().replace(" ", "");
+
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+
+        if (vehicle != null && !vehicle.isSailAway()) {
+            System.out.println("Existing containers in vehicle's port: ");
+            Prettify.prettifyContainerList(vehicle.getCurrentPort().getPortContainers());
+            System.out.print("Container's ID: ");
+            String containerID = sc.nextLine().replace(" ", "");
+
+            while (true) {
+                System.out.print("CONFIRM LOAD CONTAINER " + vehicleID + " | " + containerID + ". true / false: ");
+                try {
+                    if (sc.nextBoolean()) {
+                        System.out.println(admin.loadContainer(vehicleID, containerID));
+                    } else {
+                        System.out.println("LOAD CANCELED");
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                    System.out.println("-----------------------------------------");
+                    sc.nextLine(); // Clear the input buffer
+                }
+            }
+        } else if (vehicle == null) {
+            System.out.println("Invalid vehicle - Vehicle does not exist OR Sail away");
+        }
+        transportation();
+    }
+
+    public static void unloadContainer() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Existing vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+        System.out.print("Vehicle's ID: ");
+        String vehicleID = sc.nextLine().replace(" ", "");
+
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+
+        if (vehicle != null && !vehicle.isSailAway()) {
+            System.out.println("Existing containers in vehicles: ");
+            Prettify.prettifyContainerList(vehicle.getVehicleContainers());
+            System.out.print("Container's ID: ");
+            String containerID = sc.nextLine().replace(" ", "");
+
+            while (true) {
+                System.out.print("CONFIRM UNLOAD CONTAINER " + vehicleID + " | " + containerID + ". true / false: ");
+                try {
+                    if (sc.nextBoolean()) {
+                        System.out.println(admin.unloadContainer(vehicleID, containerID));
+                    } else {
+                        System.out.println("UNLOAD CANCELED");
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                    System.out.println("-----------------------------------------");
+                    sc.nextLine(); // Clear the input buffer
+                }
+            }
+        } else if (vehicle == null) {
+            System.out.println("Invalid vehicle - Vehicle does not exist OR Sail away");
+        }
+        transportation();
+    }
+
+    public static void refuel() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Existing vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+        System.out.print("Vehicle's ID: ");
+        String vehicleID = sc.nextLine();
+
+        while (true) {
+            try {
+                System.out.print("Gallons to refuel: ");
+                double gallons = sc.nextDouble();
+
+                System.out.print("CONFIRM REFUEL - " + vehicleID + " | " + gallons + ". true / false: ");
+                if (sc.nextBoolean()) {
+                    System.out.println(admin.refuelVehicle(vehicleID, gallons));
+                } else {
+                    System.out.println("REFUEL CANCELED");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input");
+                System.out.println("-----------------------------------------");
+                sc.nextLine();
+            }
+        }
+        transportation();
+    }
+
+    public static void moveToPort() {
+
     }
 
     public static void statQuery() {
