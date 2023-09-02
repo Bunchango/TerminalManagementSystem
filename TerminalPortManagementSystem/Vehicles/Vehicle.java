@@ -79,6 +79,7 @@ public abstract class Vehicle implements Serializable {
     }
 
     public double getTotalCarryingWeight() {
+        // Get the weight of all containers
         double totalWeight = 0;
         for (Container container: vehicleContainers) {
             totalWeight += container.getWeight();
@@ -86,6 +87,7 @@ public abstract class Vehicle implements Serializable {
     }
 
     public Map<ContainerType, Double> getTotalCarryingWeightByType() {
+        // Get the total weight of each type of containers in vehicle
         Map<ContainerType, Double> weightByType =  new HashMap<>();
         for (ContainerType containerType: vehicleType.getAllowedContainerType()) {
             double totalWeight = 0;
@@ -103,6 +105,7 @@ public abstract class Vehicle implements Serializable {
     }
 
     public Container searchContainer(String containerID) {
+        // Search for container in this vehicle
         for (Container container: vehicleContainers) {
             if (container.getContainerID().equals(containerID)) {
                 return container;
@@ -110,9 +113,8 @@ public abstract class Vehicle implements Serializable {
         } return null;
     }
 
-
-    //TODO: Make loadContainer and unloadContainer return a String
     public String loadContainer(Container containerToLoad) {
+        // Can only load vehicle if these case does not occur
         if (isSailAway()) {
             return "Vehicle can't load when sail away";
         }
@@ -125,6 +127,7 @@ public abstract class Vehicle implements Serializable {
             return "Invalid container - Container and Vehicle must be in the same port";
         }
 
+        // Load the container onto the vehicle
         vehicleContainers.add(containerToLoad);
         currentPort.unloadContainer(containerToLoad);
 
@@ -136,6 +139,7 @@ public abstract class Vehicle implements Serializable {
     }
 
     public String unloadContainer(Container containerToUnload) {
+        // Can only unload vehicle if these case does not occur
         if (isSailAway()) {
             return "Vehicle can't unload when sail away";
         }
@@ -148,7 +152,7 @@ public abstract class Vehicle implements Serializable {
             return "Invalid container - Given container does not exist on this vehicle";
         }
 
-
+        // Unload the container
         currentPort.loadContainer(containerToUnload);
         vehicleContainers.remove(containerToUnload);
 
@@ -165,11 +169,13 @@ public abstract class Vehicle implements Serializable {
     }
 
     public boolean ableToLoadContainer(Container containerToLoad) {
+        // Container must not exceed vehicle's capacity and vehicle allow the type of the target container
         return getTotalCarryingWeight() + containerToLoad.getWeight() <= carryingCapacity && vehicleType.doesAllowContainerType(containerToLoad);
     }
 
     public String refuel(double gallons) { // Can only refuel in a port
         if (!isSailAway()) {
+            // Set fuel to max if value exceed capacity
             if (currentFuel + gallons <= fuelCapacity) {
                 currentFuel += gallons;
             } else {
@@ -184,8 +190,11 @@ public abstract class Vehicle implements Serializable {
     public double calculateFuelConsumption(Port destinationPort) {
         double fuelConsumption = 0;
         double distance = Port.calculateDistanceBetweenPort(currentPort, destinationPort);
+
+        // Get the weight of each type of containers
         Map<ContainerType, Double> weightByType = getTotalCarryingWeightByType();
         for (ContainerType containerType: weightByType.keySet()) {
+            // Ship and truck have different fuel cost for different type of containers
             if (vehicleType.isShip()) {
                 // Convert from kg to ton
                 fuelConsumption += containerType.getShipFuelCost() * weightByType.get(containerType) / 1000 * distance;
@@ -197,6 +206,7 @@ public abstract class Vehicle implements Serializable {
     }
 
     public String moveToPort(Port destinationPort, Date departureDate, Date arrivalDate) {
+        // Can only move to a port if these case does not occur
         if (!TerminalUtil.passedDate(arrivalDate, departureDate)) {
             return "Invalid arrival date - arrivalDate is before DepartureDate";
         }
@@ -219,6 +229,7 @@ public abstract class Vehicle implements Serializable {
             return "Invalid destination: Cannot move to the same port";
         }
 
+        // Calculate fuel cost
         double fuelCost = TerminalUtil.roundToSecondDecimalPlace(calculateFuelConsumption(destinationPort));
 
         if (!ableToMoveToPort(destinationPort)) {
@@ -246,7 +257,9 @@ public abstract class Vehicle implements Serializable {
     }
 
     public String arriveToPort(Port destinationPort, double fuelCost) {
+        // Update the vehicle when it arrives to the target port
         currentPort = destinationPort;
+        // Only update its fuel when it arrives to the port
         currentFuel = TerminalUtil.roundToSecondDecimalPlace(getCurrentFuel() - fuelCost);
         currentPort.addVehicle(this);
 

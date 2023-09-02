@@ -19,6 +19,7 @@ public class Port implements Serializable { // Might have to add a log ( history
     private final List<Container> portContainers = new ArrayList<>(); // Store all Containers inside the port, does not include the Containers inside each Port.Vehicles in the port
 
     public Port(String portID, String portName, double latitude, double longitude, double storingCapacity, boolean landingAbility) {
+        // Prevent illogical object creation
         if (TerminalUtil.objectAlreadyExist("p-" + portID)) {
             throw new IllegalArgumentException("Port already exist, try another portID");
         }
@@ -33,7 +34,8 @@ public class Port implements Serializable { // Might have to add a log ( history
         this.longitude = longitude;
         this.storingCapacity = storingCapacity;
         this.landingAbility = landingAbility;
-        TerminalUtil.addPort(this); // Add this Port to the collection of ports
+        // Add this Port to the collection of ports
+        TerminalUtil.addPort(this);
 
         // Save id
         TerminalUtil.addId(this.portID);
@@ -41,9 +43,9 @@ public class Port implements Serializable { // Might have to add a log ( history
 
         // Save object
         LogManager.saveAllObjects();
-
     }
 
+    // Getters
     public String getPortID() {
         return portID;
     }
@@ -77,7 +79,7 @@ public class Port implements Serializable { // Might have to add a log ( history
     }
 
     public static double calculateDistanceBetweenPort(Port target_1, Port target_2) {
-        // To calculate the distance using latitude and longitude, use haversine formula
+        // Use haversine formula to calculate distance
         double R = 6371; // Earth's radius in kilometers
         double dLat = Math.toRadians(target_2.latitude - target_1.latitude);
         double dLon = Math.toRadians(target_2.longitude - target_1.longitude);
@@ -103,18 +105,19 @@ public class Port implements Serializable { // Might have to add a log ( history
     }
 
     public void unloadContainer(Container containerToUnload) {
-        // Although a Port can unload its container, when moving Containers between vehicles and ports, the operation can only be called in Vehicle to ensure synchronization
         portContainers.remove(containerToUnload);
     }
 
-    public double getTotalCarryingWeight() { // Get total weight of all containers in the port
+    public double getTotalCarryingWeight() {
+        // Get total weight of all containers in the port
         double totalWeight = 0;
         for (Container container: portContainers) {
             totalWeight += container.getWeight();
         } return totalWeight;
     }
 
-    public Vehicle searchVehicle(String vehicleID) { // Search for a vehicle based on vehicleID in the port
+    public Vehicle searchVehicle(String vehicleID) {
+        // Search for a vehicle based on vehicleID in the port
         for (Vehicle vehicle: portVehicles) {
             if (vehicle.getVehicleID().equals(vehicleID)) {
                 return vehicle;
@@ -122,7 +125,8 @@ public class Port implements Serializable { // Might have to add a log ( history
         } return null;
     }
 
-    public Container searchContainer(String containerID) { // Search for a container based on containerID in the port
+    public Container searchContainer(String containerID) {
+        // Search for a container based on containerID in the port
         for (Container container: portContainers) {
             if (container.getContainerID().equals(containerID)) {
                 return container;
@@ -131,10 +135,12 @@ public class Port implements Serializable { // Might have to add a log ( history
     }
 
     public boolean ableToLoadContainer(Container containerToLoad) {
+        // True when total weight after loading does not exceed capacity
         return getTotalCarryingWeight() + containerToLoad.getWeight() <= storingCapacity;
     }
 
     public boolean isTargetPort() {
+        // True when this port is arriving port in occurring log
         for (Log log: TerminalUtil.occurringLogs) {
             if (Objects.equals(log.getArrivalPortID(), portID)) {
                 return true;
@@ -144,6 +150,7 @@ public class Port implements Serializable { // Might have to add a log ( history
     }
 
     public boolean isStartPort() {
+        // True when this port is departing port in occurring log
         for (Log log: TerminalUtil.occurringLogs) {
             if (Objects.equals(log.getDeparturePortID(), portID)) {
                 return true;
@@ -154,6 +161,7 @@ public class Port implements Serializable { // Might have to add a log ( history
 
     @Override
     public String toString() {
+        // Convert list of objects into string for better printing
         StringBuilder vehicleIDs = new StringBuilder();
         vehicleIDs.append("[");
         for (Vehicle vehicle : portVehicles) {

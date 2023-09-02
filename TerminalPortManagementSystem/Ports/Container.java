@@ -13,6 +13,7 @@ public class Container implements Serializable {
     private final double weight;
 
     public Container(String containerID, ContainerType containertype, Port port, double weight) {
+        // Prevent illogical object creation
         if (TerminalUtil.objectAlreadyExist("c-" + containerID)) {
             throw new IllegalArgumentException("Container already exist, try another containerID");
         }
@@ -27,7 +28,7 @@ public class Container implements Serializable {
                 port.loadContainer(this);
             }
         }
-
+        // Create object
         this.containerID = "c-" + containerID;
         this.containerType = containertype;
         this.weight = weight;
@@ -41,6 +42,7 @@ public class Container implements Serializable {
         LogManager.saveAllObjects();
     }
 
+    // Getters
     public String getContainerID() {
         return containerID;
     }

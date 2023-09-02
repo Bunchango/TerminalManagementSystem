@@ -13,14 +13,15 @@ import java.util.Map;
 
 public class Prettify {
     public static void prettifyPort(Port port) {
-        if(port==null){
+        // If given object is null, print it the default way
+        if (port == null) {
             String format = "%-" + 6 + "s | %-" + 10 + "s | %-" + 4 + "s | %-" + 5 + "s | %-" + 10 + "s | %-13s%n";
 
             System.out.printf(format, "ID", "Name", "Lat", "Long", "Store", "Landing");
             System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null");
             System.out.println();
-        }else {
-
+        } else {
+            // Convert list into string
             StringBuilder vehicleIDs = new StringBuilder();
             for (Vehicle vehicle : port.getPortVehicles()) {
                 if (vehicleIDs.length() > 0) {
@@ -30,14 +31,14 @@ public class Prettify {
             }
 
             StringBuilder containersIDs = new StringBuilder();
-            for (Container container : port.getPortContainers()) {
+            for (Container container: port.getPortContainers()) {
                 if (containersIDs.length() > 0) {
                     containersIDs.append(", ");
                 }
                 containersIDs.append(container.getContainerID());
             }
 
-
+            // Get the maximum length of each attribute string
             int IDLength = port.getPortID().length();
             int nameLength = port.getPortName().length();
             int latLength = String.valueOf(port.getLatitude()).length() + 5;
@@ -62,6 +63,7 @@ public class Prettify {
     }
 
     public static void prettifyPortList(List<Port> ports) {
+        // Default print
         if (ports.size() == 0) {
             String format = "%-6s | %-10s | %-4s | %-5s | %-10s | %-13s%n";
 
@@ -69,6 +71,7 @@ public class Prettify {
             System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null");
             System.out.println();
         } else {
+            // Print based on max length
             int maxIDLength = 0;
             int maxNameLength = 0;
             int maxLatLength = 0;
@@ -117,12 +120,14 @@ public class Prettify {
         }
     }
     public static void prettifyVehicle(Vehicle vehicle){
-        if(vehicle==null){
+        // Default print
+        if (vehicle == null) {
             String format = "%-8s | %-15s | %-7s | %-13s | %-15s | %-10s%n";
             System.out.printf(format, "ID", "Type", "Port", "Is Sail Away", "Fuel", "Carry");
             System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null");
             System.out.println();
-        }else{
+        } else {
+            // Dynamic print
             String format = "%-8s | %-15s | %-7s | %-13s | %-15s | %-10s%n";
             System.out.printf(format, "ID", "Type", "Port", "Is Sail Away", "Fuel", "Carry");
             System.out.printf(format,
@@ -137,7 +142,8 @@ public class Prettify {
     }
 
     public static void prettifyVehicleList(List<Vehicle> vehicles) {
-        if(vehicles != null){
+        if (vehicles != null) {
+            // Default print
             if (vehicles.size() == 0) {
                 String format = "%-8s | %-15s | %-7s | %-13s | %-15s | %-10s%n";
                 System.out.printf(format, "ID", "Type", "Port", "Is Sail Away", "Fuel", "Carry");
@@ -184,12 +190,13 @@ public class Prettify {
                 }
                 System.out.println();
             }
-        }else{
+        } else {
             System.out.println("Invalid");
         }
 
     }
     public static void prettifyContainer(Container container) {
+        // Default print
         if (container == null) {
             String format = "%-6s | %-12s | %-6s%n";
             System.out.printf(format, "ID", "Type", "Weight");
@@ -207,14 +214,15 @@ public class Prettify {
         }
     }
     public static void prettifyContainerList(List<Container> containers) {
-        if(containers != null){
+        // Dynamic print
+        if (containers != null) {
             if (containers.size() == 0) {
                 String format = "%-6s | %-12s | %-6s%n";
                 System.out.printf(format, "ID", "Type", "Weight");
                 System.out.printf(format, "Null", "Null", "Null");
                 System.out.println();
             }  else {
-
+                // Dynamic print
                 int maxIDLength = 0;
                 int maxWeightLength = 0;
 
@@ -241,7 +249,8 @@ public class Prettify {
                 }
                 System.out.println();
             }
-        }else{
+        } else {
+            // Default print
             String format = "%-6s | %-12s | %-6s%n";
             System.out.printf(format, "ID", "Type", "Weight");
             System.out.printf(format, "Null", "Null", "Null");
@@ -251,7 +260,8 @@ public class Prettify {
     }
 
     public static void prettifyLogList(List<Log> logs) {
-        if(logs !=null){
+        // Dynamic print
+        if (logs != null) {
             String format;
             if (logs.size() == 0) {
                 format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
@@ -259,6 +269,7 @@ public class Prettify {
                 System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null", "Null");
                 System.out.println();
             }
+
             else {
                 format = "%-9s | %-19s | %-19s | %-16s | %-14s | %-16s | %-5s%n";
                 System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
@@ -273,7 +284,8 @@ public class Prettify {
                 }
             }
             System.out.println();
-        }else{
+        } else {
+            // Default print
             String format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
             System.out.printf(format, "Null", "Null", "Null", "Null", "Null", "Null", "Null");
@@ -282,6 +294,7 @@ public class Prettify {
 
     }
     public static void prettifyLog(Log log) {
+        // Default print
         if (log == null) {
             String format = "%-9s | %-20s | %-20s | %-16s | %-16s | %-16s | %-5s%n";
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
@@ -289,6 +302,7 @@ public class Prettify {
             System.out.println();
         }
         else {
+            // Dynamic print
             String format = "%-9s | %-19s | %-19s | %-16s | %-14s | %-16s | %-5s%n";
             System.out.printf(format, "vehicleID", "Departure Date", "Arrival Date", "Departure PortID", "Arrival PortID", "Fuel Consumed", "Finished");
             System.out.printf(format,
@@ -302,12 +316,14 @@ public class Prettify {
     }
 
     public static void prettifyManagerList(List<Manager> Managers) {
+        // Default print
         if (Managers.size() == 0) {
             String format = "%-15s | %-15s | %-10s%n";
             System.out.printf(format, "Username", "Password", "Manage PortID");
             System.out.printf(format, "Null", "Null", "Null");
             System.out.println();
         } else {
+            // Dynamic print
             int maxLengthUsername = 0;
             int maxLengthPassword = 0;
 
@@ -336,12 +352,14 @@ public class Prettify {
     }
 
     public static void prettifyManager(Manager Manager) {
+        // Default print
         if (Manager == null) {
             String format = "%-15s | %-15s | %-10s%n";
             System.out.printf(format, "Username", "Password", "Manage PortID");
             System.out.printf(format, "Null", "Null", "Null");
             System.out.println();
         } else {
+            // Dynamic
             int maxLengthUsername = Manager.getUsername().length();
             int maxLengthPassword = Manager.getPassword().length();
 

@@ -46,6 +46,7 @@ public class Admin implements User {
 
     //create obj
     public String createManager(String username, String password, String managePortID){
+        // Null checking, return error message
         if (TerminalUtil.objectAlreadyExist(username)) {
             return "Invalid username - This user already exist";
         }
@@ -64,7 +65,7 @@ public class Admin implements User {
 
     public String createPort(String portID, String portName, double latitude, double longitude, double storingCapacity,
                              boolean landingAbility){
-
+        // Null checking, return error message
         if (TerminalUtil.objectAlreadyExist("p-" + portID)) {
             return "Invalid portID - This port already exist";
         }
@@ -82,6 +83,7 @@ public class Admin implements User {
         Port currentPort = TerminalUtil.searchPort(portID);
         VehicleType type = VehicleType.fromString(vehicleType);
 
+        // Null checking, return error message
         if (currentPort == null) {
             return "Invalid portID - This port does not exist";
         }
@@ -104,6 +106,7 @@ public class Admin implements User {
             return "Invalid vehicleType - This port does not have landing ability";
         }
 
+        // Create different type of vehicle based on type
         if (type == VehicleType.Ship) {
             new Ship(vehicleID, currentPort, carryingCapacity, fuelCapacity);
         } else if (type == VehicleType.BasicTruck) {
@@ -120,6 +123,7 @@ public class Admin implements User {
     public String createContainer(String containerID, String containerType, String portID, double weight) {
         Port port = TerminalUtil.searchPort(portID);
 
+        // Null checking, return error message
         if (port == null) {
             return "Invalid portID - This port does not exist";
         }
@@ -148,6 +152,7 @@ public class Admin implements User {
         Manager manager = TerminalUtil.searchManager(username);
         Port port = TerminalUtil.searchPort(portID);
 
+        // Null checking, return error message
         if (manager == null) {
             return "Invalid username - Manager does not exist";
         }
@@ -169,6 +174,7 @@ public class Admin implements User {
     public String unsetManagerPort(String username) {
         Manager manager = TerminalUtil.searchManager(username);
 
+        // Null checking, return error message
         if (manager == null) {
             return "Invalid username - Manager does not exist";
         }
@@ -202,6 +208,7 @@ public class Admin implements User {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
         Container container = TerminalUtil.searchContainer(containerID);
 
+        // Null checking, return error message
         if (vehicle == null) {
             return "Invalid vehicleID - Vehicle does not exist";
         }
@@ -217,6 +224,7 @@ public class Admin implements User {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
         Container container = TerminalUtil.searchContainer(containerID);
 
+        // Null checking, return error message
         if (vehicle == null) {
             return "Invalid vehicleID - Vehicle does not exist";
         }
@@ -231,6 +239,7 @@ public class Admin implements User {
     public String refuelVehicle(String vehicleID, double gallons) {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
 
+        // Null checking, return error message
         if (vehicle == null) {
             return "Invalid vehicleID - Vehicle does not exist";
         }
@@ -244,6 +253,7 @@ public class Admin implements User {
         Date departureDate = TerminalUtil.parseStringToDateTime(departure);
         Date arrivalDate = TerminalUtil.parseStringToDateTime(arrival);
 
+        // Null checking, return error message
         if (departureDate == null || arrivalDate == null) {
             return "Invalid date format";
         }
@@ -271,6 +281,7 @@ public class Admin implements User {
     public double getTotalConsumedFuelByDate(String date){
         Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
+        // Null checking
         if (dateToQuery == null) {
             return 0;
         }
@@ -281,6 +292,7 @@ public class Admin implements User {
     public double getTotalConsumedFuelByDayByPort(String portID, String date) {
         Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
+        // Null checking
         if (dateToQuery == null) {
             return 0;
         }
@@ -339,53 +351,129 @@ public class Admin implements User {
     public List<Manager> getListOfAllManager(){
         return StatQuery.getListOfAllManager();
     }
+
     // Extract log
-    public List<Log> getTripsByDate(String date){
+    public List<Log> getTripsByArrivalDate(String date){
         Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
+        // Null checking
         if (dateToQuery == null) {
             return null;
         }
 
-        return StatQuery.getTripsByDate(dateToQuery);
+        return StatQuery.getTripsByArrivalDate(dateToQuery);
     }
 
-    public List<Log> getTripsByDateOfPort(String date, String portID) {
+    public List<Log> getTripsByDepartureDate(String date) {
         Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
+        // Null checking
         if (dateToQuery == null) {
             return null;
         }
 
-        return StatQuery.getTripsByDateOfPort(dateToQuery, portID);
+        return StatQuery.getTripsByDepartureDate(dateToQuery);
     }
 
-    public List<Log> getTripsBetweenDates(String start, String end){
+    public List<Log> getTripsByArrivalDateOfPort(String date, String portID) {
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
+
+        // Null checking
+        if (dateToQuery == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsByArrivalDateOfPort(dateToQuery, portID);
+    }
+
+    public List<Log> getTripsByDepartureDateOfPort(String date, String portID) {
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
+
+        // Null checking
+        if (dateToQuery == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsByDepartureDateOfPort(dateToQuery, portID);
+    }
+
+    public List<Log> getTripsBetweenArrivalDates(String start, String end){
         Date startDate = TerminalUtil.parseStringToDate(start);
         Date endDate = TerminalUtil.parseStringToDate(end);
 
+        // Null checking
         if (startDate == null || endDate == null) {
             return null;
         }
 
-        return StatQuery.getTripsBetweenDates(startDate, endDate);
+        return StatQuery.getTripsBetweenArrivalDates(startDate, endDate);
     }
 
-    public List<Log> getTripsBetweenDatesOfPort(String start, String end, String portID) {
+    public List<Log> getTripsBetweenDepartureDates(String start, String end) {
         Date startDate = TerminalUtil.parseStringToDate(start);
         Date endDate = TerminalUtil.parseStringToDate(end);
 
+        // Null checking
         if (startDate == null || endDate == null) {
             return null;
         }
 
-        return StatQuery.getTripsBetweenDatesOfPort(startDate, endDate, portID);
+        return StatQuery.getTripsBetweenDepartureDates(startDate, endDate);
+    }
+
+    public List<Log> getTripsBetweenArrivalDatesOfPort(String start, String end, String portID) {
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
+
+        // Null checking
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsBetweenArrivalDatesOfPort(startDate, endDate, portID);
+    }
+
+    public List<Log> getTripsBetweenDepartureDatesOfPort(String start, String end, String portID) {
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
+
+        // Null checking
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsBetweenDepartureDatesOfPort(startDate, endDate, portID);
+    }
+
+    public List<Log> getTripsInDates(String start, String end) {
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
+
+        // Null checking
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsInDates(startDate, endDate);
+    }
+
+    public List<Log> getTripsInDatesOfPort(String start, String end, String portID) {
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
+
+        // Null checking
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        return StatQuery.getTripsInDatesOfPort(startDate, endDate, portID);
     }
 
     public double calculateDistanceBetweenPorts(String target_1, String target_2) {
         Port port_1 = TerminalUtil.searchPort(target_1);
         Port port_2 = TerminalUtil.searchPort(target_2);
 
+        // Null checking
         if (port_1 == null || port_2 == null) {
             return 0;
         }

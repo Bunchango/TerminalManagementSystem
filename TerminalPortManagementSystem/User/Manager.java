@@ -19,6 +19,7 @@ public class Manager implements Serializable, User {
     private String managePortID;
 
     public Manager(String username, String password, String managePortID) {
+        // Prevent illogical object creation
         if (TerminalUtil.objectAlreadyExist(username)) {
             throw new IllegalArgumentException("User already exist");
         }
@@ -63,6 +64,7 @@ public class Manager implements Serializable, User {
     }
 
     public String setManagePortID(String portID) {
+        // Can only set portID if the target port is not already manage
         if (TerminalUtil.portIsManaged(portID)) {
             return "Invalid portID. Port already managed by a Manager";
         }
@@ -76,6 +78,7 @@ public class Manager implements Serializable, User {
     }
 
     public boolean isNotManaging() {
+        // Prevent manager from doing anything if that manager does not manage any port
         return managePortID == null;
     }
 
@@ -83,6 +86,7 @@ public class Manager implements Serializable, User {
     public String createContainer(String containerID, String containerType, double weight) {
         Port port = TerminalUtil.searchPort(managePortID);
 
+        // Null checking
         if (port == null) {
             return "Manager currently does not manage any port";
         }
@@ -109,6 +113,7 @@ public class Manager implements Serializable, User {
     public String removeContainer(String containerID) {
         Port port = TerminalUtil.searchPort(managePortID);
 
+        // Null checking
         if (port == null) {
             return "Manager currently does not manage any port";
         }
@@ -130,6 +135,7 @@ public class Manager implements Serializable, User {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
         Container container = TerminalUtil.searchContainer(containerID);
 
+        // Null checking
         if (vehicle == null) {
             return "Invalid vehicleID - Vehicle does not exist";
         }
@@ -153,6 +159,7 @@ public class Manager implements Serializable, User {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
         Container container = TerminalUtil.searchContainer(containerID);
 
+        // Null checking
         if (isNotManaging()) {
             return "Manager currently does not manage any port";
         }
@@ -175,6 +182,7 @@ public class Manager implements Serializable, User {
     public String refuelVehicle(String vehicleID, double gallons) {
         Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
 
+        // Null checking
         if (vehicle == null) {
             return "Vehicle does not exist";
         }
@@ -196,6 +204,7 @@ public class Manager implements Serializable, User {
         Date departureDate = TerminalUtil.parseStringToDateTime(departure);
         Date arrivalDate = TerminalUtil.parseStringToDateTime(arrival);
 
+        // Null checking
         if (departureDate == null || arrivalDate == null) {
             return "Invalid date format";
         }
@@ -227,6 +236,7 @@ public class Manager implements Serializable, User {
     public double getTotalConsumedFuelByDate(String date){
         Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
+        // Null checking
         if (dateToQuery == null) {
             return 0;
         }
@@ -286,9 +296,10 @@ public class Manager implements Serializable, User {
         return StatQuery.getListOfVehicleByPort(managePortID);
     }
 
-    public List<Log> getTripsByDate(String date){
+    public List<Log> getTripsByArrivalDate(String date){
         Date dateToQuery = TerminalUtil.parseStringToDate(date);
 
+        // Null checking
         if (dateToQuery == null) {
             return null;
         }
@@ -297,13 +308,29 @@ public class Manager implements Serializable, User {
             return null;
         }
 
-        return StatQuery.getTripsByDateOfPort(dateToQuery, managePortID);
+        return StatQuery.getTripsByArrivalDateOfPort(dateToQuery, managePortID);
     }
 
-    public List<Log> getTripsBetweenDates(String start, String end){
+    public List<Log> getTripsByDepartureDate(String date) {
+        Date dateToQuery = TerminalUtil.parseStringToDate(date);
+
+        // Null checking
+        if (dateToQuery == null) {
+            return null;
+        }
+
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getTripsByDepartureDateOfPort(dateToQuery, managePortID);
+    }
+
+    public List<Log> getTripsBetweenArrivalDates(String start, String end){
         Date startDate = TerminalUtil.parseStringToDate(start);
         Date endDate = TerminalUtil.parseStringToDate(end);
 
+        // Null checking
         if (startDate == null || endDate == null) {
             return null;
         }
@@ -312,7 +339,39 @@ public class Manager implements Serializable, User {
             return null;
         }
 
-        return StatQuery.getTripsBetweenDatesOfPort(startDate, endDate, managePortID);
+        return StatQuery.getTripsBetweenArrivalDatesOfPort(startDate, endDate, managePortID);
+    }
+
+    public List<Log> getTripsBetweenDepartureDates(String start, String end) {
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
+
+        // Null checking
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getTripsBetweenDepartureDatesOfPort(startDate, endDate, managePortID);
+    }
+
+    public List<Log> getTripsInDatesOfPort(String start, String end) {
+        Date startDate = TerminalUtil.parseStringToDate(start);
+        Date endDate = TerminalUtil.parseStringToDate(end);
+
+        // Null checking
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        if (isNotManaging()) {
+            return null;
+        }
+
+        return StatQuery.getTripsInDatesOfPort(startDate, endDate, managePortID);
     }
 
     @Override

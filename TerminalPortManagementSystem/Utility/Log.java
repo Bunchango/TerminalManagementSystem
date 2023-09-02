@@ -56,6 +56,7 @@ public class Log implements Serializable { // Finding a specific Log just need t
     protected void setFuelConsumed(double fuelConsumed) {
         this.fuelConsumed = fuelConsumed;
     }
+
     @Override
     public String toString() {
         return "Log{" +

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum ContainerType {
+    // Initiate constants for each type of containers
     DryStorage(3.5, 4.6),
     OpenTop(2.8, 3.2),
     OpenSide(2.7, 3.2),
@@ -35,6 +36,7 @@ public enum ContainerType {
     }
 
     public static ContainerType fromString(String input) {
+        // Return ContainerType from String
         for (ContainerType containerType : ContainerType.values()) {
             if (containerType.name().equalsIgnoreCase(input)) {
                 return containerType;

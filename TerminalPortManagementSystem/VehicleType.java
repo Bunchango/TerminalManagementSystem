@@ -196,12 +196,13 @@ public enum VehicleType {
     public abstract boolean isBasicTruck();
     public abstract boolean isTankerTruck();
     public abstract boolean isReeferTruck();
-    public abstract boolean doesAllowContainerType(Container targetContainer);
-    public abstract List<ContainerType> getAllowedContainerType();
+    public abstract boolean doesAllowContainerType(Container targetContainer); // Determine if the vehicle allow the type of target container
+    public abstract List<ContainerType> getAllowedContainerType(); // Get a list of containers type that can be loaded onto the vehicle
     public static List<VehicleType> getAllVehicleTypes() {
         return Arrays.asList(VehicleType.values());
-    }
+    } // Get all type of vehicles
     public static VehicleType fromString(String input) {
+        // Return VehicleType of input String
         for (VehicleType vehicleType : VehicleType.values()) {
             if (vehicleType.name().equalsIgnoreCase(input)) {
                 return vehicleType;

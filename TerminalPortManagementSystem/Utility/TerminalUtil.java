@@ -13,13 +13,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class TerminalUtil {
+    // Automatically load objects as the program runs
     public static final List<Port> ports = LogManager.loadPorts();
     public static final List<Vehicle> vehicles = LogManager.loadVehicles();
     public static final List<Container> containers = LogManager.loadContainers();
     public static final List<Log> occurredLogs = LogManager.loadOccurredLog("Data/History/occurred.obj");
     public static final List<Log> occurringLogs = LogManager.loadOccurredLog("Data/History/occurring.obj");
     public static final List<String> usedIds = LogManager.loadUsedIds();
-    public static final List<Manager> managers = LogManager.loadManagers(); // TODO: More work - load and save managers
+    public static final List<Manager> managers = LogManager.loadManagers();
 
     public static double roundToSecondDecimalPlace(double number) {
         return (double)Math.round(number * 100.0) / 100.0;
@@ -105,6 +106,7 @@ public class TerminalUtil {
     }
 
     public static String removeManager(String username) {
+        // Remove manager and save immediately
         Manager managerToRemove = searchManager(username);
         if (managerToRemove == null) {
             return "Manager does not exist";
@@ -117,6 +119,7 @@ public class TerminalUtil {
 
     public static String removePort(String portID) {
         Port portToRemove = searchPort(portID);
+        // Prevent users from removing a port if a port is:
         if (portToRemove == null) {
             return "Port not found";
         }
@@ -213,11 +216,14 @@ public class TerminalUtil {
     }
 
     public static void updateLogWhenFinished() {
+        // Determine if a port is finished
         for (Log log: occurringLogs) {
             if (passedDate(getNow(), log.getArrivalDate())) {
+                // Set the state of the trip and move it to a different list
                 log.setFinished(true);
                 occurredLogs.add(log);
 
+                // Update the log
                 Vehicle vehicle = TerminalUtil.searchVehicle(log.getVehicleID());
                 Port arrivalPort = TerminalUtil.searchPort(log.getArrivalPortID());
                 if (vehicle != null) {
@@ -231,9 +237,11 @@ public class TerminalUtil {
     }
 
     public static void updateVehicleWhenReachDepartureDate() {
+        // Since vehicles can be scheduled, need to check if it is the vehicle's time to move
         for (Log log: occurringLogs) {
             Vehicle vehicleToUpdate = searchVehicle(log.getVehicleID());
             if (passedDate(getNow(), log.getDepartureDate()) && vehicleToUpdate != null && !vehicleToUpdate.isSailAway()) {
+                // Move the vehicle
                 vehicleToUpdate.getCurrentPort().departureVehicle(vehicleToUpdate);
                 vehicleToUpdate.setCurrentPort(null);
             }
@@ -241,6 +249,7 @@ public class TerminalUtil {
     }
 
     public static void updateLogWhenTransportContainer(Vehicle vehicle) {
+        // Before moving but scheduled, vehicle can load and unload => Increase vehicle's fuel consumption => Update log
         for (Log log: occurringLogs) {
             // Search for the log and if the vehicle has not moved yet
             if (log.getVehicleID().equals(vehicle.getVehicleID()) && !vehicle.isSailAway()) {
@@ -256,6 +265,7 @@ public class TerminalUtil {
     }
 
     public static Date parseStringToDateTime(String stringToParse) {
+        // Parse given String to date time format
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         try {
             return formatter.parse(stringToParse);
@@ -264,6 +274,7 @@ public class TerminalUtil {
         }
     }
     public static Date parseStringToDate(String stringToParse) {
+        // Parse given String to date format
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         try {
             return formatter.parse(stringToParse);
@@ -272,16 +283,19 @@ public class TerminalUtil {
         }
     }
     public static String parseDateTimeToString(Date dateToParse) {
+        // Parse Date (date time) to a string
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return formatter.format(dateToParse);
     }
 
     public static String parseDateToString(Date dateToParse) {
+        // Parse Date (date) to a string
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         return formatter.format(dateToParse);
     }
 
     public static Date truncateTime(Date date) {
+        // Remove the time of a Date object with Date time format
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -292,6 +306,7 @@ public class TerminalUtil {
     }
 
     public static boolean passedDate(Date date1, Date date2) {
+        // Determine if date1 has pass date2
         return date1.compareTo(date2) >= 0;
     }
 
@@ -311,6 +326,7 @@ public class TerminalUtil {
     }
 
     public static void startScheduledTask() {
+        // Run updateLogWhenFinished every 1 minute
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(TerminalUtil::updateLogWhenFinished, 0, 1, TimeUnit.MINUTES);
     }

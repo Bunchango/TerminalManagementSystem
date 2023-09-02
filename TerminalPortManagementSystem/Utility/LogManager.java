@@ -9,6 +9,7 @@ import java.util.List;
 
 public class LogManager {
     public static void saveAllObjects() {
+        // Save all objects using 1 method
         saveVehicles();
         savePorts();
         saveOccurredLog();
@@ -77,6 +78,7 @@ public class LogManager {
         String filePath = "Data/Objects/ports.obj";
         File file = new File(filePath);
 
+        // Read from file
         if (file.length() > 0) {
             try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filePath))) {
 
@@ -93,6 +95,7 @@ public class LogManager {
     }
 
     protected static List<Container> loadContainers() {
+        // Since container can only be in a port or a vehicle, to load only need to add containers from loaded ports, vehicles
         List<Container> loadedContainers = new ArrayList<>();
 
         for (Vehicle vehicle: TerminalUtil.vehicles) {
@@ -106,7 +109,7 @@ public class LogManager {
         return loadedContainers;
     }
 
-    // Save logs
+    // Save logs from their respective lists
     protected static void saveOccurredLog() {
         String filePath = "Data/History/occurred.obj";
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filePath))) {
@@ -125,7 +128,7 @@ public class LogManager {
         }
     }
 
-    // Load logs
+    // Load logs from their respective lists
     @SuppressWarnings("unchecked")
     protected static List<Log> loadOccurredLog(String filePath) {
         List<Log> loadedLog = new ArrayList<>();
@@ -146,7 +149,7 @@ public class LogManager {
         return loadedLog;
     }
 
-    // Save ids
+    // Save ids. Ids are always unique to prevent data inconsistency.
     public static void saveUsedIds() {
         String filePath = "Data/used_ids.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
@@ -175,7 +178,7 @@ public class LogManager {
         return loadedIds;
     }
 
-    // Save users
+    // Save managers. Only need to save managers since there are only 1 admin
     protected static void saveManagers() {
         String filePath = "Data/Objects/managers.obj";
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filePath))) {
@@ -194,6 +197,7 @@ public class LogManager {
 
         File file = new File(filePath);
 
+        // Only load data if the file is not empty
         if (file.length() > 0) {
             try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filePath))) {
 
