@@ -306,6 +306,7 @@ public class AdminInterface {
         System.out.println("2. Remove Port");
         System.out.println("3. Remove Vehicle");
         System.out.println("4. Remove Container");
+        System.out.println("5. Set and unset manager's manage portID");
         System.out.println("~. Go back");
         System.out.print("Enter your choice: ");
         String option = sc.nextLine();
@@ -323,6 +324,9 @@ public class AdminInterface {
             case "4" -> {
                 removeContainer();
             }
+            case "5" -> {
+                setUnset();
+            }
             case "~" -> {
                 createRemove();
             }
@@ -334,19 +338,183 @@ public class AdminInterface {
     }
 
     public static void removeManager() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("Existing managers: ");
+        Prettify.prettifyManagerList(TerminalUtil.managers);
+        System.out.print("Manager's username: ");
+        String username = sc.nextLine().replace(" ", "");
+        System.out.println(admin.removeManager(username));
+
+        while (true) {
+            System.out.print("CONFIRM REMOVE MANAGER: " + username + ". true / false: ");
+            try {
+                if (sc.nextBoolean()) {
+                    System.out.println(admin.removeManager(username));
+                } else {
+                    System.out.println("REMOVE CANCELED");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+        remove();
     }
 
     public static void removePort() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("Existing ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+        System.out.print("Port's ID: ");
+        String portID = sc.nextLine().replace(" ", "");
+
+        while (true) {
+            System.out.print("CONFIRM REMOVE PORT " + portID + ". true / false: ");
+            try {
+                if (sc.nextBoolean()) {
+                    System.out.println(admin.removePort(portID));
+                } else {
+                    System.out.println("REMOVE CANCELED");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+        remove();
     }
 
     public static void removeVehicle() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("Existing vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+        System.out.print("Vehicle's ID: ");
+        String vehicleID = sc.nextLine().replace(" ", "");
+
+        while (true) {
+            System.out.print("CONFIRM REMOVE VEHICLE " + vehicleID + ". true / false: ");
+            try {
+                if (sc.nextBoolean()) {
+                    System.out.println(admin.removeVehicle(vehicleID));
+                } else {
+                    System.out.println("REMOVE CANCELED");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+        remove();
     }
 
     public static void removeContainer() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("Existing containers: ");
+        Prettify.prettifyContainerList(TerminalUtil.containers);
+        System.out.print("Container's ID: ");
+        String containerID = sc.nextLine().replace(" ", "");
+
+        while (true) {
+            System.out.print("CONFIRM REMOVE CONTAINER " + containerID + ". true / false: ");
+            try {
+                if (sc.nextBoolean()) {
+                    System.out.println(admin.removeContainer(containerID));
+                } else {
+                    System.out.println("REMOVE CANCELED");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+        remove();
+    }
+
+    public static void setUnset() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("1. Set Manager's Port");
+        System.out.println("2. Unset Manager's Port");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> {
+                System.out.println("Existing managers: ");
+                Prettify.prettifyManagerList(TerminalUtil.managers);
+                System.out.println("Existing ports: ");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("Manager's username: ");
+                String username = sc.nextLine().replace(" ", "");
+                System.out.print("PortID: ");
+                String portID = sc.nextLine().replace(" ", "");
+
+                while (true) {
+                    System.out.print("CONFIRM SET MANAGER'S PORT " + username + " | " + portID + ". true / false: ");
+                    try {
+                        if (sc.nextBoolean()) {
+                            System.out.println(admin.setManagerPort(username, portID));
+                        } else {
+                            System.out.println("SET CANCELED");
+                        }
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                        System.out.println("-----------------------------------------");
+                        sc.nextLine(); // Clear the input buffer
+                    }
+                }
+                remove();
+            }
+            case "2" -> {
+                System.out.println("Existing managers: ");
+                Prettify.prettifyManagerList(TerminalUtil.managers);
+                System.out.print("Manager's username: ");
+                String username = sc.nextLine().replace(" ", "");
+
+                while (true) {
+                    System.out.print("CONFIRM UNSET MANAGER'S PORT " + username + ". true / false: ");
+                    try {
+                        if (sc.nextBoolean()) {
+                            System.out.println(admin.unsetManagerPort(username));
+                        } else {
+                            System.out.println("UNSET CANCELED");
+                        }
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                        System.out.println("-----------------------------------------");
+                        sc.nextLine(); // Clear the input buffer
+                    }
+                }
+            }
+            default -> {
+                System.out.println("Invalid input. ");
+                remove();
+            }
+        }
+        remove();
     }
 
     public static void transportation() {
