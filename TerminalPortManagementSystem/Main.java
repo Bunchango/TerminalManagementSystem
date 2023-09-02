@@ -1,17 +1,12 @@
 package TerminalPortManagementSystem;
 
+import TerminalPortManagementSystem.Interface.InterfaceSystem;
 import TerminalPortManagementSystem.User.*;
-import TerminalPortManagementSystem.Utility.Prettify;
 import TerminalPortManagementSystem.Utility.TerminalUtil;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        // Init function, always above all code
-        TerminalUtil.updateLogWhenFinished();
-
+        InterfaceSystem.run();
         Admin admin = Admin.getInstance();
 
         //create Object
@@ -40,7 +35,7 @@ public class Main {
 //        System.out.println(container3);
 //        System.out.println(container4);
 
-        Manager manager  = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
+        Manager manager = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
 //        Prettify.prettifyVehicleList(manager.getListOfAllVehicles());
 //        System.out.println(admin.loadContainer("sh-1010","c-1010"));
 //        System.out.println(admin.loadContainer("tr-1010","c-1011"));
@@ -73,8 +68,8 @@ public class Main {
 //        Prettify.prettifyGetNumberOfVehicleOfEachType(admin.getNumberOfVehicleOfEachType());
 //        Prettify.prettifyVehicleList(manager.getListOfVehicleByType("TankerTruck"));
 //        Prettify.prettifyLogList(manager.getTripsBetweenDepartureDates("01-09-2023", "06-09-2023"));
-        Prettify.prettifyLogList(manager.getTripsInDates("02-09-2023", "05-09-2023"));
-        Prettify.prettifyLogList(admin.getTripsInDates("02-09-2023", "03-09-2023"));
+//        Prettify.prettifyLogList(manager.getTripsInDates("02-09-2023", "05-09-2023"));
+//        Prettify.prettifyLogList(admin.getTripsInDates("02-09-2023", "03-09-2023"));
 
         // admin static
         //System.out.println(admin.setManagerPort("manager-1010","p-1010"));
@@ -121,7 +116,5 @@ public class Main {
 //        Prettify.prettifyLogList(TerminalUtil.occurringLogs);
 //        Prettify.prettifyLogList(TerminalUtil.occurredLogs);
 
-        // Check for occurring logs every 1 minutes
-        TerminalUtil.startScheduledTask();
     }
 }

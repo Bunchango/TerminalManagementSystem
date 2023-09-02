@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class TerminalUtil {
@@ -21,6 +22,7 @@ public class TerminalUtil {
     public static final List<Log> occurringLogs = LogManager.loadOccurredLog("Data/History/occurring.obj");
     public static final List<String> usedIds = LogManager.loadUsedIds();
     public static final List<Manager> managers = LogManager.loadManagers();
+    public static final List<String> announcements = new ArrayList<>(); // Keep track of announcements
 
     public static double roundToSecondDecimalPlace(double number) {
         return (double)Math.round(number * 100.0) / 100.0;
@@ -48,6 +50,14 @@ public class TerminalUtil {
 
     public static void addManager(Manager managerToAdd) {
         managers.add(managerToAdd);
+    }
+
+    public static void addAnnouncement(String announcementToAdd) {
+        announcements.add(announcementToAdd);
+    }
+
+    public static void clearAnnouncements() {
+        announcements.clear();
     }
 
     public static boolean objectAlreadyExist(String id) {
@@ -325,9 +335,15 @@ public class TerminalUtil {
         return null;
     }
 
-    public static void startScheduledTask() {
+    public static ScheduledFuture<?> startScheduledTask() {
         // Run updateLogWhenFinished every 1 minute
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(TerminalUtil::updateLogWhenFinished, 0, 1, TimeUnit.MINUTES);
+        return executor.scheduleAtFixedRate(TerminalUtil::updateLogWhenFinished, 0, 1, TimeUnit.MINUTES);
+    }
+
+    public static void stopScheduledTask(ScheduledFuture<?> future) {
+        future.cancel(true);
+        // Stop the terminal
+        System.exit(0);
     }
 }
