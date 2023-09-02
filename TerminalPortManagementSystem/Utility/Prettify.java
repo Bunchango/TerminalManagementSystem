@@ -390,7 +390,6 @@ public class Prettify {
         } else {
             System.out.println("Invalid");
         }
-
     }
 
     public static void prettifyGetTotalWeightOfEachType(Map<ContainerType, Double> input) {

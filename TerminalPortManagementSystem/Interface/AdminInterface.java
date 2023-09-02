@@ -198,7 +198,7 @@ public class AdminInterface {
                 System.out.print("Port's landing ability. true / false: ");
                 boolean landingAbility = sc.nextBoolean();
 
-                System.out.print("CONFIRM CREATION - " + portID + " | " + portName + " | " + latitude + " | " + longitude +
+                System.out.print("CONFIRM CREATION - " + "p-" + portID + " | " + portName + " | " + latitude + " | " + longitude +
                         " | " + capacity + " | " + landingAbility + ". true / false: ");
 
                 if (sc.nextBoolean()) {
@@ -266,6 +266,8 @@ public class AdminInterface {
 
         System.out.println("Existing containers: ");
         Prettify.prettifyContainerList(TerminalUtil.containers);
+        System.out.println("Existing ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
 
         while (true) {
             try {
@@ -279,7 +281,7 @@ public class AdminInterface {
                 String containerType = sc.nextLine();
                 System.out.print("Container's portID: ");
                 String portID = sc.nextLine();
-                System.out.print("Container's weight");
+                System.out.print("Container's weight: ");
                 double weight = sc.nextDouble();
 
                 System.out.print("CONFIRM CREATION - " + containerID + " | " + containerType + " | " + portID + " | " +
@@ -377,7 +379,7 @@ public class AdminInterface {
         String portID = sc.nextLine().replace(" ", "");
 
         while (true) {
-            System.out.print("CONFIRM REMOVE PORT " + portID + ". true / false: ");
+            System.out.print("CONFIRM REMOVE PORT - " + "p-" + portID + ". true / false: ");
             try {
                 if (sc.nextBoolean()) {
                     System.out.println(admin.removePort(portID));
@@ -456,6 +458,7 @@ public class AdminInterface {
         Scanner sc = new Scanner(System.in);
         System.out.println("1. Set Manager's Port");
         System.out.println("2. Unset Manager's Port");
+        System.out.println("~. Go back");
         System.out.print("Enter your choice: ");
         String option = sc.nextLine();
 
@@ -487,6 +490,7 @@ public class AdminInterface {
                 }
                 remove();
             }
+
             case "2" -> {
                 System.out.println("Existing managers: ");
                 Prettify.prettifyManagerList(TerminalUtil.managers);
@@ -509,9 +513,13 @@ public class AdminInterface {
                     }
                 }
             }
+
+            case "~" -> {
+                remove();
+            }
             default -> {
                 System.out.println("Invalid input. ");
-                remove();
+                setUnset();
             }
         }
         remove();
@@ -519,6 +527,17 @@ public class AdminInterface {
 
     public static void transportation() {
         System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1. Load container");
+        System.out.println("2. Unload container");
+        System.out.println("3. Refuel");
+        System.out.println("4. Move to port");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+
+
         run();
     }
 
