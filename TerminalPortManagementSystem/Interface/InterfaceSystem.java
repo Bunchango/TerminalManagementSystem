@@ -30,13 +30,14 @@ public class InterfaceSystem {
         switch (option) {
             case "1" -> {
                 System.out.print("Enter username: ");
-                String username = sc.nextLine();
+                String username = sc.nextLine().replace(" ", "");
                 System.out.print("Enter password: ");
-                String password = sc.nextLine();
+                String password = sc.nextLine().replace(" ", "");
                 User user = TerminalUtil.login(username, password);
 
                 if (user == null) {
                     System.out.println("User not found");
+                    System.out.println("-----------------------------------------");
                     login();
                 }
                 if (user != null && user.isAdmin()) {
@@ -53,7 +54,7 @@ public class InterfaceSystem {
             default -> {
                 System.out.println("Invalid input. Please enter either '1' or '2' ");
                 System.out.println("-----------------------------------------");
-                run();
+                login();
             }
         }
     }

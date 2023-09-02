@@ -7,7 +7,7 @@ import TerminalPortManagementSystem.Utility.TerminalUtil;
 public class Main {
     public static void main(String[] args) {
         InterfaceSystem.run();
-        Admin admin = Admin.getInstance();
+//        Admin admin = Admin.getInstance();
 
         //create Object
 //        String port1 = admin.createPort("1010","Hai Phong",-42,75,400,true);
@@ -35,7 +35,7 @@ public class Main {
 //        System.out.println(container3);
 //        System.out.println(container4);
 
-        Manager manager = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
+//        Manager manager = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
 //        Prettify.prettifyVehicleList(manager.getListOfAllVehicles());
 //        System.out.println(admin.loadContainer("sh-1010","c-1010"));
 //        System.out.println(admin.loadContainer("tr-1010","c-1011"));
