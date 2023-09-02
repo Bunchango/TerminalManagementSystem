@@ -230,7 +230,7 @@ public class AdminInterface {
                 // Consume the newline character left in the input buffer
                 sc.nextLine();
 
-                System.out.println("Available vehicle types: 1.Ship | 2.BasicTruck | 3.TankerTruck | 4.ReeferTruck");
+                System.out.println("Available vehicle types: Ship | BasicTruck | TankerTruck | ReeferTruck");
                 System.out.print("Vehicle's type: ");
                 String vehicleType = sc.nextLine();
                 System.out.print("Vehicle's portID: ");
@@ -260,6 +260,41 @@ public class AdminInterface {
 
     public static void createContainer() {
         System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Existing containers: ");
+        Prettify.prettifyContainerList(TerminalUtil.containers);
+
+        while (true) {
+            try {
+                System.out.print("Container's ID: ");
+                String containerID = String.valueOf(sc.nextInt());
+                // Consume the newline character left in the input buffer
+                sc.nextLine();
+
+                System.out.println("Available container types: DryStorage | OpenTop | OpenSide | Refrigerated | Liquid");
+                System.out.print("Container's type: ");
+                String containerType = sc.nextLine();
+                System.out.print("Container's portID: ");
+                String portID = sc.nextLine();
+                System.out.print("Container's weight");
+                double weight = sc.nextDouble();
+
+                System.out.print("CONFIRM CREATION - " + containerID + " | " + containerType + " | " + portID + " | " +
+                        weight + ". true / false: ");
+                if (sc.nextBoolean()) {
+                    System.out.println(admin.createContainer(containerID, containerType, portID, weight));
+                } else {
+                    System.out.println("CREATION CANCELED");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input");
+                System.out.println("-----------------------------------------");
+                sc.nextLine();
+            }
+        }
         create();
     }
 
