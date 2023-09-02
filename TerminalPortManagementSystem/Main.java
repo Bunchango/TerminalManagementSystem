@@ -27,7 +27,7 @@ public class Main {
 //        String container2 = admin.createContainer("1011","DryStorage","p-1010",22);
 //        String container3 = admin.createContainer("1012","DryStorage","p-1010",14);
 //        String container4 = admin.createContainer("1013","DryStorage","p-1010",16);
-
+//
 //        System.out.println(port1);
 //        System.out.println(port2);
 //        System.out.println(manager1);
@@ -41,15 +41,15 @@ public class Main {
 //        System.out.println(container4);
 
         Manager manager  = (Manager) TerminalUtil.login("manager-1010","dongmanhduc");
-        //Prettify.prettifyVehicleList(manager.getListOfAllVehicles());
+//        Prettify.prettifyVehicleList(manager.getListOfAllVehicles());
 //        System.out.println(admin.loadContainer("sh-1010","c-1010"));
 //        System.out.println(admin.loadContainer("tr-1010","c-1011"));
 //        System.out.println(admin.refuelVehicle("sh-1010",300));
-//        System.out.println(admin.moveToPort("sh-1010","p-1010","01-09-2023 14:40:00","01-09-2023 14:45:00"));
+//        System.out.println(admin.moveToPort("sh-1010","p-1011","02-09-2023 15:50:00","05-09-2023 15:50:00"));
 //        System.out.println(admin.loadContainer("sh-1010","c-1012"));
 //        System.out.println(admin.loadContainer("sh-1010","c-1013"));
 //        System.out.println(admin.unloadContainer("sh-1010","c-1013"));
-        //System.out.println(admin.removeVehicle("sh-1010"));
+//        System.out.println(admin.removeVehicle("sh-1010"));
 
         // manager static query
 //        System.out.println(manager.getListOfAllContainers());
@@ -57,7 +57,7 @@ public class Main {
 //        Prettify.prettifyContainerList(manager.getListOfAllContainers());
 //        System.out.println(manager.createContainer("1015","OpenTop",13));
 //        System.out.println(manager.removeContainer("c-1015"));
-//        Prettify.prettifyLogList(manager.getTripsByDate("01-09-2023"));
+//        Prettify.prettifyLogList(manager.getTripsByArrivalDate("01-09-2023"));
 //        System.out.println(manager.getTotalConsumedFuelByDate("01-09-2023"));
 //
 //        Prettify.prettifyGetTotalFuelConsumedPerDay(manager.getTotalFuelConsumedPerDay());
@@ -72,7 +72,9 @@ public class Main {
 //        Prettify.prettifyGetNumberOfVehicleOfEachType(manager.getNumberOfVehicleOfEachType());
 //        Prettify.prettifyGetNumberOfVehicleOfEachType(admin.getNumberOfVehicleOfEachType());
 //        Prettify.prettifyVehicleList(manager.getListOfVehicleByType("TankerTruck"));
-//        Prettify.prettifyLogList(manager.getTripsBetweenDates("31-08-2023","01-09-2023"));
+//        Prettify.prettifyLogList(manager.getTripsBetweenDepartureDates("01-09-2023", "06-09-2023"));
+        Prettify.prettifyLogList(manager.getTripsInDates("02-09-2023", "05-09-2023"));
+        Prettify.prettifyLogList(admin.getTripsInDates("02-09-2023", "03-09-2023"));
 
         // admin static
         //System.out.println(admin.setManagerPort("manager-1010","p-1010"));
@@ -118,8 +120,6 @@ public class Main {
 //        Prettify.prettifyContainerList(TerminalUtil.containers);
 //        Prettify.prettifyLogList(TerminalUtil.occurringLogs);
 //        Prettify.prettifyLogList(TerminalUtil.occurredLogs);
-
-
 
         // Check for occurring logs every 1 minutes
         TerminalUtil.startScheduledTask();

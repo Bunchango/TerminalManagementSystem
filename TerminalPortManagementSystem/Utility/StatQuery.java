@@ -360,7 +360,8 @@ public class StatQuery {
             Date departureDayOnly = TerminalUtil.truncateTime(departureDate);
             Date arrivalDayOnly = TerminalUtil.truncateTime(arrivalDate);
 
-            if (startDate.before(departureDayOnly) && endDate.after(arrivalDayOnly)) {
+            if (TerminalUtil.passedDate(departureDayOnly, startDate) &&
+                    TerminalUtil.passedDate(endDate, arrivalDayOnly)) {
                 tripsInDate.add(log);
             }
         }
@@ -382,7 +383,8 @@ public class StatQuery {
             Date departureDayOnly = TerminalUtil.truncateTime(departureDate);
             Date arrivalDayOnly = TerminalUtil.truncateTime(arrivalDate);
 
-            if (startDate.before(departureDayOnly) && endDate.after(arrivalDayOnly) &&
+            if (TerminalUtil.passedDate(departureDayOnly, startDate) &&
+                    TerminalUtil.passedDate(endDate, arrivalDayOnly) &&
                     (log.getArrivalPortID().equals(portID) || log.getDeparturePortID().equals(portID))) {
                 tripsBetweenDates.add(log);
             }
@@ -492,7 +494,7 @@ public class StatQuery {
     }
 
     public static Map<VehicleType, Integer> getNumberOfVehicleOfEachTypeByPort(String portID) {
-        // Get the number of each type of vehicles of a port
+        // Get the number of each type of vehicles of port
         Port port = TerminalUtil.searchPort(portID);
 
         if (port == null) {

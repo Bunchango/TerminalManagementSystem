@@ -358,7 +358,7 @@ public class Manager implements Serializable, User {
         return StatQuery.getTripsBetweenDepartureDatesOfPort(startDate, endDate, managePortID);
     }
 
-    public List<Log> getTripsInDatesOfPort(String start, String end) {
+    public List<Log> getTripsInDates(String start, String end) {
         Date startDate = TerminalUtil.parseStringToDate(start);
         Date endDate = TerminalUtil.parseStringToDate(end);
 
