@@ -49,7 +49,8 @@ public class InterfaceSystem {
                 }
             }
             case "2" -> {
-                System.out.println("Exited");
+                System.out.println("EXITED");
+                System.exit(0);
             }
             default -> {
                 System.out.println("Invalid input. Please enter either '1' or '2' ");

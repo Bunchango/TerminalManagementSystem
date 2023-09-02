@@ -41,7 +41,8 @@ public class AdminInterface {
                 statQuery();
             }
             case "~" -> {
-                System.out.println("Exited");;
+                System.out.println("EXITED");
+                System.exit(0);
             }
             default -> {
                 System.out.println("Invalid input. Try again");
@@ -91,7 +92,7 @@ public class AdminInterface {
                 remove();
             }
             case "~" -> {
-                createRemove();
+                run();
             }
             default -> {
                 System.out.println("Invalid input. Please enter either '1' or '2'");
@@ -300,7 +301,52 @@ public class AdminInterface {
 
     public static void remove() {
         System.out.println("-----------------------------------------");
-        System.out.println("Remove");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("1. Remove Manager");
+        System.out.println("2. Remove Port");
+        System.out.println("3. Remove Vehicle");
+        System.out.println("4. Remove Container");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> {
+                removeManager();
+            }
+            case "2" -> {
+                removePort();
+            }
+            case "3" -> {
+                removeVehicle();
+            }
+            case "4" -> {
+                removeContainer();
+            }
+            case "~" -> {
+                createRemove();
+            }
+            default -> {
+                System.out.println("Invalid input. ");
+                remove();
+            }
+        }
+    }
+
+    public static void removeManager() {
+
+    }
+
+    public static void removePort() {
+
+    }
+
+    public static void removeVehicle() {
+
+    }
+
+    public static void removeContainer() {
+
     }
 
     public static void transportation() {
