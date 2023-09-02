@@ -1,5 +1,6 @@
 package TerminalPortManagementSystem.Interface;
 import TerminalPortManagementSystem.User.Manager;
+import TerminalPortManagementSystem.Utility.Prettify;
 import TerminalPortManagementSystem.Utility.TerminalUtil;
 
 import java.sql.SQLOutput;
@@ -161,29 +162,142 @@ public class ManagerInterface {
     }
 
     public static void statQuery(Manager manager) {
-        System.out.println(" * Statistic Search Options *");
-        System.out.println("1. Total Fuel Consumed by Date");
-        System.out.println("2. Total Weight of Each Type of Container");
-        System.out.println("3. Number of Containers of Each Type");
-        System.out.println("4. List of All The Containers");
-        System.out.println("5. Number of Vehicles of Each Type");
-        System.out.println("6. List of Vehicles by Type");
-        System.out.println("7. List of All Vehicles");
-        System.out.println("8. Get The Trips by Arrival Date");
-        System.out.println("9. Get The Trips by Departure Date");
-        System.out.println("10. Get The Trips That Arives Between A to B Dates ");
-        System.out.println("11. Get The Trips That Departs Between A to B Dates ");
-        System.out.println("12. Get Trips Between A to B Dates ");
+/*
+        1. Total/Overview Statistics
+        2. Listing
+        3. Get Trips
+ */
+        System.out.println("1. Overview Statistics");
+        System.out.println("2. Listing Statistics");
+        System.out.println("3. Get Trips");
         System.out.println("Enter your choice: ");
-
         Scanner sc = new Scanner(System.in);
         String choice = sc.nextLine();
 
         switch (choice) {
 
             case "1" -> {
-
+                overview(manager);
+            }
+            case "2" -> {
+                listing(manager);
+            }
+            case "3" -> {
+                getTrips(manager);
             }
         }
     }
+
+    public static void overview(Manager manager) {
+        System.out.println("1. Total Fuel Consumed Per Day");
+        System.out.println("2. Total Fuel Consumed by Date");
+        System.out.println("3. Total Weight of Each Type of Container");
+        System.out.println("4. Number of Containers of Each Type");
+        System.out.println("5. Number of Vehicles of Each Type");
+        System.out.println("Enter your choice: ");
+        Scanner sc = new Scanner(System.in);
+        String choice = sc.nextLine();
+
+        switch (choice) {
+
+            case "1" -> {
+                Prettify.prettifyGetTotalFuelConsumedPerDay(manager.getTotalFuelConsumedPerDay());
+            }
+
+            case "2" -> {
+                System.out.println("Enter The Date: ");
+                String date = sc.nextLine();
+                manager.getTotalConsumedFuelByDate(date);
+            }
+
+            case "3" -> {
+                Prettify.prettifyGetTotalWeightOfEachType(manager.getTotalWeightOfEachType());
+            }
+
+            case "4" -> {
+                Prettify.prettifyGetNumberOfContainerOfEachType(manager.getNumberOfContainerOfEachType());
+            }
+
+            case "5" -> {
+                Prettify.prettifyGetNumberOfVehicleOfEachType(manager.getNumberOfVehicleOfEachType());
+            }
+        }
+    }
+
+    public static void listing(Manager manager) {
+        System.out.println("1. List of Vehicles by Type");
+        System.out.println("2. List of All Vehicles");
+        System.out.println("3. List of All The Containers");
+        System.out.println("Enter your choice: ");
+        Scanner sc = new Scanner(System.in);
+        String choice = sc.nextLine();
+
+        switch (choice) {
+
+            case "1" -> {
+                System.out.println("Enter Vehicle's Type");
+                String vehicleType = sc.nextLine();
+                manager.getListOfVehicleByType(vehicleType);
+            }
+
+            case "2" -> {
+                Prettify.prettifyVehicleList(manager.getListOfAllVehicles());
+            }
+
+            case "3" -> {
+                Prettify.prettifyContainerList(manager.getListOfAllContainers());
+            }
+        }
+    }
+
+    public static void getTrips(Manager manager) {
+        System.out.println("1. Get The Trips by Arrival Date");
+        System.out.println("2. Get The Trips by Departure Date");
+        System.out.println("3. Get The Trips That Arrives Between A to B Dates ");
+        System.out.println("4. Get The Trips That Departs Between A to B Dates ");
+        System.out.println("5. Get Trips Between A to B Dates ");
+        System.out.println("Enter your choice: ");
+        Scanner sc = new Scanner(System.in);
+        String choice = sc.nextLine();
+
+        switch (choice) {
+
+            case "1" -> {
+                System.out.println("Enter Arrival Date: ");
+                String date = sc.nextLine();
+                manager.getTripsByArrivalDate(date);
+            }
+
+            case "2" -> {
+                System.out.println("Enter Departure Date: ");
+                String date = sc.nextLine();
+                manager.getTripsByDepartureDate(date);
+            }
+
+            case "3" -> {
+                System.out.println("Enter Starting Date A: ");
+                String startDate = sc.nextLine();
+                System.out.println("Enter Ending Date B: ");
+                String endDate= sc.nextLine();
+                manager.getTripsBetweenArrivalDates(startDate,endDate);
+            }
+
+            case "4" -> {
+                System.out.println("Enter Starting Date A: ");
+                String startDate = sc.nextLine();
+                System.out.println("Enter Ending Date B: ");
+                String endDate= sc.nextLine();
+                manager.getTripsBetweenDepartureDates(startDate,endDate);
+            }
+
+            case "5" -> {
+                System.out.println("Enter Starting Date A: ");
+                String startDate = sc.nextLine();
+                System.out.println("Enter Ending Date B: ");
+                String endDate= sc.nextLine();
+                manager.getTripsInDates(startDate,endDate);
+            }
+        }
+    }
+
     }
