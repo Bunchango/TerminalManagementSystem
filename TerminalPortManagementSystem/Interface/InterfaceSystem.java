@@ -23,14 +23,15 @@ public class InterfaceSystem {
         System.out.println("Menu");
         System.out.println("1: Login");
         System.out.println("2: Terminate program");
-
+        System.out.println("-----------------------------------------");
+        System.out.print("Enter your choice: ");
         String option = sc.nextLine();
 
         switch (option) {
             case "1" -> {
-                System.out.println("Enter username");
+                System.out.print("Enter username: ");
                 String username = sc.nextLine();
-                System.out.println("Enter password");
+                System.out.print("Enter password: ");
                 String password = sc.nextLine();
                 User user = TerminalUtil.login(username, password);
 
@@ -42,12 +43,17 @@ public class InterfaceSystem {
                     AdminInterface.run();
                 }
                 if (user != null && user.isManager()) {
-                    ManagerInterface.run();
+                    Manager manager = (Manager) user;
+                    ManagerInterface.run(manager);
                 }
             }
             case "2" -> {
-                System.out.println("Exit");
-                return;
+                System.out.println("Exited");
+            }
+            default -> {
+                System.out.println("Invalid input. Please enter either '1' or '2' ");
+                System.out.println("-----------------------------------------");
+                run();
             }
         }
     }

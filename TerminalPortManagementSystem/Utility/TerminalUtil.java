@@ -52,14 +52,9 @@ public class TerminalUtil {
         managers.add(managerToAdd);
     }
 
-    public static void addAnnouncement(String announcementToAdd) {
-        announcements.add(announcementToAdd);
-    }
-
-    public static void clearAnnouncements() {
+    public static void clearAnnouncement() {
         announcements.clear();
     }
-
     public static boolean objectAlreadyExist(String id) {
         return usedIds.contains(id);
     }
@@ -238,6 +233,8 @@ public class TerminalUtil {
                 Port arrivalPort = TerminalUtil.searchPort(log.getArrivalPortID());
                 if (vehicle != null) {
                     vehicle.arriveToPort(arrivalPort, log.getFuelConsumed());
+                    // Add announcement
+                    announcements.add(log.getVehicleID() + " arrived to " + log.getArrivalPortID());
                 }
             }
         }
@@ -254,6 +251,8 @@ public class TerminalUtil {
                 // Move the vehicle
                 vehicleToUpdate.getCurrentPort().departureVehicle(vehicleToUpdate);
                 vehicleToUpdate.setCurrentPort(null);
+                // Add announcement
+                announcements.add(log.getVehicleID() + " start moving to " + log.getArrivalPortID());
             }
         }
     }
