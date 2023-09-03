@@ -24,21 +24,13 @@ public class AdminInterface {
         String option = sc.nextLine();
 
         switch (option) {
-            case "1" -> {
-                announcement();
-            }
+            case "1" -> announcement();
 
-            case "2" -> {
-                createRemove();
-            }
+            case "2" -> createRemove();
 
-            case "3" -> {
-                transportation();
-            }
+            case "3" -> transportation();
 
-            case "4" -> {
-                statQuery();
-            }
+            case "4" -> statQuery();
             case "~" -> {
                 System.out.println("EXITED");
                 System.exit(0);
@@ -84,15 +76,9 @@ public class AdminInterface {
         String option = sc.nextLine();
 
         switch (option) {
-            case "1" -> {
-                create();
-            }
-            case "2" -> {
-                remove();
-            }
-            case "~" -> {
-                run();
-            }
+            case "1" -> create();
+            case "2" -> remove();
+            case "~" -> run();
             default -> {
                 System.out.println("Invalid input. Please enter either '1' or '2'");
                 System.out.println("-----------------------------------------");
@@ -115,21 +101,11 @@ public class AdminInterface {
         String option = sc.nextLine();
 
         switch (option) {
-            case "1" -> {
-                createManager();
-            }
-            case "2" -> {
-                createPort();
-            }
-            case "3" -> {
-                createVehicle();
-            }
-            case "4" -> {
-                createContainer();
-            }
-            case "~" -> {
-                createRemove();
-            }
+            case "1" -> createManager();
+            case "2" -> createPort();
+            case "3" -> createVehicle();
+            case "4" -> createContainer();
+            case "~" -> createRemove();
             default -> {
                 System.out.println("Invalid input. ");
                 create();
@@ -325,24 +301,12 @@ public class AdminInterface {
         String option = sc.nextLine();
 
         switch (option) {
-            case "1" -> {
-                removeManager();
-            }
-            case "2" -> {
-                removePort();
-            }
-            case "3" -> {
-                removeVehicle();
-            }
-            case "4" -> {
-                removeContainer();
-            }
-            case "5" -> {
-                setUnset();
-            }
-            case "~" -> {
-                createRemove();
-            }
+            case "1" -> removeManager();
+            case "2" -> removePort();
+            case "3" -> removeVehicle();
+            case "4" -> removeContainer();
+            case "5" -> setUnset();
+            case "~" -> createRemove();
             default -> {
                 System.out.println("Invalid input. ");
                 remove();
@@ -525,9 +489,7 @@ public class AdminInterface {
                 }
             }
 
-            case "~" -> {
-                remove();
-            }
+            case "~" -> remove();
             default -> {
                 System.out.println("Invalid input. ");
                 setUnset();
@@ -538,7 +500,6 @@ public class AdminInterface {
 
     public static void transportation() {
         System.out.println("-----------------------------------------");
-        Admin admin = Admin.getInstance();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("1. Load container");
@@ -550,21 +511,11 @@ public class AdminInterface {
 
         String option = sc.nextLine();
         switch (option) {
-            case "1" -> {
-                loadContainer();
-            }
-            case "2" -> {
-                unloadContainer();
-            }
-            case "3" -> {
-                refuel();
-            }
-            case "4" -> {
-                moveToPort();
-            }
-            case "~" -> {
-                run();
-            }
+            case "1" -> loadContainer();
+            case "2" -> unloadContainer();
+            case "3" -> refuel();
+            case "4" -> moveToPort();
+            case "~" -> run();
             default -> {
                 System.out.println("Invalid input. ");
                 transportation();
@@ -722,6 +673,359 @@ public class AdminInterface {
 
     public static void statQuery() {
         System.out.println("-----------------------------------------");
-        run();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1. Fuel");
+        System.out.println("2. Containers");
+        System.out.println("3. Vehicles");
+        System.out.println("4. Trips");
+        System.out.println("5. Other");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> getFuel();
+            case "2" -> getContainers();
+            case "3" -> getVehicles();
+            case "4" -> getTrips();
+            case "5" -> getOther();
+            case "~" -> run();
+            default -> {
+                System.out.println("Invalid input. ");
+                statQuery();
+            }
+        }
+    }
+
+    public static void getFuel() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1. Fuel consumed per day");
+        System.out.println("2. Fuel consumed per day of a Port");
+        System.out.println("3. Fuel consumed query by date");
+        System.out.println("4. Fuel consumed query by date of a port");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> {
+                Prettify.prettifyGetTotalFuelConsumedPerDay(admin.totalFuelConsumedPerDay());
+                getFuel();
+            }
+            case "2" -> {
+                System.out.println("Existing ports: ");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                Prettify.prettifyGetTotalFuelConsumedPerDay(admin.totalFuelConsumedPerDayOfPort(portID));
+                getFuel();
+            }
+            case "3" -> {
+                System.out.print("Date (dd-MM-yyyy): ");
+                String date = sc.nextLine();
+                System.out.println("Fuel consumed in " + date + " is: " + admin.getTotalConsumedFuelByDate(date));
+                getFuel();
+            }
+            case "4" -> {
+                System.out.println("Existing ports: ");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                System.out.print("Date (dd-MM-yyyy): ");
+                String date = sc.nextLine();
+                System.out.println("Fuel consumed in " + date + " of " + portID + " is: " +
+                        admin.getTotalConsumedFuelByDayByPort(portID, date));
+                getFuel();
+            }
+            case "~" -> statQuery();
+            default -> {
+                System.out.println("Invalid input. ");
+                getFuel();
+            }
+        }
+    }
+
+    public static void getContainers() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1. Total weight of each type");
+        System.out.println("2. Total weight of each type of a port");
+        System.out.println("3. Number of container of each type");
+        System.out.println("4. Number of container of each type of a port");
+        System.out.println("5. List of all containers");
+        System.out.println("6. List of containers of a port");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> {
+                Prettify.prettifyGetTotalWeightOfEachType(admin.getTotalWeightOfEachType());
+                getContainers();
+            }
+            case "2" -> {
+                System.out.println("Existing ports: ");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                Prettify.prettifyGetTotalWeightOfEachType(admin.getTotalWeightOfEachTypeByPort(portID));
+                getContainers();
+            }
+            case "3" -> {
+                Prettify.prettifyGetNumberOfContainerOfEachType(admin.getNumberOfContainerOfEachType());
+                getContainers();
+            }
+            case "4" -> {
+                System.out.println("Existing ports: ");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                Prettify.prettifyGetNumberOfContainerOfEachType(admin.getNumberOfContainerOfEachTypeByPort(portID));
+                getContainers();
+            }
+            case "5" -> {
+                Prettify.prettifyContainerList(admin.getListOfAllContainer());
+                getContainers();
+            }
+            case "6" -> {
+                System.out.println("Existing ports: ");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                Prettify.prettifyContainerList(admin.getListOfContainerByPort(portID));
+                getContainers();
+            }
+            case "~" -> statQuery();
+            default -> {
+                System.out.println("Invalid input. ");
+                getContainers();
+            }
+        }
+    }
+
+    public static void getVehicles() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1. List of all vehicles");
+        System.out.println("2. List of vehicles by type");
+        System.out.println("3. List of vehicles in port by type");
+        System.out.println("4. Number of vehicle of each type");
+        System.out.println("5. Number of vehicle in port of each type");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> {
+                Prettify.prettifyVehicleList(admin.getListOfAllVehicle());
+                getVehicles();
+            }
+            case "2" -> {
+                System.out.println("Available vehicle types: Ship | BasicTruck | TankerTruck | ReeferTruck");
+                System.out.print("Vehicle type: ");
+                String vehicleType = sc.nextLine();
+                Prettify.prettifyVehicleList(admin.getListOfVehicleByType(vehicleType));
+                getVehicles();
+            }
+            case "3" -> {
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                System.out.println("Available vehicle types: Ship | BasicTruck | TankerTruck | ReeferTruck");
+                System.out.print("Vehicle type: ");
+                String vehicleType = sc.nextLine();
+                Prettify.prettifyVehicleList(admin.getListOFVehicleByTypeOfPort(portID, vehicleType));
+                getVehicles();
+            }
+            case "4" -> {
+                Prettify.prettifyGetNumberOfVehicleOfEachType(admin.getNumberOfVehicleOfEachType());
+                getVehicles();
+            }
+            case "5" -> {
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                Prettify.prettifyGetNumberOfVehicleOfEachType(admin.getNumberOfVehicleOfEachTypeByPort(portID));
+                getVehicles();
+            }
+            case "~" -> statQuery();
+            default -> {
+                System.out.println("Invalid input. ");
+                getContainers();
+            }
+        }
+    }
+
+    public static void getTrips() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1. Trips by arrival date");
+        System.out.println("2. Trips by departure date");
+        System.out.println("3. Trips of port by arrival date");
+        System.out.println("4. Trips of port by departure date");
+        System.out.println("5. Trips between arrival dates");
+        System.out.println("6. Trips between departure dates");
+        System.out.println("7. Trips of port between arrival dates");
+        System.out.println("8. Trips of port between departure dates");
+        System.out.println("9. Trips in dates");
+        System.out.println("10. Trips of port in dates");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> {
+                System.out.print("Arrival Date ( dd-MM-yyyy ): ");
+                String arrival = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsByArrivalDate(arrival));
+                getTrips();
+            }
+            case "2" -> {
+                System.out.print("Departure Date ( dd-MM-yyyy ): ");
+                String departure = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsByDepartureDate(departure));
+                getTrips();
+            }
+            case "3" -> {
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                System.out.print("Arrival Date ( dd-MM-yyyy ): ");
+                String arrival = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsByArrivalDateOfPort(arrival, portID));
+                getTrips();
+            }
+            case "4" -> {
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                System.out.print("Departure Date ( dd-MM-yyyy ): ");
+                String departure = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsByDepartureDateOfPort(departure, portID));
+                getTrips();
+            }
+            case "5" -> {
+                System.out.println("GUIDE: Get trips where its arrival date is between 2 given dates");
+                System.out.print("Start Date ( dd-MM-yyyy ): ");
+                String start = sc.nextLine();
+                System.out.print("End Date ( dd-MM-yyyy ): ");
+                String end = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsBetweenArrivalDates(start, end));
+                getTrips();
+            }
+            case "6" -> {
+                System.out.println("GUIDE: Get trips where its departure date is between 2 given dates");
+                System.out.print("Start Date ( dd-MM-yyyy ): ");
+                String start = sc.nextLine();
+                System.out.print("End Date ( dd-MM-yyyy ): ");
+                String end = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsBetweenDepartureDates(start, end));
+                getTrips();
+            }
+            case "7" -> {
+                System.out.println("GUIDE: Get trips where its arrival date is between 2 given dates and its portID is the given portID");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                System.out.print("Start Date ( dd-MM-yyyy ): ");
+                String start = sc.nextLine();
+                System.out.print("End Date ( dd-MM-yyyy ): ");
+                String end = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsBetweenArrivalDatesOfPort(start, end, portID));
+                getTrips();
+            }
+            case "8" -> {
+                System.out.println("GUIDE: Get trips where its departure date is between 2 given dates and its portID is the given portID");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                System.out.print("Start Date ( dd-MM-yyyy ): ");
+                String start = sc.nextLine();
+                System.out.print("End Date ( dd-MM-yyyy ): ");
+                String end = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsBetweenDepartureDatesOfPort(start, end, portID));
+                getTrips();
+            }
+            case "9" -> {
+                System.out.println("GUIDE: Get trips where both departureDate and arrivalDate is between the 2 given dates");
+                System.out.print("Start Date ( dd-MM-yyyy ): ");
+                String start = sc.nextLine();
+                System.out.print("End Date ( dd-MM-yyyy ): ");
+                String end = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsInDates(start, end));
+                getTrips();
+            }
+            case "10" -> {
+                System.out.println("GUIDE: Get trips where both departureDate and arrivalDate is between the 2 given dates and its portID is the given portID");
+                Prettify.prettifyPortList(TerminalUtil.ports);
+                System.out.print("PortID: ");
+                String portID = sc.nextLine();
+                System.out.print("Start Date ( dd-MM-yyyy ): ");
+                String start = sc.nextLine();
+                System.out.print("End Date ( dd-MM-yyyy ): ");
+                String end = sc.nextLine();
+                Prettify.prettifyLogList(admin.getTripsInDatesOfPort(start, end, portID));
+                getTrips();
+            }
+            case "~" -> statQuery();
+            default -> {
+                System.out.println("Invalid input. ");
+                getTrips();
+            }
+        }
+    }
+
+    public static void getOther() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1. Calculate distance between 2 ports");
+        System.out.println("2. List of all ports");
+        System.out.println("3. List of all logs");
+        System.out.println("4. List of all managers");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> {
+                System.out.print("Target 1 ID: ");
+                String target1 = sc.nextLine();
+                System.out.print("Target 2 ID: ");
+                String target2 = sc.nextLine();
+
+                System.out.println("Distance between " + target1 + " and " + target2 + " is: " +
+                        admin.calculateDistanceBetweenPorts(target1, target2));
+                getOther();
+            }
+            case "2" -> {
+                Prettify.prettifyPortList(admin.getListOfAllPort());
+                getOther();
+            }
+            case "3" -> {
+                Prettify.prettifyLogList(admin.getListOfAllLogs());
+                getOther();
+            }
+            case "4" -> {
+                Prettify.prettifyManagerList(admin.getListOfAllManager());
+                getOther();
+            }
+            case "~" -> statQuery();
+            default -> {
+                System.out.println("Invalid input. ");
+                getOther();
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ import TerminalPortManagementSystem.Utility.TerminalUtil;
 import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -344,14 +345,6 @@ public class Admin implements User {
         return StatQuery.getNumberOfVehicleOfEachTypeByPort(portID);
     }
 
-    public List<Port> getListOfAllPort() {
-        return StatQuery.getListOfAllPort();
-    }
-
-    public List<Manager> getListOfAllManager(){
-        return StatQuery.getListOfAllManager();
-    }
-
     // Extract log
     public List<Log> getTripsByArrivalDate(String date){
         Date dateToQuery = TerminalUtil.parseStringToDate(date);
@@ -406,6 +399,10 @@ public class Admin implements User {
             return null;
         }
 
+        if (TerminalUtil.passedDate(startDate, endDate)) {
+            return null;
+        }
+
         return StatQuery.getTripsBetweenArrivalDates(startDate, endDate);
     }
 
@@ -415,6 +412,10 @@ public class Admin implements User {
 
         // Null checking
         if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        if (TerminalUtil.passedDate(startDate, endDate)) {
             return null;
         }
 
@@ -430,6 +431,10 @@ public class Admin implements User {
             return null;
         }
 
+        if (TerminalUtil.passedDate(startDate, endDate)) {
+            return null;
+        }
+
         return StatQuery.getTripsBetweenArrivalDatesOfPort(startDate, endDate, portID);
     }
 
@@ -439,6 +444,10 @@ public class Admin implements User {
 
         // Null checking
         if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        if (TerminalUtil.passedDate(startDate, endDate)) {
             return null;
         }
 
@@ -454,6 +463,10 @@ public class Admin implements User {
             return null;
         }
 
+        if (TerminalUtil.passedDate(startDate, endDate)) {
+            return null;
+        }
+
         return StatQuery.getTripsInDates(startDate, endDate);
     }
 
@@ -463,6 +476,10 @@ public class Admin implements User {
 
         // Null checking
         if (startDate == null || endDate == null) {
+            return null;
+        }
+
+        if (TerminalUtil.passedDate(startDate, endDate)) {
             return null;
         }
 
@@ -478,6 +495,22 @@ public class Admin implements User {
             return 0;
         }
         return TerminalUtil.roundToSecondDecimalPlace(Port.calculateDistanceBetweenPort(port_1, port_2));
+    }
+
+    public List<Log> getListOfAllLogs() {
+        List<Log> logs = new ArrayList<>();
+        logs.addAll(TerminalUtil.occurredLogs);
+        logs.addAll(TerminalUtil.occurringLogs);
+        return List.copyOf(logs);
+    }
+
+
+    public List<Port> getListOfAllPort() {
+        return StatQuery.getListOfAllPort();
+    }
+
+    public List<Manager> getListOfAllManager(){
+        return StatQuery.getListOfAllManager();
     }
 
     @Override
