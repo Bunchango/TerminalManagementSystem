@@ -142,11 +142,15 @@ public class AdminInterface {
         Admin admin = Admin.getInstance();
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Unavailable usernames: ");
+        Prettify.prettifyIdsList(TerminalUtil.getManagerIds());
         System.out.println("Existing managers: ");
         Prettify.prettifyManagerList(TerminalUtil.managers);
+        System.out.println("Existing ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
 
         System.out.print("Manager's username: ");
-        String username = sc.nextLine().replace(" ", "");
+        String username = sc.nextLine().replaceAll("[^a-zA-Z0-9]", "").replace(" ", "");
         System.out.print("Manager's password: ");
         String password = sc.nextLine().replace(" ", "");
         System.out.print("Port ID: ");
@@ -673,7 +677,41 @@ public class AdminInterface {
     }
 
     public static void moveToPort() {
+        System.out.println("-----------------------------------------");
+        Admin admin = Admin.getInstance();
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("Existing vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+        System.out.println("Existing ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+        System.out.print("Vehicle's ID: ");
+        String vehicleID = sc.nextLine();
+        System.out.print("Destination Port's ID: ");
+        String destinationPortID = sc.nextLine();
+        System.out.println("Date Time format: dd-MM-yyyy HH:mm:ss");
+        System.out.print("Departure Date and Time: ");
+        String departure = sc.nextLine();
+        System.out.print("Arrival Date and Time: ");
+        String arrival = sc.nextLine();
+
+        while (true) {
+            try {
+                System.out.print("CONFIRM MOVE - " + vehicleID + " | " + destinationPortID +
+                        " | " + departure + " | " + arrival + ". true / false: ");
+                if (sc.nextBoolean()) {
+                    System.out.println(admin.moveToPort(vehicleID, destinationPortID, departure, arrival));
+                } else {
+                    System.out.println("MOVE CANCELED");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input");
+                System.out.println("-----------------------------------------");
+                sc.nextLine();
+            }
+        }
+        transportation();
     }
 
     public static void statQuery() {

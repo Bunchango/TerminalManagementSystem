@@ -110,6 +110,46 @@ public class TerminalUtil {
         } return null;
     }
 
+    public static List<String> getVehicleIds() {
+        List<String> ids = new ArrayList<>();
+        for (String id: usedIds) {
+            if (id.contains("sh-") || id.contains("tr-")) {
+                ids.add(id);
+            }
+        }
+        return ids;
+    }
+
+    public static List<String> getPortIds() {
+        List<String> ids = new ArrayList<>();
+        for (String id: usedIds) {
+            if (id.contains("p-")) {
+                ids.add(id);
+            }
+        }
+        return ids;
+    }
+
+    public static List<String> getContainerIds() {
+        List<String> ids = new ArrayList<>();
+        for (String id: usedIds) {
+            if (id.contains("c-")) {
+                ids.add(id);
+            }
+        }
+        return ids;
+    }
+
+    public static List<String> getManagerIds() {
+        List<String> ids = new ArrayList<>();
+        for (String id: usedIds) {
+            if (!id.contains("c-") && !id.contains("p-") && !id.contains("sh-") && !id.contains("tr-")) {
+                ids.add(id);
+            }
+        }
+        return ids;
+    }
+
     public static String removeManager(String username) {
         // Remove manager and save immediately
         Manager managerToRemove = searchManager(username);

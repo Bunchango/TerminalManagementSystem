@@ -441,6 +441,66 @@ public class Prettify {
         } else {
             System.out.println("Invalid");
         }
+    }
 
+    public static void prettifyUsedIds() {
+        int numColumns = 8;
+        int numRows = (TerminalUtil.usedIds.size() + numColumns - 1) / numColumns; // Calculate the number of rows
+
+        // Calculate column widths based on the longest string in each column
+        int[] columnWidths = new int[numColumns];
+        for (int i = 0; i < numColumns; i++) {
+            for (int j = i; j < TerminalUtil.usedIds.size(); j += numColumns) {
+                String currentId = TerminalUtil.usedIds.get(j);
+                columnWidths[i] = Math.max(columnWidths[i], currentId.length());
+            }
+        }
+
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numColumns; j++) {
+                int index = i + j * numRows;
+                if (index < TerminalUtil.usedIds.size()) {
+                    String currentId = TerminalUtil.usedIds.get(index);
+                    System.out.printf("%-" + (columnWidths[j] + 2) + "s", currentId); // Adjust column width
+                    if (j < numColumns - 1) {
+                        System.out.print(" | "); // Add a separator between columns
+                    }
+                }
+            }
+            System.out.println(); // Move to the next row
+        }
+    }
+
+    public static void prettifyIdsList(List<String> usedIds) {
+        if (usedIds.size() > 0) {
+            int numColumns = 8;
+            int numRows = (usedIds.size() + numColumns - 1) / numColumns; // Calculate the number of rows
+
+            // Calculate column widths based on the longest string in each column
+            int[] columnWidths = new int[numColumns];
+            for (int i = 0; i < numColumns; i++) {
+                for (int j = i; j < usedIds.size(); j += numColumns) {
+                    String currentId = usedIds.get(j);
+                    columnWidths[i] = Math.max(columnWidths[i], currentId.length());
+                }
+            }
+
+            for (int i = 0; i < numRows; i++) {
+                for (int j = 0; j < numColumns; j++) {
+                    int index = i + j * numRows;
+                    if (index < usedIds.size()) {
+                        String currentId = usedIds.get(index);
+                        System.out.printf("%-" + (columnWidths[j] + 2) + "s", currentId); // Adjust column width
+                        if (j < numColumns - 1) {
+                            System.out.print(" | "); // Add a separator between columns
+                        }
+                    }
+                }
+                System.out.println(); // Move to the next row
+            }
+        } else {
+            System.out.println("Null");
+            System.out.println();
+        }
     }
 }
