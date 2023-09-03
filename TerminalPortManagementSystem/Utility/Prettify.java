@@ -498,6 +498,7 @@ public class Prettify {
                 }
                 System.out.println(); // Move to the next row
             }
+            System.out.println();
         } else {
             System.out.println("Null");
             System.out.println();
