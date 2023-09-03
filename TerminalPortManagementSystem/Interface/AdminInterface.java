@@ -179,6 +179,8 @@ public class AdminInterface {
         Admin admin = Admin.getInstance();
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Unavailable ids: ");
+        Prettify.prettifyIdsList(TerminalUtil.getPortIds());
         System.out.println("Existing ports: ");
         Prettify.prettifyPortList(TerminalUtil.ports);
 
@@ -224,6 +226,8 @@ public class AdminInterface {
         Admin admin = Admin.getInstance();
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Unavailable ids: ");
+        Prettify.prettifyIdsList(TerminalUtil.getVehicleIds());
         System.out.println("Existing vehicles: ");
         Prettify.prettifyVehicleList(TerminalUtil.vehicles);
         System.out.println("Existing ports: ");
@@ -269,6 +273,8 @@ public class AdminInterface {
         Admin admin = Admin.getInstance();
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Unavailable ids: ");
+        Prettify.prettifyIdsList(TerminalUtil.getContainerIds());
         System.out.println("Existing containers: ");
         Prettify.prettifyContainerList(TerminalUtil.containers);
         System.out.println("Existing ports: ");
