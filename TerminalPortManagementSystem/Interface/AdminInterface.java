@@ -875,8 +875,8 @@ public class AdminInterface {
         System.out.println("4. Trips of port by departure date");
         System.out.println("5. Trips between arrival dates");
         System.out.println("6. Trips between departure dates");
-        System.out.println("7. Trips of port between arrival dates");
-        System.out.println("8. Trips of port between departure dates");
+        System.out.println("7. Get the trips of port that arrives between A to B dates");
+        System.out.println("8. Get the trips of port that departs between A to B dates");
         System.out.println("9. Trips in dates");
         System.out.println("10. Trips of port in dates");
         System.out.println("~. Go back");
