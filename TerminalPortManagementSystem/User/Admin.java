@@ -184,6 +184,8 @@ public class Admin implements User {
         }
 
         manager.setManagePortID(null);
+        // Save
+        LogManager.saveAllObjects();
         return "Managing port unset successfully";
     }
 

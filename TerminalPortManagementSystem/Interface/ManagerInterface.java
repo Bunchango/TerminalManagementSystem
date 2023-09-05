@@ -16,7 +16,14 @@ public class ManagerInterface {
         4. Stat Query
         */
         Scanner sc = new Scanner(System.in);
-        System.out.println("1. Announcement");
+        System.out.println("-----------------------------------------");
+        int announcements = 0;
+        for (String announcement : TerminalUtil.announcements) {
+            if (announcement.contains(manager.getManagePortID())) {
+                announcements ++;
+            }
+        }
+        System.out.println("1. Announcement[" + announcements + "]");
         System.out.println("2. Create and Remove");
         System.out.println("3. Transportation");
         System.out.println("4. Statistics and Query");
@@ -82,7 +89,7 @@ public class ManagerInterface {
         System.out.println("1. Create Container");
         System.out.println("2. Remove Container");
         System.out.println("~. Go Back");
-        System.out.println("Enter your choice: ");
+        System.out.print("Enter your choice: ");
         Scanner sc = new Scanner(System.in);
         String choice = sc.nextLine();
 
@@ -106,69 +113,74 @@ public class ManagerInterface {
 
     public static void createContainer(Manager manager){
         System.out.println("-----------------------------------------");
-        Scanner sc = new Scanner(System.in);
-        //print existing ids, ids should be unique
-        System.out.println("Unavailable ids: ");
-        Prettify.prettifyIdsList(TerminalUtil.getContainerIds());
-        System.out.println("Existing containers: ");
-        Prettify.prettifyContainerList(TerminalUtil.containers);
-        System.out.println("Existing ports: ");
-        Prettify.prettifyPortList(TerminalUtil.ports);
+        if(manager.getManagePortID() != null) {
+            Scanner sc = new Scanner(System.in);
+            //print existing ids, ids should be unique
+            System.out.println("Unavailable ids: ");
+            Prettify.prettifyIdsList(TerminalUtil.getContainerIds());
+            System.out.println("Existing containers: ");
+            Prettify.prettifyContainerList(TerminalUtil.containers);
 
-        while (true) {
-            try {
-                System.out.print("Container's ID: ");
-                String containerID = sc.nextLine().replace(" ", "");
-                // Consume the newline character left in the input buffer
-                sc.nextLine();
+            while (true) {
+                try {
+                    System.out.print("Container's ID: ");
+                    String containerID = String.valueOf(sc.nextInt());
+                    // Consume the newline character left in the input buffer
+                    sc.nextLine();
 
-                System.out.println("Available container types: DryStorage | OpenTop | OpenSide | Refrigerated | Liquid");
-                System.out.print("Container's type: ");
-                String containerType = sc.nextLine();
-                System.out.print("Container's portID: ");
-                String portID = sc.nextLine();
-                System.out.print("Container's weight: ");
-                double weight = sc.nextDouble();
+                    System.out.println("Available container types: DryStorage | OpenTop | OpenSide | Refrigerated | Liquid");
+                    System.out.print("Container's type: ");
+                    String containerType = sc.nextLine();
+                    System.out.print("Container's weight: ");
+                    double weight = sc.nextDouble();
 
-                System.out.print("CONFIRM CREATION - " + containerID + " | " + containerType + " | " + portID + " | " +
-                        weight + ". true / false: ");
-                if (sc.nextBoolean()) {
-                    System.out.println(manager.createContainer(containerID, containerType, weight));
-                } else {
-                    System.out.println("CREATION CANCELED");
+                    System.out.print("CONFIRM CREATION - " + containerID + " | " + containerType + " | "  +
+                            weight + ". true / false: ");
+                    if (sc.nextBoolean()) {
+                        System.out.println(manager.createContainer(containerID, containerType, weight));
+                    } else {
+                        System.out.println("CREATION CANCELED");
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid Input. ");
+                    System.out.println("-----------------------------------------");
+                    sc.nextLine();
                 }
-                break;
-            } catch (Exception e) {
-                System.out.println("Invalid Input. ");
-                System.out.println("-----------------------------------------");
-                sc.nextLine();
             }
+        } else {
+            System.out.println("ERROR - This manager's port is Null");
         }
+
         createRemove(manager);
     }
 
     public static void removeContainer(Manager manager){
         System.out.println("-----------------------------------------");
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Existing containers: ");
-        Prettify.prettifyContainerList(TerminalUtil.containers);
-        System.out.print("Container's ID: ");
-        String containerID = sc.nextLine().replace(" ", "");
+        if(manager.getManagePortID() != null) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Existing containers: ");
+            Prettify.prettifyContainerList(TerminalUtil.containers);
+            System.out.print("Container's ID: ");
+            String containerID = sc.nextLine().replace(" ", "");
 
-        while (true) {
-            System.out.print("CONFIRM REMOVE CONTAINER " + containerID + ". true / false: ");
-            try {
-                if (sc.nextBoolean()) {
-                    System.out.println(manager.removeContainer(containerID));
-                } else {
-                    System.out.println("REMOVE CANCELED");
+            while (true) {
+                System.out.print("CONFIRM REMOVE CONTAINER " + containerID + ". true / false: ");
+                try {
+                    if (sc.nextBoolean()) {
+                        System.out.println(manager.removeContainer(containerID));
+                    } else {
+                        System.out.println("REMOVE CANCELED");
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                    System.out.println("-----------------------------------------");
+                    sc.nextLine(); // Clear the input buffer
                 }
-                break;
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
-                System.out.println("-----------------------------------------");
-                sc.nextLine(); // Clear the input buffer
             }
+        }else {
+            System.out.println("ERROR - This manager's port is Null");
         }
         createRemove(manager);
     }
@@ -181,7 +193,7 @@ public class ManagerInterface {
         System.out.println("3. Refuel Vehicle");
         System.out.println("4. Move to Port");
         System.out.println("~. Go back");
-        System.out.println("Enter your choice: ");
+        System.out.print("Enter your choice: ");
         Scanner sc = new Scanner(System.in);
         String choice= sc.nextLine();
 
@@ -218,9 +230,12 @@ public class ManagerInterface {
             System.out.println("Available containers for loading:");
             Prettify.prettifyContainerList(TerminalUtil.searchPort(manager.getManagePortID()).getPortContainers());
 
-            System.out.println("Enter Vehicle's ID: ");
+            System.out.println("Available vehicles: ");
+            Prettify.prettifyVehicleList(TerminalUtil.searchPort(manager.getManagePortID()).getPortVehicles());
+
+            System.out.print("Enter Vehicle's ID: ");
             String vehicleID = sc.nextLine().replace(" ","");
-            System.out.println("Enter Container's ID: ");
+            System.out.print("Enter Container's ID: ");
             String containerID = sc.nextLine().replace(" ","");
 
             Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
@@ -243,7 +258,7 @@ public class ManagerInterface {
             } else if(vehicle == null){
                 System.out.println("Invalid vehicle - Vehicle does not exist OR Sail away");
             }
-        }else {
+        }else if(manager.getManagePortID() == null){
             System.out.println("ERROR - This manager's port is Null");
         }
         transportation(manager);
@@ -255,11 +270,9 @@ public class ManagerInterface {
         if (manager.getManagePortID() != null) {
             System.out.println("Available vehicle for unloading containers");
             // return existing vehicle to unload
-            for(Vehicle vehicle : TerminalUtil.searchPort(manager.getManagePortID()).getPortVehicles()){
-                System.out.println(vehicle.getVehicleID());
-            }
+            Prettify.prettifyVehicleList(TerminalUtil.searchPort(manager.getManagePortID()).getPortVehicles());
 
-            System.out.println("Enter Vehicle's ID: ");
+            System.out.print("Enter Vehicle's ID: ");
             String vehicleID = sc.nextLine().replace(" ","");
             Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
 
@@ -274,7 +287,7 @@ public class ManagerInterface {
                     try{
                         System.out.print("CONFIRM UNLOAD CONTAINER " + containerID + " | " + vehicleID + ". true / false: ");
                         if(sc.nextBoolean()){
-                            manager.unloadContainer(vehicleID,containerID);
+                            System.out.println(manager.unloadContainer(vehicleID,containerID));
                         }else{
                             System.out.println("UNLOAD CANCELED");
                         }break;
@@ -301,7 +314,7 @@ public class ManagerInterface {
             Prettify.prettifyVehicleList(TerminalUtil.searchPort(manager.getManagePortID()).getPortVehicles());
 
             Scanner sc = new Scanner(System.in);
-            System.out.println("Enter Vehicle's ID: ");
+            System.out.print("Enter Vehicle's ID: ");
             String vehicleID = sc.nextLine().replace(" ","");
             Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID); // search for vehicle
 
@@ -312,7 +325,7 @@ public class ManagerInterface {
                     try {
                         System.out.println("CONFIRM REFUEL VEHICLE " + vehicleID + " | " + gallons + ". true / false: ");
                         if(sc.nextBoolean()) {
-                            manager.refuelVehicle(vehicleID,gallons);
+                            System.out.println(manager.refuelVehicle(vehicleID,gallons));
                         }else {
                             System.out.println("REFUEL CANCELED");
                         } break;
@@ -340,25 +353,25 @@ public class ManagerInterface {
             // current vehicles in the port
             Prettify.prettifyVehicleList(TerminalUtil.searchPort(manager.getManagePortID()).getPortVehicles());
 
-            System.out.println("Enter Vehicle's ID: ");
+            System.out.print("Enter Vehicle's ID: ");
             String vehicleID = sc.nextLine().replace(" ","");
 
             System.out.println("List of all Ports");
             Prettify.prettifyPortList(TerminalUtil.ports);
 
-            System.out.println("Enter Destination's Port ID: ");
+            System.out.print("Enter Destination's Port ID: ");
             String destinationPortID = sc.nextLine().replace(" ","");
 
             System.out.println("Date time format: dd-MM-yyyy HH:mm:ss");
-            System.out.println("Departure Date and Time: ");
-            String departureDate = sc.nextLine().replace(" ","");
+            System.out.print("Departure Date and Time: ");
+            String departureDate = sc.nextLine();
             System.out.print("Arrival Date and Time: ");
-            String arrival = sc.nextLine().replace(" ","");;
+            String arrival = sc.nextLine();
             while(true) {
                 try {
-                    System.out.println("CONFIRM MOVE TO PORT:  " + vehicleID + " | " + destinationPortID + " | "+ departureDate + " | " + arrival + ". true / false: ");
+                    System.out.print("CONFIRM MOVE TO PORT:  " + vehicleID + " | " + destinationPortID + " | "+ departureDate + " | " + arrival + ". true / false: ");
                     if(sc.nextBoolean()) {
-                        manager.moveToPort(vehicleID,destinationPortID,departureDate,arrival);
+                        System.out.println(manager.moveToPort(vehicleID,destinationPortID,departureDate,arrival));
                     }else {
                         System.out.println("MOVE CANCELED");
                     } break;
@@ -385,7 +398,7 @@ public class ManagerInterface {
         System.out.println("2. Objects Listing Statistics");
         System.out.println("3. Get Trips");
         System.out.println("~. Go back");
-        System.out.println("Enter your choice: ");
+        System.out.print("Enter your choice: ");
         Scanner sc = new Scanner(System.in);
         String choice = sc.nextLine();
 
@@ -418,29 +431,49 @@ public class ManagerInterface {
         System.out.println("4. Number of Containers of Each Type ");
         System.out.println("5. Number of Vehicles of Each Type ");
         System.out.println("~. Go Back");
-        System.out.println("Enter your choice: ");
+        System.out.print("Enter your choice: ");
         Scanner sc = new Scanner(System.in);
         String choice = sc.nextLine();
 
         switch (choice) {
 
             case "1" -> {
-                Prettify.prettifyGetTotalFuelConsumedPerDay(manager.getTotalFuelConsumedPerDay());
+                if(manager.getManagePortID() != null) {
+                    Prettify.prettifyGetTotalFuelConsumedPerDay(manager.getTotalFuelConsumedPerDay());
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }
-
             case "2" -> {
-                System.out.println("Enter The Date: ");
-                String date = sc.nextLine().replace(" ","");
-                manager.getTotalConsumedFuelByDate(date);
+                if(manager.getManagePortID() != null) {
+                    System.out.print("Enter The Date ( dd-MM-yyyy ): ");
+                    String date = sc.nextLine().replace(" ","");
+                    System.out.println(manager.getTotalConsumedFuelByDate(date));
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
+
             }
             case "3" -> {
-                Prettify.prettifyGetTotalWeightOfEachType(manager.getTotalWeightOfEachType());
+                if(manager.getManagePortID() != null) {
+                    Prettify.prettifyGetTotalWeightOfEachType(manager.getTotalWeightOfEachType());
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }
             case "4" -> {
-                Prettify.prettifyGetNumberOfContainerOfEachType(manager.getNumberOfContainerOfEachType());
+                if(manager.getManagePortID() != null) {
+                    Prettify.prettifyGetNumberOfContainerOfEachType(manager.getNumberOfContainerOfEachType());
+                } else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }
             case "5" -> {
-                Prettify.prettifyGetNumberOfVehicleOfEachType(manager.getNumberOfVehicleOfEachType());
+                if(manager.getManagePortID() != null) {
+                    Prettify.prettifyGetNumberOfVehicleOfEachType(manager.getNumberOfVehicleOfEachType());
+                } else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }case "~" ->{
                 statQuery(manager);
             }
@@ -457,24 +490,37 @@ public class ManagerInterface {
         System.out.println("2. List of All Vehicles");
         System.out.println("3. List of All The Containers");
         System.out.println("~. Go back");
-        System.out.println("Enter your choice: ");
+        System.out.print("Enter your choice: ");
         Scanner sc = new Scanner(System.in);
         String choice = sc.nextLine();
 
         switch (choice) {
 
             case "1" -> {
-                System.out.println("Enter Vehicle's Type");
-                String vehicleType = sc.nextLine();
-                manager.getListOfVehicleByType(vehicleType);
+                if(manager.getManagePortID() != null) {
+                    System.out.println("Available vehicle types: ReeferTruck | TankerTruck | BasicTruck | Ship ");
+                    System.out.print("Enter Vehicle's Type: ");
+                    String vehicleType = sc.nextLine();
+                    Prettify.prettifyVehicleList(manager.getListOfVehicleByType(vehicleType));
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }
 
             case "2" -> {
-                Prettify.prettifyVehicleList(manager.getListOfAllVehicles());
+                if(manager.getManagePortID() != null) {
+                    Prettify.prettifyVehicleList(manager.getListOfAllVehicles());
+                } else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }
 
             case "3" -> {
-                Prettify.prettifyContainerList(manager.getListOfAllContainers());
+                if(manager.getManagePortID() != null) {
+                    Prettify.prettifyContainerList(manager.getListOfAllContainers());
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }
             case "~" -> {
                 statQuery(manager);
@@ -494,46 +540,69 @@ public class ManagerInterface {
         System.out.println("4. Get The Trips That Departs Between A to B Dates ");
         System.out.println("5. Get Trips Between A to B Dates ");
         System.out.println("~. Go back ");
-        System.out.println("Enter your choice: ");
+        System.out.print("Enter your choice: ");
         Scanner sc = new Scanner(System.in);
         String choice = sc.nextLine();
 
         switch (choice) {
-
             case "1" -> {
-                System.out.println("Enter Arrival Date ( dd-MM-yyyy ): ");
-                String date = sc.nextLine();
-                manager.getTripsByArrivalDate(date);
+                if(manager.getManagePortID() != null) {
+                    System.out.println("GUIDE: get trips by arrival date.");
+                    System.out.print("Enter Arrival Date ( dd-MM-yyyy ): ");
+                    String date = sc.nextLine();
+                    Prettify.prettifyLogList(manager.getTripsByArrivalDate(date));
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }
-
             case "2" -> {
-                System.out.println("Enter Departure Date ( dd-MM-yyyy ): ");
-                String date = sc.nextLine();
-                manager.getTripsByDepartureDate(date);
-            }
+                if(manager.getManagePortID() != null) {
+                    System.out.println("GUIDE: get trips by departure date.");
+                    System.out.print("Enter Departure Date ( dd-MM-yyyy ): ");
+                    String date = sc.nextLine();
+                    Prettify.prettifyLogList(manager.getTripsByDepartureDate(date));
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
 
+            }
             case "3" -> {
-                System.out.println("Enter Starting Date A ( dd-MM-yyyy ): ");
-                String startDate = sc.nextLine();
-                System.out.println("Enter Ending Date B ( dd-MM-yyyy ): ");
-                String endDate= sc.nextLine();
-                manager.getTripsBetweenArrivalDates(startDate,endDate);
-            }
+                if(manager.getManagePortID() != null) {
+                    System.out.println("GUIDE: get trips between 2 dates by arrival date.");
+                    System.out.print("Enter Starting Date A ( dd-MM-yyyy ): ");
+                    String startDate = sc.nextLine();
+                    System.out.print("Enter Ending Date B ( dd-MM-yyyy ): ");
+                    String endDate= sc.nextLine();
+                    Prettify.prettifyLogList(manager.getTripsBetweenArrivalDates(startDate,endDate));
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
 
+            }
             case "4" -> {
-                System.out.println("Enter Starting Date A ( dd-MM-yyyy ): ");
-                String startDate = sc.nextLine();
-                System.out.println("Enter Ending Date B ( dd-MM-yyyy ): ");
-                String endDate= sc.nextLine();
-                manager.getTripsBetweenDepartureDates(startDate,endDate);
-            }
+                if(manager.getManagePortID() != null) {
+                    System.out.println("GUIDE: get trips between 2 dates by departure date.");
+                    System.out.print("Enter Starting Date A ( dd-MM-yyyy ): ");
+                    String startDate = sc.nextLine();
+                    System.out.print("Enter Ending Date B ( dd-MM-yyyy ): ");
+                    String endDate= sc.nextLine();
+                    Prettify.prettifyLogList(manager.getTripsBetweenDepartureDates(startDate,endDate));
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
 
+            }
             case "5" -> {
-                System.out.println("Enter Starting Date A ( dd-MM-yyyy ): ");
-                String startDate = sc.nextLine();
-                System.out.println("Enter Ending Date B ( dd-MM-yyyy ): ");
-                String endDate= sc.nextLine();
-                manager.getTripsInDates(startDate,endDate);
+                if(manager.getManagePortID() != null) {
+                    System.out.println("GUIDE: get trips between 2 dates.");
+                    System.out.print("Enter Starting Date A ( dd-MM-yyyy ): ");
+                    String startDate = sc.nextLine();
+                    System.out.print("Enter Ending Date B ( dd-MM-yyyy ): ");
+                    String endDate= sc.nextLine();
+                    Prettify.prettifyLogList(manager.getTripsInDates(startDate,endDate));
+                }else {
+                    System.out.println("ERROR - This manager's port is Null");
+                }
             }
             case "~" -> {
                 statQuery(manager);

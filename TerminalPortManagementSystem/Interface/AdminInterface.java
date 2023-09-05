@@ -1000,13 +1000,14 @@ public class AdminInterface {
 
         switch (option) {
             case "1" -> {
+                Prettify.prettifyPortList(TerminalUtil.ports);
                 System.out.print("Target 1 ID: ");
                 String target1 = sc.nextLine();
                 System.out.print("Target 2 ID: ");
                 String target2 = sc.nextLine();
 
                 System.out.println("Distance between " + target1 + " and " + target2 + " is: " +
-                        admin.calculateDistanceBetweenPorts(target1, target2));
+                        admin.calculateDistanceBetweenPorts(target1, target2) +" km") ;
                 getOther();
             }
             case "2" -> {
