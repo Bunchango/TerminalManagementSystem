@@ -15,10 +15,24 @@ public class InterfaceSystem {
         login();
 
         TerminalUtil.stopScheduledTask(future);
+        System.exit(0);
     }
 
     private static void login() {
         Scanner sc = new Scanner(System.in);
+
+        // Welcome screen
+        System.out.println("COSC2081 GROUP ASSIGNMENT");
+        System.out.println("CONTAINER PORT MANAGEMENT SYSTEM");
+        System.out.println("Instructor: Mr. Minh Vu & Dr. Phong Ngo");
+        System.out.println("Group: Team 4");
+        System.out.println("s3978290, Dong Manh Duc");
+        System.out.println("s3977747, Le Nguyen My Chau");
+        System.out.println("s3927777, Do Thuy Linh");
+        System.out.println("s3978506, Nguyen Ba Duc Manh");
+        System.out.println();
+        System.out.println("-----------------------------------------");
+
         System.out.println("Menu");
         System.out.println("1: Login");
         System.out.println("2: Terminate program");

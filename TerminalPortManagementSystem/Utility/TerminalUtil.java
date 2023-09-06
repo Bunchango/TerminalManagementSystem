@@ -7,6 +7,7 @@ import TerminalPortManagementSystem.Vehicles.Vehicle;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -280,6 +281,7 @@ public class TerminalUtil {
         }
         occurringLogs.removeIf(Log::isFinished); // Remove all logs that is finished
         updateVehicleWhenReachDepartureDate();
+        deleteLogAfterSevenDays(); // Keep only logs within the last 7 days
         LogManager.saveAllObjects();
     }
 
@@ -295,6 +297,17 @@ public class TerminalUtil {
                 announcements.add(log.getVehicleID() + " start moving to " + log.getArrivalPortID());
             }
         }
+    }
+
+    public static void deleteLogAfterSevenDays() {
+        Date currentDate = new Date();
+
+        // Define the threshold date (7 days before today)
+        long thresholdMillis = currentDate.getTime() - (7 * 24 * 60 * 60 * 1000);
+
+        // Iterate through the logs and remove those with arrivalDate before the threshold
+        // Remove the log if its arrivalDate is more than 7 days before today
+        occurredLogs.removeIf(log -> log.getArrivalDate().getTime() <= thresholdMillis);
     }
 
     public static void updateLogWhenTransportContainer(Vehicle vehicle) {
