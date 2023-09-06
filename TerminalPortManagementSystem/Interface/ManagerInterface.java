@@ -280,7 +280,7 @@ public class ManagerInterface {
                 System.out.println("Available containers in vehicle:");
                 Prettify.prettifyContainerList(TerminalUtil.searchVehicle(vehicleID).getVehicleContainers());
 
-                System.out.println("Enter Container's ID: ");
+                System.out.print("Enter Container's ID: ");
                 String containerID = sc.nextLine().replace(" ","");
 
                 while (true) {
@@ -319,11 +319,11 @@ public class ManagerInterface {
             Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID); // search for vehicle
 
             if(vehicle != null && !vehicle.isSailAway()){
-                System.out.println("Enter number of gallons: ");
+                System.out.print("Enter number of gallons: ");
                 double gallons = sc.nextDouble();
                 while(true) {
                     try {
-                        System.out.println("CONFIRM REFUEL VEHICLE " + vehicleID + " | " + gallons + ". true / false: ");
+                        System.out.print("CONFIRM REFUEL VEHICLE " + vehicleID + " | " + gallons + ". true / false: ");
                         if(sc.nextBoolean()) {
                             System.out.println(manager.refuelVehicle(vehicleID,gallons));
                         }else {
