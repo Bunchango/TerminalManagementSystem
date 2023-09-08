@@ -16,7 +16,7 @@ public class AdminInterface {
         Scanner sc = new Scanner(System.in);
         System.out.println("-----------------------------------------");
         System.out.println("1. Announcement [" + TerminalUtil.announcements.size() + "]");
-        System.out.println("2. Create and Remove");
+        System.out.println("2. Create, Remove and Update");
         System.out.println("3. Transportation");
         System.out.println("4. Statistics and Query");
         System.out.println("~. Terminate program");
@@ -26,7 +26,7 @@ public class AdminInterface {
         switch (option) {
             case "1" -> announcement();
 
-            case "2" -> createRemove();
+            case "2" -> createRemoveUpdate();
 
             case "3" -> transportation();
 
@@ -66,11 +66,12 @@ public class AdminInterface {
         run();
     }
 
-    public static void createRemove() {
+    public static void createRemoveUpdate() {
         System.out.println("-----------------------------------------");
         Scanner sc = new Scanner(System.in);
         System.out.println("1. Create");
         System.out.println("2. Remove");
+        System.out.println("3. Update");
         System.out.println("~. Go back");
         System.out.print("Enter your choice: ");
         String option = sc.nextLine();
@@ -78,15 +79,407 @@ public class AdminInterface {
         switch (option) {
             case "1" -> create();
             case "2" -> remove();
+            case "3" -> update();
             case "~" -> run();
             default -> {
-                System.out.println("Invalid input. Please enter either '1' or '2'");
+                System.out.println("Invalid input. ");
                 System.out.println("-----------------------------------------");
-                createRemove();
+                createRemoveUpdate();
+            }
+        }
+        run();
+    }
+
+    public static void update() {
+        System.out.println("-----------------------------------------");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("1. Update manager");
+        System.out.println("2. Update port");
+        System.out.println("3. Update vehicle");
+        System.out.println("4. Update container Id");
+        System.out.println("5. Set and unset manager's manage portID");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+
+        switch (option) {
+            case "1" -> updateManager();
+            case "2" -> updatePort();
+            case "3" -> updateVehicle();
+            case "4" -> updateContainer();
+            case "5" -> setUnset();
+            case "~" -> createRemoveUpdate();
+            default -> {
+                System.out.println("Invalid input. ");
+                update();
+            }
+        }
+        createRemoveUpdate();
+    }
+
+    public static void updateManager() {
+        System.out.println("-----------------------------------------");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("1. Update username");
+        System.out.println("2. Update password");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+        switch (option){
+            case "1" -> updateUsername();
+            case "2" -> updatePassword();
+            case "~" -> createRemoveUpdate();
+            default -> {
+                System.out.println("Invalid input. ");
+                updateManager();
+            }
+        }
+    }
+    public static void updateUsername(){
+        System.out.println("-----------------------------------------");
+        System.out.println("All managers: ");
+        Prettify.prettifyManagerList(TerminalUtil.managers);
+
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter manager's username: ");
+        String username = sc.nextLine();
+        System.out.print("Enter new username: ");
+        String newUsername = sc.nextLine();
+        while (true) {
+            try {
+                System.out.print("CONFIRM UPDATE USERNAME: " + username + " TO " + newUsername + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updateManagerUsername(username,newUsername));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+        System.out.println("All managers: ");
+        Prettify.prettifyManagerList(TerminalUtil.managers);
+        updateManager();
+    }
+
+    public static void updatePassword() {
+        System.out.println("-----------------------------------------");
+        System.out.println("All managers: ");
+        Prettify.prettifyManagerList(TerminalUtil.managers);
+
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter manager's username: ");
+        String username = sc.nextLine();
+        System.out.print("Enter new password: ");
+        String newPassword = sc.nextLine();
+
+        while (true) {
+            try {
+                System.out.print("CONFIRM UPDATE USERNAME: " + username + " TO " + newPassword + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updateManagerPassword(username,newPassword));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+        System.out.println("All managers: ");
+        Prettify.prettifyManagerList(TerminalUtil.managers);
+        updateManager();
+    }
+
+    public static void updatePort() {
+        System.out.println("-----------------------------------------");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("1. Update port Id");
+        System.out.println("2. Update port's name");
+        System.out.println("3. Update port storing capacity ");
+        System.out.println("4. Update port's landing ability ");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+        switch (option) {
+            case "1" -> updatePortID();
+            case "2" -> updatePortName();
+            case "3" -> updatePortStoringCapacity();
+            case "4" -> updateLandingAbility();
+            case "~" -> update() ;
+            default -> {
+                System.out.println("Invalid input. ");
+                updatePort();
+            }
+        }
+        update();
+    }
+    public static void updatePortID() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("All ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+
+        System.out.print("Enter port ID: ");
+        String portID = sc.nextLine();
+        System.out.print("Enter new port ID: ");
+        String newPortID = sc.nextLine();
+        while (true) {
+            try {
+                System.out.print("CONFIRM UPDATE PORT ID: " + portID + " TO " + newPortID + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updatePortID(portID,newPortID));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
             }
         }
 
-        run();
+        System.out.println("All ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+
+        updatePort();
+    }
+
+    public static void updatePortName() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("All ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+
+        System.out.print("Enter port ID: ");
+        String portID = sc.nextLine();
+        System.out.print("Enter new port's name: ");
+        String newPortName = sc.nextLine();
+        while (true) {
+            try {
+                System.out.println("CONFIRM UPDATE PORT'S NAME: " + portID + " TO " + newPortName + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updatePortName(portID, newPortName));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter either 'true' or 'false'.");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+
+        System.out.println("All ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+
+        updatePort();
+    }
+
+    public static void updatePortStoringCapacity() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("All ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+
+        System.out.print("Enter port ID: ");
+        String portID = sc.nextLine();
+        System.out.print("Enter new port's capacity: ");
+
+        while (true) {
+            try {
+                double newPortCapacity = sc.nextDouble();
+                System.out.println("CONFIRM UPDATE PORT'S CAPACITY: " + portID + " TO " + newPortCapacity + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updatePortStoringCapacity(portID, newPortCapacity));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. ");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+
+        System.out.println("All ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+
+        updatePort();
+    }
+    public static void updateLandingAbility() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("All ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+
+        System.out.print("Enter port ID: ");
+        String portID = sc.nextLine();
+        System.out.print("Enter new port's landing ability: ");
+
+        while (true) {
+            try {
+                boolean newPortLandingAbility = sc.nextBoolean();
+                System.out.print("CONFIRM UPDATE PORT'S LANDING ABILITY: " + portID + " TO " + newPortLandingAbility + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updatePortLandingAbility(portID, newPortLandingAbility));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. ");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+
+        System.out.println("All ports: ");
+        Prettify.prettifyPortList(TerminalUtil.ports);
+
+        updatePort();
+    }
+
+    public static void updateVehicle() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("-----------------------------------------");
+        System.out.println("1. Update vehicle ID: ");
+        System.out.println("2. Update vehicle's carrying capacity: ");
+        System.out.println("3. Update vehicle's fuel capacity: ");
+        System.out.println("~. Go back");
+        System.out.print("Enter your choice: ");
+        String option = sc.nextLine();
+        switch (option) {
+            case "1" -> updateVehicleID();
+            case "2" -> updateVehicleCarryingCapacity();
+            case "3" -> updateVehicleFuelCapacity();
+            case "~" -> update();
+            default -> {
+                System.out.println("Invalid input. ");
+                updateVehicle();
+            }
+        }
+        update();
+    }
+
+    public static void updateVehicleID() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("All vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+
+        System.out.print("Enter vehicle ID: ");
+        String vehicleID = sc.nextLine();
+        System.out.print("Enter new vehicle ID: ");
+        String newVehicleID = sc.nextLine();
+
+        while (true) {
+            try {
+                System.out.print("CONFIRM UPDATE VEHICLE ID: " + vehicleID + " TO " + newVehicleID + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updateVehicleID(vehicleID, newVehicleID));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. ");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+
+        System.out.println("All vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+
+        updateVehicle();
+    }
+
+    public static void updateVehicleCarryingCapacity() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("All vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+
+        System.out.print("Enter vehicle ID: ");
+        String vehicleID = sc.nextLine();
+        System.out.print("Enter new vehicle's capacity: ");
+
+        while (true) {
+            try {
+                double newVehicleCapacity = sc.nextDouble();
+                System.out.print("CONFIRM UPDATE VEHICLE CARRYING CAPACITY: " + vehicleID + " TO " + newVehicleCapacity + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updateVehicleCarryingCapacity(vehicleID, newVehicleCapacity));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. ");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+
+        System.out.println("All vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+
+        updateVehicle();
+    }
+
+    public static void updateVehicleFuelCapacity() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("All vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+
+        System.out.print("Enter vehicle ID: ");
+        String vehicleID = sc.nextLine();
+        System.out.print("Enter new vehicle's capacity: ");
+
+        while (true) {
+            try {
+                double newVehicleFuelCapacity = sc.nextDouble();
+                System.out.print("CONFIRM UPDATE VEHICLE FUEL CAPACITY: " + vehicleID + " TO " + newVehicleFuelCapacity + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updateVehicleFuelCapacity(vehicleID, newVehicleFuelCapacity));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. ");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+
+        System.out.println("All vehicles: ");
+        Prettify.prettifyVehicleList(TerminalUtil.vehicles);
+
+        updateVehicle();
+    }
+
+    public static void updateContainer() {
+        System.out.println("-----------------------------------------");
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("All containers: ");
+        Prettify.prettifyContainerList(TerminalUtil.containers);
+
+        System.out.print("Enter container Id for updating: ");
+        String containerID = sc.nextLine();
+        System.out.print("Enter new container Id: ");
+        String newContainID = sc.nextLine();
+        while (true) {
+            try {
+                System.out.print("CONFIRM UPDATE VEHICLE FUEL CAPACITY: " + containerID + " TO " + newContainID + " (true/false)? ");
+                if (sc.nextBoolean()) {
+                    System.out.println(TerminalUtil.updateContainerId(containerID,newContainID));
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid input. ");
+                System.out.println("-----------------------------------------");
+                sc.nextLine(); // Clear the input buffer
+            }
+        }
+
+        System.out.println("All containers: ");
+        Prettify.prettifyContainerList(TerminalUtil.containers);
+
+        update();
     }
 
     public static void create() {
@@ -105,7 +498,7 @@ public class AdminInterface {
             case "2" -> createPort();
             case "3" -> createVehicle();
             case "4" -> createContainer();
-            case "~" -> createRemove();
+            case "~" -> createRemoveUpdate();
             default -> {
                 System.out.println("Invalid input. ");
                 create();
@@ -295,7 +688,6 @@ public class AdminInterface {
         System.out.println("2. Remove Port");
         System.out.println("3. Remove Vehicle");
         System.out.println("4. Remove Container");
-        System.out.println("5. Set and unset manager's manage portID");
         System.out.println("~. Go back");
         System.out.print("Enter your choice: ");
         String option = sc.nextLine();
@@ -305,8 +697,7 @@ public class AdminInterface {
             case "2" -> removePort();
             case "3" -> removeVehicle();
             case "4" -> removeContainer();
-            case "5" -> setUnset();
-            case "~" -> createRemove();
+            case "~" -> createRemoveUpdate();
             default -> {
                 System.out.println("Invalid input. ");
                 remove();
@@ -647,10 +1038,12 @@ public class AdminInterface {
         System.out.print("Destination Port's ID: ");
         String destinationPortID = sc.nextLine();
         System.out.println("Date Time format: dd-MM-yyyy HH:mm:ss");
+
         System.out.print("Departure Date and Time: ");
         String departure = sc.nextLine();
         System.out.print("Arrival Date and Time: ");
         String arrival = sc.nextLine();
+
 
         while (true) {
             try {

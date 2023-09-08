@@ -14,8 +14,8 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Manager implements Serializable, User {
-    private final String username;
-    private final String password;
+    private String username;
+    private String password;
     private String managePortID;
 
     public Manager(String username, String password, String managePortID) {
@@ -71,6 +71,14 @@ public class Manager implements Serializable, User {
 
         managePortID = portID;
         return "Set manager's port successfully";
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getManagePortID() {

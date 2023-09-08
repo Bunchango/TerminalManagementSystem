@@ -7,7 +7,6 @@ import TerminalPortManagementSystem.Vehicles.Vehicle;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -261,6 +260,265 @@ public class TerminalUtil {
         return "Container found and deleted";
     }
 
+    // Updates
+    public static String updateContainerId(String containerID, String newContainerID) {
+        Container container = TerminalUtil.searchContainer(containerID);
+        if (objectAlreadyExist(newContainerID)) {
+            return "Invalid new containerID - ID already used";
+        }
+
+        if (container == null) {
+            return "Invalid containerID - container does not exist";
+        }
+
+        // Delete old id
+        usedIds.remove(container.getContainerID());
+        // Add new id
+        usedIds.add(newContainerID);
+        container.setContainerID(newContainerID);
+        LogManager.saveAllObjects();
+        return "Container ID set";
+    }
+
+    public static String updateContainerIdOfPort(String portID, String containerID, String newContainerID) {
+        Port port = TerminalUtil.searchPort(portID);
+        Container container = TerminalUtil.searchContainer(containerID);
+
+        if (objectAlreadyExist(newContainerID)) {
+            return "Invalid new containerID - ID already used";
+        }
+
+        if (container == null) {
+            return "Invalid containerID - container does not exist";
+        }
+
+        if (port == null) {
+            return "Invalid portID - port does not exist";
+        }
+
+        // Delete old id
+        usedIds.remove(container.getContainerID());
+        // Add new id
+        usedIds.add(newContainerID);
+        container.setContainerID(newContainerID);
+        LogManager.saveAllObjects();
+        return "Container ID set";
+    }
+
+    public static String updateVehicleID(String vehicleID, String newVehicleID) {
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+        if (objectAlreadyExist(newVehicleID)) {
+            return "Invalid new vehicleID - ID already used";
+        }
+
+        if (vehicle == null) {
+            return "Invalid vehicleID - vehicle does not exist";
+        }
+
+        if (vehicle.isScheduled()) {
+            return "Invalid vehicle - can't update vehicle if it is scheduled";
+        }
+        // Update log
+        for (Log log: occurredLogs) {
+            if (log.getVehicleID().equals(vehicle.getVehicleID())) {
+                log.setVehicleID(newVehicleID);
+            }
+        }
+        // Delete old id
+        usedIds.remove(vehicle.getVehicleID());
+        // Add new id
+        usedIds.add(newVehicleID);
+        // Update vehicle
+        vehicle.setVehicleID(newVehicleID);
+        LogManager.saveAllObjects();
+        return "Vehicle ID set";
+    }
+
+    public static String updateVehicleCarryingCapacity(String vehicleID, double newCapacity) {
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+
+        if (vehicle == null) {
+            return "Invalid vehicleID - vehicle does not exist";
+        }
+
+        if (vehicle.isScheduled()) {
+            return "Invalid vehicle - can't update vehicle if it is scheduled";
+        }
+
+        if (newCapacity < vehicle.getTotalCarryingWeight()) {
+            return "Invalid new carrying capacity - capacity can't handle vehicle's current weight";
+        }
+        vehicle.setCarryingCapacity(newCapacity);
+        LogManager.saveAllObjects();
+        return "Vehicle carrying capacity set";
+    }
+
+    public static String updateVehicleFuelCapacity(String vehicleID, double newCapacity) {
+        Vehicle vehicle = TerminalUtil.searchVehicle(vehicleID);
+
+        if (vehicle == null) {
+            return "Invalid vehicleID - vehicle does not exist";
+        }
+
+        if (vehicle.isScheduled()) {
+            return "Invalid vehicle - can't update vehicle if it is scheduled";
+        }
+        // Set current fuel to new max if new capacity is less than original current fuel
+        if (newCapacity < vehicle.getCurrentFuel()) {
+            vehicle.setCurrentFuel(newCapacity);
+        }
+        vehicle.setFuelCapacity(newCapacity);
+        LogManager.saveAllObjects();
+        return "Vehicle fuel capacity set";
+    }
+
+    public static String updatePortID(String portID, String newPortID) {
+        Port port = TerminalUtil.searchPort(portID);
+
+        if (port == null) {
+            return "Invalid portID - port does not exist";
+        }
+
+        if (objectAlreadyExist(newPortID)) {
+            return "Invalid new portID - ID already used";
+        }
+        // Can only update if port has not scheduled trip
+        if (port.isStartPort()) {
+            return "Invalid port - can't update a started port";
+        }
+
+        if (port.isTargetPort()) {
+            return "Invalid port - can't update a targeted port";
+        }
+        // Update log
+        for (Log log: occurredLogs) {
+            if (log.getArrivalPortID().equals(port.getPortID())) {
+                log.setArrivalPortID(newPortID);
+            } else if (log.getDeparturePortID().equals(port.getPortID())) {
+                log.setDeparturePortID(newPortID);
+            }
+        }
+        // Delete old ID
+        usedIds.remove(port.getPortID());
+        // Add new id
+        usedIds.add(newPortID);
+        // Update port
+        for (Manager manager : TerminalUtil.managers) {
+            if (manager.getManagePortID().equals(port.getPortID())) {
+                manager.setManagePortID(newPortID);
+            }
+        }
+        port.setPortID(newPortID);
+        LogManager.saveAllObjects();
+        return "Port ID set";
+    }
+
+    public static String updatePortName(String portID, String newName) {
+        Port port = TerminalUtil.searchPort(portID);
+        if (port == null) {
+            return "Invalid portID - port does not exist";
+        }
+
+        // Can only update if port has not scheduled trip
+        if (port.isStartPort()) {
+            return "Invalid port - can't update a started port";
+        }
+
+        if (port.isTargetPort()) {
+            return "Invalid port - can't update a targeted port";
+        }
+        // Update port
+        port.setPortName(newName);
+        LogManager.saveAllObjects();
+        return "Port name set";
+    }
+
+    public static String updatePortStoringCapacity(String portID, double newStoringCapacity) {
+        Port port = TerminalUtil.searchPort(portID);
+
+        if (port == null) {
+            return "Invalid portID - port does not exist";
+        }
+
+        if (newStoringCapacity < port.getTotalCarryingWeight()) {
+            return "Invalid storingCapacity - port's current carrying weight is higher than new storing capacity";
+        }
+
+        // Can only update if port has not scheduled trip
+        if (port.isStartPort()) {
+            return "Invalid port - can't update a started port";
+        }
+
+        if (port.isTargetPort()) {
+            return "Invalid port - can't update a targeted port";
+        }
+        // Update port
+        port.setStoringCapacity(newStoringCapacity);
+        LogManager.saveAllObjects();
+        return "Port storing capacity set";
+    }
+
+    public static String updatePortLandingAbility(String portID, boolean newLandingAbility) {
+        Port port =  TerminalUtil.searchPort(portID);
+
+        if (port == null) {
+            return "Invalid portID - port does not exist";
+        }
+
+        // Can only update if port has not scheduled trip
+        if (port.isStartPort()) {
+            return "Invalid port - can't update a started port";
+        }
+
+        if (port.isTargetPort()) {
+            return "Invalid port - can't update a targeted port";
+        }
+        // If there are trucks in the port, prevent
+        if (!newLandingAbility) {
+            for (Vehicle vehicle : port.getPortVehicles()) {
+                if (vehicle.getVehicleType().isTruck()) {
+                    return "Invalid port - can't update port landing ability to false if there are trucks inside the vehicle";
+                }
+            }
+        }
+        // Update port
+        port.setLandingAbility(newLandingAbility);
+        LogManager.saveAllObjects();
+        return "Port landing ability set";
+    }
+
+    public static String updateManagerUsername(String username, String newUsername) {
+        Manager manager = TerminalUtil.searchManager(username);
+        if (manager == null) {
+            return "Invalid username - manager does not exist";
+        }
+
+        if (objectAlreadyExist(newUsername)) {
+            return "Invalid new username - username already used";
+        }
+        // Remove old username
+        usedIds.remove(manager.getUsername());
+        // Set new username
+        manager.setUsername(newUsername);
+        // Add new username to list
+        usedIds.add(newUsername);
+        LogManager.saveAllObjects();
+        return "Manager username set";
+    }
+
+    public static String updateManagerPassword(String managerUsername, String newPassword) {
+        Manager manager = TerminalUtil.searchManager(managerUsername);
+
+        if (manager == null) {
+            return "Invalid username - manager does not exist";
+        }
+
+        // Set new password
+        manager.setPassword(newPassword);
+        LogManager.saveAllObjects();
+        return "Manager password set";
+    }
+
     public static void updateLogWhenFinished() {
         // Determine if a port is finished
         for (Log log: occurringLogs) {
@@ -329,15 +587,26 @@ public class TerminalUtil {
     public static Date parseStringToDateTime(String stringToParse) {
         // Parse given String to date time format
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        if (!isValidDateTime(stringToParse)) {
+            return null;
+        }
+
         try {
             return formatter.parse(stringToParse);
         } catch (ParseException e) {
             return null;
         }
     }
+
     public static Date parseStringToDate(String stringToParse) {
         // Parse given String to date format
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+        if (!isValidDate(stringToParse)) {
+            return null;
+        }
+
         try {
             return formatter.parse(stringToParse);
         } catch (ParseException e) {
@@ -370,6 +639,52 @@ public class TerminalUtil {
     public static boolean passedDate(Date date1, Date date2) {
         // Determine if date1 has pass date2
         return date1.compareTo(date2) >= 0;
+    }
+
+    public static boolean isValidDateTime(String input) {
+        // Define a regular expression pattern to match a valid date format
+        String dateFormatPattern = "\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{1,2}:\\d{1,2}";
+
+        // Check if the input matches the pattern
+        if (!input.matches(dateFormatPattern)) {
+            return false;
+        }
+
+        // If it matches the pattern, try to parse it as a date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        sdf.setLenient(false); // Disable leniency to enforce strict date parsing
+
+        try {
+            Date parsedDate = sdf.parse(input);
+            // If parsing succeeds without exceptions, it's a valid date
+            return true;
+        } catch (ParseException e) {
+            // Parsing failed, so it's an invalid date
+            return false;
+        }
+    }
+
+    public static boolean isValidDate(String input) {
+        // Define a regular expression pattern to match a valid date format (dd-MM-yyyy)
+        String dateFormatPattern = "\\d{1,2}-\\d{1,2}-\\d{4}";
+
+        // Check if the input matches the pattern
+        if (!input.matches(dateFormatPattern)) {
+            return false;
+        }
+
+        // If it matches the pattern, try to parse it as a date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(false); // Disable leniency to enforce strict date parsing
+
+        try {
+            Date parsedDate = sdf.parse(input);
+            // If parsing succeeds without exceptions, it's a valid date
+            return true;
+        } catch (ParseException e) {
+            // Parsing failed, so it's an invalid date
+            return false;
+        }
     }
 
     public static User login(String username, String password) {

@@ -12,13 +12,14 @@ import java.io.Serializable;
 import java.util.*;
 
 public abstract class Vehicle implements Serializable {
-    private final String vehicleID;
+    private String vehicleID;
     private final VehicleType vehicleType;
     private Port currentPort;
     private double currentFuel = 0;
-    private final double carryingCapacity;
-    private final double fuelCapacity;
+    private double carryingCapacity;
+    private double fuelCapacity;
     private final List<Container> vehicleContainers = new ArrayList<>();
+
     Vehicle(String vehicleID, VehicleType vehicleType, Port currentPort, double carryingCapacity, double fuelCapacity) {
         // Check for illogical sets
         if (TerminalUtil.objectAlreadyExist(vehicleID)) {
@@ -76,6 +77,23 @@ public abstract class Vehicle implements Serializable {
 
     public List<Container> getVehicleContainers() {
         return vehicleContainers;
+    }
+
+    // Setter
+    public void setVehicleID(String vehicleID) {
+        this.vehicleID = vehicleID;
+    }
+
+    public void setCurrentFuel(double currentFuel) {
+        this.currentFuel = currentFuel;
+    }
+
+    public void setCarryingCapacity(double carryingCapacity) {
+        this.carryingCapacity = carryingCapacity;
+    }
+
+    public void setFuelCapacity(double fuelCapacity) {
+        this.fuelCapacity = fuelCapacity;
     }
 
     public double getTotalCarryingWeight() {

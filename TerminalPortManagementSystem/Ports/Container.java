@@ -8,7 +8,7 @@ import TerminalPortManagementSystem.Vehicles.Vehicle;
 import java.io.Serializable;
 
 public class Container implements Serializable {
-    private final String containerID;
+    private String containerID;
     private final ContainerType containerType;
     private final double weight;
 
@@ -53,6 +53,11 @@ public class Container implements Serializable {
 
     public double getWeight() {
         return weight;
+    }
+
+    // Setter
+    public void setContainerID(String containerID) {
+        this.containerID = containerID;
     }
 
     @Override

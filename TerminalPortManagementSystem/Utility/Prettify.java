@@ -325,7 +325,7 @@ public class Prettify {
         } else {
             // Dynamic print
             int maxLengthUsername = 0;
-            int maxLengthPassword = 0;
+            int maxLengthPassword = 8;
 
             // dynamic length
             for (Manager manager: Managers) {

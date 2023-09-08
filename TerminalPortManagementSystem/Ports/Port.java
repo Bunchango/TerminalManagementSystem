@@ -9,12 +9,12 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Port implements Serializable { // Might have to add a log ( history for trips )
-    private final String portID;
-    private final String portName;
-    private final double latitude;
-    private final double longitude;
-    private final double storingCapacity; // Check if reached storing capacity
-    private final boolean landingAbility;
+    private String portID;
+    private String portName;
+    private double latitude;
+    private double longitude;
+    private double storingCapacity; // Check if reached storing capacity
+    private boolean landingAbility;
     private final List<Vehicle> portVehicles = new ArrayList<>();
     private final List<Container> portContainers = new ArrayList<>(); // Store all Containers inside the port, does not include the Containers inside each Port.Vehicles in the port
 
@@ -54,11 +54,11 @@ public class Port implements Serializable { // Might have to add a log ( history
         return portName;
     }
 
-    public double getLatitude() {
+    public final double getLatitude() {
         return latitude;
     }
 
-    public double getLongitude() {
+    public final double getLongitude() {
         return longitude;
     }
 
@@ -68,7 +68,7 @@ public class Port implements Serializable { // Might have to add a log ( history
 
     public boolean getLandingAbility() {
         return landingAbility;
-    }
+    } // Update when has no truks
 
     public List<Vehicle> getPortVehicles() {
         return portVehicles;
@@ -76,6 +76,23 @@ public class Port implements Serializable { // Might have to add a log ( history
 
     public List<Container> getPortContainers() {
         return portContainers;
+    }
+
+    // Setter
+    public void setPortID(String portID) {
+        this.portID = portID;
+    }
+
+    public void setPortName(String portName) {
+        this.portName = portName;
+    }
+
+    public void setStoringCapacity(double storingCapacity) {
+        this.storingCapacity = storingCapacity;
+    }
+
+    public void setLandingAbility(boolean landingAbility) {
+        this.landingAbility = landingAbility;
     }
 
     public static double calculateDistanceBetweenPort(Port target_1, Port target_2) {

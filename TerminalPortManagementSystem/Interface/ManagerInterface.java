@@ -24,7 +24,7 @@ public class ManagerInterface {
             }
         }
         System.out.println("1. Announcement[" + announcements + "]");
-        System.out.println("2. Create and Remove");
+        System.out.println("2. Create, Remove and Update");
         System.out.println("3. Transportation");
         System.out.println("4. Statistics and Query");
         System.out.println("~. Terminate program");
@@ -88,6 +88,7 @@ public class ManagerInterface {
         System.out.println("-----------------------------------------");
         System.out.println("1. Create Container");
         System.out.println("2. Remove Container");
+        System.out.println("3. Update Container");
         System.out.println("~. Go Back");
         System.out.print("Enter your choice: ");
         Scanner sc = new Scanner(System.in);
@@ -99,6 +100,9 @@ public class ManagerInterface {
             }
             case "2" -> {
                 removeContainer(manager);
+            }
+            case "3" -> {
+                updateContainer(manager);
             }
             case "~" ->{
                 run(manager);
@@ -185,6 +189,37 @@ public class ManagerInterface {
         createRemove(manager);
     }
 
+    public static void updateContainer(Manager manager) {
+        Scanner sc = new Scanner(System.in);
+        if(manager.getManagePortID() != null){
+            System.out.println("Containers in port managing: ");
+            Prettify.prettifyContainerList(TerminalUtil.searchPort(manager.getManagePortID()).getPortContainers());
+
+            System.out.print("Enter container Id: ");
+            String containerID = sc.nextLine();
+            System.out.print("Enter new container Id: ");
+            String newContainerID = sc.nextLine();
+
+            while (true) {
+                try {
+                    System.out.print("CONFIRM UPDATE CONTAINER " + containerID + " TO "+ newContainerID +". true / false: ");
+                    if(sc.nextBoolean()){
+                        System.out.println(TerminalUtil.updateContainerIdOfPort(manager.getManagePortID(),containerID,newContainerID));
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid input. ");
+                    System.out.println("-----------------------------------------");
+                    sc.nextLine(); // consume string buffer
+                }
+            }
+        } else {
+            System.out.println("ERROR - This manager's port is Null");
+        }
+
+
+        createRemove(manager);
+    }
 
     public static void transportation(Manager manager) {
         System.out.println("-----------------------------------------");
