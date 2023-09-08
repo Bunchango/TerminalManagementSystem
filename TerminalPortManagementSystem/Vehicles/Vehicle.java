@@ -145,6 +145,31 @@ public abstract class Vehicle implements Serializable {
             return "Invalid container - Container and Vehicle must be in the same port";
         }
 
+        if (isScheduled() && !isSailAway()) {
+            // Get the total weight of each type of containers in vehicle
+            List<Container> futureVehicleContainers = List.copyOf(vehicleContainers);
+            Map<ContainerType, Double> weightByType = TerminalUtil.getWeightByTypeFromList(futureVehicleContainers, vehicleType);
+
+            // Search destinationPort from log
+            Port destinationPort = null;
+            for (Log log: TerminalUtil.occurringLogs) {
+                if (log.getVehicleID().equals(vehicleID)) {
+                    destinationPort = TerminalUtil.searchPort(log.getArrivalPortID());
+                }
+            }
+
+            if (destinationPort == null) {
+                return "Error";
+            }
+
+            double distance = Port.calculateDistanceBetweenPort(currentPort, destinationPort);
+            double fuelConsumption = TerminalUtil.getFuelConsumptionFromMap(weightByType, distance, vehicleType);
+
+            if (currentFuel < fuelConsumption) {
+                return "Invalid container - Container when loaded will have trip's fuel cost exceed capacity";
+            }
+        }
+
         // Load the container onto the vehicle
         vehicleContainers.add(containerToLoad);
         currentPort.unloadContainer(containerToLoad);
@@ -313,7 +338,7 @@ public abstract class Vehicle implements Serializable {
                 ", currentFuel=" + currentFuel +
                 ", carryingCapacity=" + carryingCapacity +
                 ", fuelCapacity=" + fuelCapacity +
-                ", portContainers=" + containersIDs.toString() +
+                ", portContainers=" + containersIDs +
                 '}';
     }
 }

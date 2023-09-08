@@ -1,8 +1,10 @@
 package TerminalPortManagementSystem.Utility;
 
+import TerminalPortManagementSystem.ContainerType;
 import TerminalPortManagementSystem.Ports.Container;
 import TerminalPortManagementSystem.Ports.Port;
 import TerminalPortManagementSystem.User.*;
+import TerminalPortManagementSystem.VehicleType;
 import TerminalPortManagementSystem.Vehicles.Vehicle;
 
 import java.text.ParseException;
@@ -714,5 +716,33 @@ public class TerminalUtil {
         future.cancel(true);
         // Stop the terminal
         System.exit(0);
+    }
+
+    public static Map<ContainerType, Double> getWeightByTypeFromList(List<Container> vehicleContainers, VehicleType vehicleType) {
+        Map<ContainerType, Double> newWeightByType =  new HashMap<>();
+        for (ContainerType containerType: vehicleType.getAllowedContainerType()) {
+            double totalWeight = 0;
+            for (Container container: vehicleContainers) {
+                if (container.getContainerType() == containerType) {
+                    totalWeight += container.getWeight();
+                }
+            }
+            newWeightByType.put(containerType, totalWeight);
+        }
+        return newWeightByType;
+    }
+
+    public static double getFuelConsumptionFromMap(Map<ContainerType, Double> weightByType, double distance, VehicleType vehicleType) {
+        double fuelConsumption = 0;
+        for (ContainerType containerType: weightByType.keySet()) {
+            // Ship and truck have different fuel cost for different type of containers
+            if (vehicleType.isShip()) {
+                // Convert from kg to ton
+                fuelConsumption += containerType.getShipFuelCost() * weightByType.get(containerType) / 1000 * distance;
+            } else {
+                fuelConsumption += containerType.getTruckFuelCost() * weightByType.get(containerType) / 1000 * distance;
+            }
+        }
+        return fuelConsumption;
     }
 }
