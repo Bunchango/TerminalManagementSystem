@@ -398,16 +398,18 @@ public class TerminalUtil {
                 log.setDeparturePortID(newPortID);
             }
         }
-        // Delete old ID
-        usedIds.remove(port.getPortID());
-        // Add new id
-        usedIds.add(newPortID);
-        // Update port
+        // Update manager port
         for (Manager manager : TerminalUtil.managers) {
             if (manager.getManagePortID().equals(port.getPortID())) {
                 manager.setManagePortID(newPortID);
             }
         }
+
+        // Delete old ID
+        usedIds.remove(port.getPortID());
+        // Add new id
+        usedIds.add(newPortID);
+        // Update port
         port.setPortID(newPortID);
         LogManager.saveAllObjects();
         return "Port ID set";
@@ -643,7 +645,7 @@ public class TerminalUtil {
 
     public static boolean isValidDateTime(String input) {
         // Define a regular expression pattern to match a valid date format
-        String dateFormatPattern = "\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{1,2}:\\d{1,2}";
+        String dateFormatPattern = "\\d{1,2}-\\d{1,2}-\\d{4} \\d{1,2}:\\d{1,2}:\\d{1,2}";
 
         // Check if the input matches the pattern
         if (!input.matches(dateFormatPattern)) {
@@ -651,7 +653,7 @@ public class TerminalUtil {
         }
 
         // If it matches the pattern, try to parse it as a date
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         sdf.setLenient(false); // Disable leniency to enforce strict date parsing
 
         try {

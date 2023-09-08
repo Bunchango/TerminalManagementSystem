@@ -288,7 +288,7 @@ public class AdminInterface {
         while (true) {
             try {
                 double newPortCapacity = sc.nextDouble();
-                System.out.println("CONFIRM UPDATE PORT'S CAPACITY: " + portID + " TO " + newPortCapacity + " (true/false)? ");
+                System.out.print("CONFIRM UPDATE PORT'S CAPACITY: " + portID + " TO " + newPortCapacity + " (true/false)? ");
                 if (sc.nextBoolean()) {
                     System.out.println(TerminalUtil.updatePortStoringCapacity(portID, newPortCapacity));
                 }

@@ -15,6 +15,7 @@ public class LogManager {
         saveOccurredLog();
         saveOccurringLog();
         saveManagers();
+        saveUsedIds();
     }
 
     protected static void saveVehicles() {
