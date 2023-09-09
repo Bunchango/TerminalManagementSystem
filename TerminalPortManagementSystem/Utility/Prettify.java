@@ -324,7 +324,7 @@ public class Prettify {
             System.out.println();
         } else {
             // Dynamic print
-            int maxLengthUsername = 0;
+            int maxLengthUsername = 8;
             int maxLengthPassword = 8;
 
             // dynamic length

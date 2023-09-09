@@ -166,6 +166,7 @@ public abstract class Vehicle implements Serializable {
             }
 
             double distance = Port.calculateDistanceBetweenPort(currentPort, destinationPort);
+            // Future consumption
             double fuelConsumption = TerminalUtil.getFuelConsumptionFromMap(weightByType, distance, vehicleType);
 
             if (currentFuel < fuelConsumption) {
