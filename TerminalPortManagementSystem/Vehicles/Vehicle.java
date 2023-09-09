@@ -146,8 +146,11 @@ public abstract class Vehicle implements Serializable {
         }
 
         if (isScheduled() && !isSailAway()) {
+
             // Get the total weight of each type of containers in vehicle
-            List<Container> futureVehicleContainers = List.copyOf(vehicleContainers);
+            List<Container> futureVehicleContainers = new ArrayList<>(List.copyOf(vehicleContainers));
+            futureVehicleContainers.add(containerToLoad);
+
             Map<ContainerType, Double> weightByType = TerminalUtil.getWeightByTypeFromList(futureVehicleContainers, vehicleType);
 
             // Search destinationPort from log
@@ -299,14 +302,13 @@ public abstract class Vehicle implements Serializable {
         return vehicleType + " moved successfully";
     }
 
-    public String arriveToPort(Port destinationPort, double fuelCost) {
+    public void arriveToPort(Port destinationPort, double fuelCost) {
         // Update the vehicle when it arrives to the target port
         currentPort = destinationPort;
         // Only update its fuel when it arrives to the port
         currentFuel = TerminalUtil.roundToSecondDecimalPlace(getCurrentFuel() - fuelCost);
         currentPort.addVehicle(this);
 
-        return vehicleType + " arrived to Port";
     }
 
     public abstract boolean ableToMoveToPort(Port destinationPort);
