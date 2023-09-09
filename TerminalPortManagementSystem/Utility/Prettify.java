@@ -160,7 +160,7 @@ public class Prettify {
                 for (Vehicle vehicle : vehicles) {
                     int vehicleIDLength = vehicle.getVehicleID().length();
                     int currentPortLength = (vehicle.getCurrentPort() == null) ? 5 : vehicle.getCurrentPort().getPortID().length();
-                    int fuelLength = String.valueOf(vehicle.getFuelCapacity()).length() * 2 + 8;
+                    int fuelLength = String.valueOf(vehicle.getFuelCapacity()).length() * 2 + 9;
                     int capacityLength = String.valueOf(vehicle.getCarryingCapacity()).length() * 2 + 4;
 
                     if (vehicleIDLength > maxIDLength) {
