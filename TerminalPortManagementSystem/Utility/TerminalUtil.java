@@ -543,7 +543,7 @@ public class TerminalUtil {
         }
         occurringLogs.removeIf(Log::isFinished); // Remove all logs that is finished
         updateVehicleWhenReachDepartureDate();
-        deleteLogAfterSevenDays(); // Keep only logs within the last 7 days
+        // deleteLogAfterSevenDays(); // Keep only logs within the last 7 days. Functional
         LogManager.saveAllObjects();
     }
 
@@ -606,7 +606,7 @@ public class TerminalUtil {
     public static Date parseStringToDate(String stringToParse) {
         // Parse given String to date format
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
+        
         if (!isValidDate(stringToParse)) {
             return null;
         }
